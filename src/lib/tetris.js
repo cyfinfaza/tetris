@@ -12,6 +12,17 @@ function iterateAll(callback) {
 	}
 }
 
+function deepCopy2d(arr) {
+	let newArr = [];
+	for (let i = 0; i < arr.length; i++) {
+		newArr[i] = [];
+		for (let j = 0; j < arr[i].length; j++) {
+			newArr[i][j] = arr[i][j];
+		}
+	}
+	return newArr;
+}
+
 export default class TetrisGame {
 	constructor() {
 		this.staticMatrix = [];
@@ -23,7 +34,9 @@ export default class TetrisGame {
 		}
 		this.activePiece = null;
 		this.holdPiece = null;
+		this.holdAvailable = true;
 		this.tickDelay = 1000;
+		this.gameOver = false;
 		// this.autoTick = autoTick;
 		this.numLinesCleared = 0;
 		this.onLinesCleared = (clearedLines) => {};
@@ -43,6 +56,7 @@ export default class TetrisGame {
 			}
 		}
 		this.activePiece = null;
+		this.gameOver = false;
 	}
 
 	checkMiniMatrixCollision({ x, y, shape }) {
@@ -57,13 +71,25 @@ export default class TetrisGame {
 		}
 	}
 
+	triggerGameOver() {
+		this.onCancelTick();
+		this.gameOver = true;
+		this.activePiece = null;
+		this.onGameOver();
+	}
+
 	spawnBlock() {
 		const chosenBlock = blocks[Math.floor(Math.random() * blocks.length)];
 		// console.error(chosenBlock);
-		let newPiece = { ...chosenBlock, x: chosenBlock.spawnX, y: chosenBlock.spawnY, floorMoves: 0 };
+		let newPiece = {
+			...chosenBlock,
+			x: chosenBlock.spawnX,
+			y: chosenBlock.spawnY,
+			floorMoves: 0,
+			originalShape: deepCopy2d(chosenBlock.shape),
+		};
 		if (this.checkMiniMatrixCollision(newPiece)) {
-			this.onGameOver();
-			this.onCancelTick();
+			this.triggerGameOver();
 			return;
 		} else {
 			this.activePiece = newPiece;
@@ -144,6 +170,7 @@ export default class TetrisGame {
 			this.numLinesCleared += clearedLines;
 			this.onLinesCleared(clearedLines);
 		}
+		this.holdAvailable = true;
 	}
 
 	resetTickIfAboutToLock() {
@@ -190,22 +217,40 @@ export default class TetrisGame {
 	}
 
 	hardDrop() {
-		while (!this.translateActivePiece(0, 1)) {}
+		while (this.activePiece && !this.translateActivePiece(0, 1)) {}
 		this.runPieceLockSequence();
 	}
 
 	hold() {
-		if (this.holdPiece) {
-			[this.activePiece, this.holdPiece] = [
-				{ ...this.holdPiece, x: this.holdPiece.spawnX, y: this.holdPiece.spawnY },
-				{ ...this.activePiece, x: this.activePiece.spawnX, y: this.activePiece.spawnY },
-			];
-		} else {
-			this.holdPiece = this.activePiece;
-			this.spawnBlock();
+		if (this.holdAvailable && !this.gameOver) {
+			if (this.holdPiece) {
+				[this.activePiece, this.holdPiece] = [
+					{
+						...this.holdPiece,
+						x: this.holdPiece.spawnX,
+						y: this.holdPiece.spawnY,
+						shape: this.holdPiece.originalShape,
+					},
+					{
+						...this.activePiece,
+						x: this.activePiece.spawnX,
+						y: this.activePiece.spawnY,
+						shape: this.activePiece.originalShape,
+					},
+				];
+			} else {
+				this.holdPiece = {
+					...this.activePiece,
+					x: this.activePiece.spawnX,
+					y: this.activePiece.spawnY,
+					shape: this.activePiece.originalShape,
+				};
+				this.spawnBlock();
+			}
+			this.holdAvailable = false;
+			this.onCancelTick();
+			this.onRequestTick(this.tickDelay);
 		}
-		this.onCancelTick();
-		this.onRequestTick(this.tickDelay);
 	}
 
 	get ghostPiece() {
