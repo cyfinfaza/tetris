@@ -1,0 +1,24 @@
+body,
+body.theme-default {
+	--window-bg: #000;
+	--board-bg: #222;
+	--text: #fff;
+	--piece-empty: transparent;
+	--piece-I: #31c7ef;
+	--piece-O: #f7d308;
+	--piece-T: #ad4d9c;
+	--piece-S: #42b642;
+	--piece-Z: #ef2029;
+	--piece-J: #5a65ad;
+	--piece-L: #ef7921;
+	.piece {
+		// transition: 120ms;
+		// transform: scale(0.7);
+	}
+	.piece-active {
+		transform: scale(1);
+	}
+	.piece-ghost {
+		background: #444 !important;
+	}
+}

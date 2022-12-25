@@ -1,0 +1,14 @@
+/* Write your global styles here, in SCSS syntax. Variables and mixins from the src/variables.scss file are available here without importing */
+body {
+	background: var(--window-bg);
+	color: var(--text);
+	margin: 0;
+	padding: 8px;
+	box-sizing: border-box;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100vh;
+	font-family: "Courier New", Courier, monospace;
+	background-color: black;
+}
