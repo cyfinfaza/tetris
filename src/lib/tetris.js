@@ -22,6 +22,7 @@ export default class TetrisGame {
 			}
 		}
 		this.activePiece = null;
+		this.holdPiece = null;
 		this.tickDelay = 1000;
 		// this.autoTick = autoTick;
 		this.numLinesCleared = 0;
@@ -191,6 +192,20 @@ export default class TetrisGame {
 	hardDrop() {
 		while (!this.translateActivePiece(0, 1)) {}
 		this.runPieceLockSequence();
+	}
+
+	hold() {
+		if (this.holdPiece) {
+			[this.activePiece, this.holdPiece] = [
+				{ ...this.holdPiece, x: this.holdPiece.spawnX, y: this.holdPiece.spawnY },
+				{ ...this.activePiece, x: this.activePiece.spawnX, y: this.activePiece.spawnY },
+			];
+		} else {
+			this.holdPiece = this.activePiece;
+			this.spawnBlock();
+		}
+		this.onCancelTick();
+		this.onRequestTick(this.tickDelay);
 	}
 
 	get ghostPiece() {

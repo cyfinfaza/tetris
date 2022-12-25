@@ -1,8 +1,11 @@
 <script>
 	import { onMount } from "svelte";
 	import TetrisGame, { sx, sy } from "./lib/tetris";
+	import blocks from "./lib/blocks";
+	import PieceViewer from "./components/PieceViewer.svelte";
 
 	let gameGridElement;
+	let holdPiece = null;
 
 	let linesCleared = 0;
 	let gameOver = false;
@@ -68,6 +71,9 @@
 				game.rotateCCW();
 			} else if (e.key == "r") {
 				restartGame();
+			} else if (e.key == "c") {
+				game.hold();
+				holdPiece = game.holdPiece;
 			}
 			grid = game.grid;
 		});
@@ -92,6 +98,10 @@
 		{/each}
 	</div>
 	<div>
+		{#if holdPiece}
+			<h2>hold</h2>
+			<PieceViewer piece={holdPiece} />
+		{/if}
 		<h1>{linesCleared} lines</h1>
 		{#if gameOver}
 			<h2 style="color: red;">Game Over</h2>
@@ -115,12 +125,12 @@
 		}
 	}
 	.grid {
-		height: 90vh;
-		aspect-ratio: 10/20;
+		// height: 90vh;
+		// aspect-ratio: 10/20;
 		display: grid;
 		grid-template-columns: repeat(10, 1fr);
 		/* grid-template-rows: repeat(sy, 1fr); */
-		background-color: #222;
+		background-color: var(--board-bg);
 		padding: 2px;
 		/* gap: 2px; */
 		box-sizing: border-box;
@@ -129,7 +139,7 @@
 		}
 	}
 	.grid > div {
-		height: 100%;
+		height: var(--block-size);
 		aspect-ratio: 1;
 	}
 </style>

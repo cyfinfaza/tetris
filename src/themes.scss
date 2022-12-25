@@ -1,5 +1,7 @@
 body,
 body.theme-default {
+	--block-size: calc(90vh / 20);
+
 	--window-bg: #000;
 	--board-bg: #222;
 	--text: #fff;
