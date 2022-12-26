@@ -23,7 +23,7 @@
 			clearTimeout(tickTimeout);
 		}
 		tickTimeout = setTimeout(() => {
-			// game.tick();
+			game.tick();
 			grid = game.grid;
 		}, dt);
 	};
@@ -56,22 +56,63 @@
 		updateVis();
 	}
 
+	const das = 140;
+	const arr = 10;
+
+	let rightState = 0;
+	let leftState = 0;
+	let dasTimeout = null;
+
+	function setDasTimeout(callback) {
+		function setArrTimeout() {
+			clearInterval(dasTimeout);
+			dasTimeout = setTimeout(() => {
+				callback();
+				updateVis();
+				setArrTimeout(callback);
+			}, arr);
+		}
+		callback();
+		clearInterval(dasTimeout);
+		dasTimeout = setTimeout(() => {
+			callback();
+			updateVis();
+			setArrTimeout(() => {
+				callback;
+				updateVis();
+			});
+		}, das);
+	}
+
 	onMount(() => {
 		// setInterval(() => {
 		// 	game.tick();
 		// 	grid = game.grid;
 		// }, 1000);
+		window.addEventListener("keyup", (e) => {
+			switch (e.key) {
+				case "ArrowLeft":
+				case "ArrowRight":
+				case "ArrowDown":
+					clearTimeout(dasTimeout);
+					dasTimeout = null;
+					break;
+			}
+		});
 		window.addEventListener("keydown", (e) => {
 			// console.log(e);
+			if (e.repeat) {
+				return;
+			}
 			switch (e.key) {
 				case "ArrowRight":
-					game.right();
+					setDasTimeout(() => game.right());
 					break;
 				case "ArrowLeft":
-					game.left();
+					setDasTimeout(() => game.left());
 					break;
 				case "ArrowDown":
-					game.down();
+					setDasTimeout(() => game.down());
 					break;
 				case "ArrowUp":
 					game.rotateCW();
