@@ -1,4 +1,6 @@
 /* Write your global styles here, in SCSS syntax. Variables and mixins from the src/variables.scss file are available here without importing */
+@import url("https://fonts.googleapis.com/css2?family=Chivo+Mono:wght@400;700&display=swap");
+
 body {
 	background: var(--window-bg);
 	color: var(--text);
@@ -9,6 +11,17 @@ body {
 	align-items: center;
 	justify-content: center;
 	height: 100vh;
-	font-family: "Courier New", Courier, monospace;
+	font-family: "Chivo Mono", monospace;
 	background-color: black;
+}
+
+button,
+input,
+select,
+textarea {
+	font-family: inherit;
+	padding: 8px;
+	border: 1px solid var(--border);
+	color: inherit;
+	background-color: var(--board-bg);
 }

@@ -144,10 +144,25 @@
 </script>
 
 <main>
-	<div class="queue">
-		{#each queue as piece}
-			<PieceViewer {piece} />
-		{/each}
+	<div class="stats">
+		<div>
+			{#if holdPiece}
+				<h2>hold</h2>
+				<PieceViewer piece={holdPiece} />
+			{/if}
+		</div>
+		<div>
+			<h1>{linesCleared} lines</h1>
+			{#if gameOver}
+				<h2 style="color: red;">Game Over</h2>
+			{/if}
+			<button
+				on:click={() => {
+					restartGame();
+					gameGridElement.focus();
+				}}>Restart (R)</button
+			>
+		</div>
 	</div>
 	<div class="grid" tabindex="0" bind:this={gameGridElement}>
 		{#each grid as row, i}
@@ -163,21 +178,10 @@
 			{/each}
 		{/each}
 	</div>
-	<div class="stats">
-		{#if holdPiece}
-			<h2>hold</h2>
-			<PieceViewer piece={holdPiece} />
-		{/if}
-		<h1>{linesCleared} lines</h1>
-		{#if gameOver}
-			<h2 style="color: red;">Game Over</h2>
-		{/if}
-		<button
-			on:click={() => {
-				restartGame();
-				gameGridElement.focus();
-			}}>Restart (R)</button
-		>
+	<div class="queue">
+		{#each queue as piece}
+			<PieceViewer {piece} />
+		{/each}
 	</div>
 </main>
 
@@ -212,14 +216,26 @@
 	.queue {
 		display: flex;
 		flex-direction: column;
-		align-items: flex-end;
+		align-items: flex-start;
 		align-self: flex-start;
 		gap: 12px;
 		width: calc(var(--block-size) * 4);
 	}
 
 	.stats {
-		align-self: flex-end;
+		align-self: stretch;
+		text-align: right;
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+		align-items: flex-end;
+		justify-content: space-between;
 		width: calc(var(--block-size) * 4);
+		* {
+			margin: 0;
+			display: flex;
+			flex-direction: column;
+			gap: 12px;
+		}
 	}
 </style>

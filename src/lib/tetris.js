@@ -53,10 +53,7 @@ export default class TetrisGame {
 		while (this.queue.length < queueLength) {
 			this.queue.push(this.genRandomPiece());
 		}
-		if (this.bag.length === 0) {
-			// Refill bag
-			blocks.forEach((x) => this.bag.push(x));
-		}
+		this.resetBag();
 	}
 
 	resetGame(newInitialSeed = null) {
@@ -76,6 +73,7 @@ export default class TetrisGame {
 		this.holdAvailable = true;
 		this.initialSeed = newInitialSeed || Math.floor(Math.random() * 1000000);
 		this.seed = this.initialSeed;
+		this.resetBag();
 	}
 
 	checkMiniMatrixCollision(piece) {
@@ -102,11 +100,14 @@ export default class TetrisGame {
 		return (this.seed = (742938285 * this.seed) % (2 ** 31 - 1));
 	}
 
-	genRandomPiece() {
+	resetBag() {
 		if (this.bag.length === 0) {
-			// Refill bag
 			blocks.forEach((x) => this.bag.push(x));
 		}
+	}
+
+	genRandomPiece() {
+		this.resetBag();
 		const length = this.bag.length;
 		const index = this.genRandomNumber() % length;
 		this.queue.push(this.bag.splice(index, 1)[0]);
@@ -297,6 +298,7 @@ export default class TetrisGame {
 						...this.activePiece,
 						x: this.activePiece.spawnX,
 						y: this.activePiece.spawnY,
+						rotationState: 0,
 						shape: this.activePiece.shape,
 					},
 				];
@@ -305,6 +307,7 @@ export default class TetrisGame {
 					...this.activePiece,
 					x: this.activePiece.spawnX,
 					y: this.activePiece.spawnY,
+					rotationState: 0,
 					shape: this.activePiece.shape,
 				};
 				this.spawnBlock();

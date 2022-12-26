@@ -1,7 +1,7 @@
-- [ ] Fix DAS/ARR (input stuff)
+- [x] Fix DAS/ARR (input stuff)
 - [ ] Sound
 - [x] Preview boxes (looking into the future queue)
-- [ ] Kick tables
+- [x] Kick tables
 - [ ] T-spin detection (Normal, Mini)
 - [ ] Combos
 - [ ] Timer
