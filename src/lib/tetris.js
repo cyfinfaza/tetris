@@ -107,10 +107,16 @@ export default class TetrisGame {
 		for (let i = 0; i < matrix.length; i++) {
 			newMatrix[i] = [];
 			for (let j = 0; j < matrix[i].length; j++) {
-				if (dir > 0) {
-					newMatrix[i][j] = matrix[matrix.length - j - 1][i];
-				} else {
-					newMatrix[i][j] = matrix[j][matrix.length - i - 1];
+				switch (dir) {
+					case 1:
+						newMatrix[i][j] = matrix[matrix.length - j - 1][i];
+						break;
+					case -1:
+						newMatrix[i][j] = matrix[j][matrix.length - i - 1];
+						break;
+					case 0:
+						newMatrix[i][j] = matrix[matrix.length - i - 1][matrix.length - j - 1];
+						break;
 				}
 			}
 		}
@@ -183,6 +189,14 @@ export default class TetrisGame {
 
 	rotateCW() {
 		let newPiece = { ...this.activePiece, shape: this.rotateMiniMatrix(this.activePiece.shape, 1) };
+		if (!this.checkMiniMatrixCollision(newPiece)) {
+			this.activePiece = newPiece;
+			this.resetTickIfAboutToLock();
+		}
+	}
+	
+	rotateFlip() {
+		let newPiece = { ...this.activePiece, shape: this.rotateMiniMatrix(this.activePiece.shape, 0) };
 		if (!this.checkMiniMatrixCollision(newPiece)) {
 			this.activePiece = newPiece;
 			this.resetTickIfAboutToLock();
