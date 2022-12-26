@@ -12,6 +12,8 @@
 
 	let game = new TetrisGame();
 	let grid = game.grid;
+	let queue = game.queue;
+
 	game.onLinesCleared = (lines) => {
 		linesCleared += lines;
 	};
@@ -40,12 +42,18 @@
 
 	// $: console.table(grid);
 
+	function updateVis() {
+		grid = game.grid;
+		holdPiece = game.holdPiece;
+		queue = game.queue;
+	}
+
 	function restartGame() {
 		game.resetGame();
 		game.start();
 		linesCleared = 0;
 		gameOver = false;
-		grid = game.grid;
+		updateVis();
 	}
 
 	onMount(() => {
@@ -85,17 +93,21 @@
 					break;
 				case "c":
 					game.hold();
-					holdPiece = game.holdPiece;
 					break;
 			}
-			grid = game.grid;
+			updateVis();
 		});
 		game.start();
-		grid = game.grid;
+		updateVis();
 	});
 </script>
 
 <main>
+	<div class="queue">
+		{#each queue as piece}
+			<PieceViewer {piece} />
+		{/each}
+	</div>
 	<div class="grid" tabindex="0" bind:this={gameGridElement}>
 		{#each grid as row, i}
 			{#each row as cell, j}
@@ -110,7 +122,7 @@
 			{/each}
 		{/each}
 	</div>
-	<div>
+	<div class="stats">
 		{#if holdPiece}
 			<h2>hold</h2>
 			<PieceViewer piece={holdPiece} />
@@ -154,5 +166,19 @@
 	.grid > div {
 		height: var(--block-size);
 		aspect-ratio: 1;
+	}
+
+	.queue {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
+		align-self: flex-start;
+		gap: 12px;
+		width: calc(var(--block-size) * 4);
+	}
+
+	.stats {
+		align-self: flex-end;
+		width: calc(var(--block-size) * 4);
 	}
 </style>

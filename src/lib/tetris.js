@@ -3,6 +3,7 @@ import blocks from "./blocks.js";
 export const sx = 10;
 export const sy = 20;
 export const floorMoveLimit = 15;
+export const queueLength = 5;
 
 function iterateAll(callback) {
 	for (let i = 0; i < sy; i++) {
@@ -41,14 +42,23 @@ export default class TetrisGame {
 		this.numLinesCleared = 0;
 		this.initialSeed = randomSeed || Math.floor(Math.random() * 1000000);
 		this.seed = this.initialSeed;
-		this.bag = [0, 1, 2, 3, 4, 5, 6];
+		this.bag = [];
+		this.queue = [];
 		this.onLinesCleared = (clearedLines) => {};
 		this.onGameOver = () => {};
 		this.onRequestTick = (dt) => {};
 		this.onCancelTick = () => {};
+
+		while (this.queue.length < queueLength) {
+			this.queue.push(this.genRandomPiece());
+		}
+		if (this.bag.length === 0) {
+			// Refill bag
+			blocks.forEach((x) => this.bag.push(x));
+		}
 	}
 
-	resetGame() {
+	resetGame(newInitialSeed = null) {
 		this.onCancelTick();
 		this.numLinesCleared = 0;
 		this.staticMatrix = [];
@@ -60,6 +70,11 @@ export default class TetrisGame {
 		}
 		this.activePiece = null;
 		this.gameOver = false;
+		this.tickDelay = 1000;
+		this.holdPiece = null;
+		this.holdAvailable = true;
+		this.initialSeed = newInitialSeed || Math.floor(Math.random() * 1000000);
+		this.seed = this.initialSeed;
 	}
 
 	checkMiniMatrixCollision({ x, y, shape }) {
@@ -67,7 +82,7 @@ export default class TetrisGame {
 			for (let j = 0; j < shape[i].length; j++) {
 				const ai = y + i;
 				const aj = x + j;
-				if (shape[i][j] && !(ai < 0) && (ai >= sy || aj < 0 || aj >= sx || this.staticMatrix[ai][aj])) {
+				if (shape[i][j] && (ai >= sy || aj < 0 || aj >= sx || (ai >= 0 ? this.staticMatrix[ai][aj] : false))) {
 					return true;
 				}
 			}
@@ -86,12 +101,14 @@ export default class TetrisGame {
 	}
 
 	genRandomPiece() {
-		if (this.bag.length == 0) {
-			this.bag = [0, 1, 2, 3, 4, 5, 6];
+		if (this.bag.length === 0) {
+			// Refill bag
+			blocks.forEach((x) => this.bag.push(x));
 		}
 		const length = this.bag.length;
 		const index = this.genRandomNumber() % length;
-		return blocks[this.bag.splice(index, 1)[0]];
+		this.queue.push(this.bag.splice(index, 1)[0]);
+		return this.queue.shift();
 	}
 
 	spawnBlock() {
@@ -197,16 +214,18 @@ export default class TetrisGame {
 	}
 
 	resetTickIfAboutToLock() {
-		if (this.translateActivePiece(0, 1, true)) {
-			if (this.activePiece.floorMoves < floorMoveLimit) {
-				this.onCancelTick();
-				this.onRequestTick(this.tickDelay);
-				this.activePiece.floorMoves++;
+		if (this.activePiece) {
+			if (this.translateActivePiece(0, 1, true)) {
+				if (this.activePiece.floorMoves < floorMoveLimit) {
+					this.onCancelTick();
+					this.onRequestTick(this.tickDelay);
+					this.activePiece.floorMoves++;
+				} else {
+					this.runPieceLockSequence();
+				}
 			} else {
-				this.runPieceLockSequence();
+				this.activePiece.floorMoves = 0;
 			}
-		} else {
-			this.activePiece.floorMoves = 0;
 		}
 		// console.log(this.activePiece.floorMoves);
 	}

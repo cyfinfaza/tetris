@@ -1,0 +1,10 @@
+- [ ] Fix DAS/ARR (input stuff)
+- [ ] Sound
+- [x] Preview boxes (looking into the future queue)
+- [ ] Kick tables
+- [ ] T-spin detection (Normal, Mini)
+- [ ] Combos
+- [ ] Timer
+- [ ] Stat Counter (PPS, DMG)
+- [ ] Theme Picker
+- [ ] Double tetris
