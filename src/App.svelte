@@ -55,25 +55,38 @@
 		// }, 1000);
 		window.addEventListener("keydown", (e) => {
 			// console.log(e);
-			if (e.key == "ArrowRight") {
-				game.right();
-			} else if (e.key == "ArrowLeft") {
-				game.left();
-			} else if (e.key == "ArrowDown") {
-				game.down();
-			} else if (e.key == "ArrowUp") {
-				game.rotateCW();
-			} else if (e.key == " ") {
-				game.hardDrop();
-			} else if (e.key == "Enter") {
-				game.tick();
-			} else if (e.key == "z") {
-				game.rotateCCW();
-			} else if (e.key == "r") {
-				restartGame();
-			} else if (e.key == "c") {
-				game.hold();
-				holdPiece = game.holdPiece;
+			switch (e.key) {
+				case "ArrowRight":
+					game.right();
+					break;
+				case "ArrowLeft":
+					game.left();
+					break;
+				case "ArrowDown":
+					game.down();
+					break;
+				case "ArrowUp":
+					game.rotateCW();
+					break;
+				case " ":
+					game.hardDrop();
+					break;
+				case "Enter":
+					game.tick();
+					break;
+				case "a":
+					game.rotateFlip();
+					break;
+				case "z":
+					game.rotateCCW();
+					break;
+				case "r":
+					restartGame();
+					break;
+				case "c":
+					game.hold();
+					holdPiece = game.holdPiece;
+					break;
 			}
 			grid = game.grid;
 		});
