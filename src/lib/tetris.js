@@ -268,17 +268,19 @@ export default class TetrisGame {
 	}
 
 	rotate(n) {
-		let newPiece = { ...this.activePiece, rotationState: (this.activePiece.rotationState + n) % 4 };
-		let kickset = kicks.find((kickset) => kickset.appliesTo.includes(this.activePiece.type))?.kicks?.[
-			this.activePiece.rotationState
-		]?.[newPiece.rotationState] || [[0, 0]];
-		console.log(this.activePiece.type, kicks, kickset);
-		for (let i = 0; i < kickset.length; i++) {
-			let newTraslatedPiece = { ...newPiece, x: newPiece.x + kickset[i][0], y: newPiece.y + kickset[i][1] };
-			if (!this.checkMiniMatrixCollision(newTraslatedPiece)) {
-				this.activePiece = newTraslatedPiece;
-				this.resetTickIfAboutToLock();
-				return false;
+		if (this.activePiece) {
+			let newPiece = { ...this.activePiece, rotationState: (this.activePiece.rotationState + n) % 4 };
+			let kickset = kicks.find((kickset) => kickset.appliesTo.includes(this.activePiece.type))?.kicks?.[
+				this.activePiece.rotationState
+			]?.[newPiece.rotationState] || [[0, 0]];
+			// console.log(this.activePiece.type, kicks, kickset);
+			for (let i = 0; i < kickset.length; i++) {
+				let newTraslatedPiece = { ...newPiece, x: newPiece.x + kickset[i][0], y: newPiece.y + kickset[i][1] };
+				if (!this.checkMiniMatrixCollision(newTraslatedPiece)) {
+					this.activePiece = newTraslatedPiece;
+					this.resetTickIfAboutToLock();
+					return false;
+				}
 			}
 		}
 		return true;

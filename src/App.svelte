@@ -108,6 +108,22 @@
 		}, das);
 	}
 
+	$: console.log(
+		grid.map((row) => row.map((cell) => "%c  ").join("")).join("\n"),
+		...grid.reduce(
+			(prev, curr) => [
+				...prev,
+				...curr.map(
+					(cell) =>
+						"background-color:" +
+						(cell ? (cell.ghost ? "#333" : blocks.find((block) => block.type === cell.type).color) : "black") +
+						"; border-radius: 50%; margin: 1px;"
+				),
+			],
+			[]
+		)
+	);
+
 	onMount(() => {
 		// setInterval(() => {
 		// 	game.tick();
