@@ -152,7 +152,7 @@
 			{/if}
 		</div>
 		<div>
-			<h1>{linesCleared} lines</h1>
+			<h1>{linesCleared} {linesCleared == 1 ? "line" : "lines"}</h1>
 			{#if gameOver}
 				<h2 style="color: red;">Game Over</h2>
 			{/if}
@@ -231,11 +231,16 @@
 		align-items: flex-end;
 		justify-content: space-between;
 		width: calc(var(--block-size) * 4);
-		* {
-			margin: 0;
+		> * {
 			display: flex;
 			flex-direction: column;
 			gap: 12px;
+		}
+		:nth-child(2) {
+			align-self: stretch;
+			button {
+				text-align: right;
+			}
 		}
 	}
 </style>
