@@ -1,4 +1,5 @@
 import blocks from "./blocks.js";
+import kicks from "./kicks.js";
 
 export const sx = 10;
 export const sy = 20;
@@ -77,7 +78,8 @@ export default class TetrisGame {
 		this.seed = this.initialSeed;
 	}
 
-	checkMiniMatrixCollision({ x, y, shape }) {
+	checkMiniMatrixCollision(piece) {
+		const { x, y, shape } = this.calculateRotatedPiece(piece);
 		for (let i = 0; i < shape.length; i++) {
 			for (let j = 0; j < shape[i].length; j++) {
 				const ai = y + i;
@@ -131,13 +133,19 @@ export default class TetrisGame {
 	}
 
 	overlay(staticMatrix, piece, options = {}) {
+		let rotatedPiece;
+		if (piece) {
+			rotatedPiece = this.calculateRotatedPiece(piece);
+		} else {
+			return staticMatrix;
+		}
 		let renderedGrid = [];
 		for (let i = 0; i < sy; i++) {
 			renderedGrid[i] = [];
 			for (let j = 0; j < sx; j++) {
 				renderedGrid[i][j] = staticMatrix[i][j];
 				if (piece) {
-					const { x, y, shape } = piece;
+					const { x, y, shape } = rotatedPiece;
 					if (shape[i - y] && shape[i - y][j - x]) {
 						renderedGrid[i][j] = { type: piece.type, ...options };
 					}
@@ -163,24 +171,23 @@ export default class TetrisGame {
 	}
 
 	rotateMiniMatrix(matrix, dir = 1) {
-		let newMatrix = [];
-		for (let i = 0; i < matrix.length; i++) {
-			newMatrix[i] = [];
-			for (let j = 0; j < matrix[i].length; j++) {
-				switch (dir) {
-					case 1:
-						newMatrix[i][j] = matrix[matrix.length - j - 1][i];
-						break;
-					case -1:
-						newMatrix[i][j] = matrix[j][matrix.length - i - 1];
-						break;
-					case 0:
-						newMatrix[i][j] = matrix[matrix.length - i - 1][matrix.length - j - 1];
-						break;
+		let newMatrix = matrix;
+		for (let _ = 0; _ < dir; _++) {
+			newMatrix = [];
+			for (let i = 0; i < matrix.length; i++) {
+				newMatrix[i] = [];
+				for (let j = 0; j < matrix[i].length; j++) {
+					// console.log(dir);
+					newMatrix[i][j] = matrix[matrix.length - j - 1][i];
 				}
 			}
+			matrix = newMatrix;
 		}
 		return newMatrix;
+	}
+
+	calculateRotatedPiece(piece) {
+		return { ...piece, shape: this.rotateMiniMatrix(piece.shape, piece.rotationState), rotationState: 0 };
 	}
 
 	tick() {
@@ -242,31 +249,33 @@ export default class TetrisGame {
 		if (!this.translateActivePiece(0, 1)) this.resetTickIfAboutToLock();
 	}
 
-	rotateCCW() {
-		let newPiece = { ...this.activePiece, shape: this.rotateMiniMatrix(this.activePiece.shape, -1) };
-		if (!this.checkMiniMatrixCollision(newPiece)) {
-			this.activePiece = newPiece;
-			this.activePiece.rotationState = (this.activePiece.rotationState + 3) % 4;
-			this.resetTickIfAboutToLock();
+	rotate(n) {
+		let newPiece = { ...this.activePiece, rotationState: (this.activePiece.rotationState + n) % 4 };
+		let kickset = kicks.find((kickset) => kickset.appliesTo.includes(this.activePiece.type))?.kicks?.[
+			this.activePiece.rotationState
+		]?.[newPiece.rotationState] || [[0, 0]];
+		console.log(this.activePiece.type, kicks, kickset);
+		for (let i = 0; i < kickset.length; i++) {
+			let newTraslatedPiece = { ...newPiece, x: newPiece.x + kickset[i][0], y: newPiece.y + kickset[i][1] };
+			if (!this.checkMiniMatrixCollision(newTraslatedPiece)) {
+				this.activePiece = newTraslatedPiece;
+				this.resetTickIfAboutToLock();
+				return;
+			}
 		}
+	}
+
+	// tetrominoKicks[I][rot + CCW][test#]
+	rotateCCW() {
+		this.rotate(3);
 	}
 
 	rotateCW() {
-		let newPiece = { ...this.activePiece, shape: this.rotateMiniMatrix(this.activePiece.shape, 1) };
-		if (!this.checkMiniMatrixCollision(newPiece)) {
-			this.activePiece = newPiece;
-			this.activePiece.rotationState = (this.activePiece.rotationState + 1) % 4;
-			this.resetTickIfAboutToLock();
-		}
+		this.rotate(1);
 	}
 
 	rotateFlip() {
-		let newPiece = { ...this.activePiece, shape: this.rotateMiniMatrix(this.activePiece.shape, 0) };
-		if (!this.checkMiniMatrixCollision(newPiece)) {
-			this.activePiece = newPiece;
-			this.activePiece.rotationState = (this.activePiece.rotationState + 2) % 4;
-			this.resetTickIfAboutToLock();
-		}
+		this.rotate(2);
 	}
 
 	hardDrop() {
@@ -282,13 +291,13 @@ export default class TetrisGame {
 						...this.holdPiece,
 						x: this.holdPiece.spawnX,
 						y: this.holdPiece.spawnY,
-						shape: this.holdPiece.originalShape,
+						shape: this.holdPiece.shape,
 					},
 					{
 						...this.activePiece,
 						x: this.activePiece.spawnX,
 						y: this.activePiece.spawnY,
-						shape: this.activePiece.originalShape,
+						shape: this.activePiece.shape,
 					},
 				];
 			} else {
@@ -296,7 +305,7 @@ export default class TetrisGame {
 					...this.activePiece,
 					x: this.activePiece.spawnX,
 					y: this.activePiece.spawnY,
-					shape: this.activePiece.originalShape,
+					shape: this.activePiece.shape,
 				};
 				this.spawnBlock();
 			}
@@ -309,7 +318,7 @@ export default class TetrisGame {
 	get ghostPiece() {
 		if (!this.activePiece) return null;
 		let ghostPiece = { ...this.activePiece };
-		while (!this.checkMiniMatrixCollision(ghostPiece)) {
+		while (!this.checkMiniMatrixCollision(ghostPiece) && ghostPiece.y < sy) {
 			ghostPiece.y++;
 		}
 		ghostPiece.y--;

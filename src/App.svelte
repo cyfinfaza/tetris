@@ -23,7 +23,7 @@
 			clearTimeout(tickTimeout);
 		}
 		tickTimeout = setTimeout(() => {
-			game.tick();
+			// game.tick();
 			grid = game.grid;
 		}, dt);
 	};
