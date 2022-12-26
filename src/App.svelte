@@ -3,19 +3,27 @@
 	import TetrisGame, { sx, sy } from "./lib/tetris";
 	import blocks from "./lib/blocks";
 	import PieceViewer from "./components/PieceViewer.svelte";
+	import { sounds, playClearSFX, playMoveSFX, playDropSFX, playHoldSFX } from "./lib/sounds";
 
 	let gameGridElement;
 	let holdPiece = null;
 
 	let linesCleared = 0;
+	let dropTimestamps = [];
+	let gameStartTimestamp = Infinity;
+	let pps = 0;
+
 	let gameOver = false;
 
 	let game = new TetrisGame();
 	let grid = game.grid;
 	let queue = game.queue;
 
+	let _shake = false;
+
 	game.onLinesCleared = (lines) => {
 		linesCleared += lines;
+		playClearSFX(lines);
 	};
 	let tickTimeout = null;
 	game.onRequestTick = (dt) => {
@@ -34,6 +42,14 @@
 	};
 	game.onGameOver = () => {
 		gameOver = true;
+		sounds.gameover.play();
+	};
+	game.onDrop = (e) => {
+		dropTimestamps.push(Date.now());
+		pps = dropTimestamps.length / ((Date.now() - gameStartTimestamp) / 1000);
+		if (!e.otherEventsFired) {
+			playDropSFX();
+		}
 	};
 
 	window.TetrisGame = TetrisGame;
@@ -51,9 +67,17 @@
 	function restartGame() {
 		game.resetGame();
 		game.start();
+		gameStartTimestamp = Date.now();
+		dropTimestamps = [];
+		pps = 0;
 		linesCleared = 0;
 		gameOver = false;
 		updateVis();
+		_shake = false;
+		setTimeout(() => {
+			_shake = true;
+		}, 10);
+		sounds.restart.play();
 	}
 
 	const das = 140;
@@ -106,16 +130,16 @@
 			}
 			switch (e.key) {
 				case "ArrowRight":
-					setDasTimeout(() => game.right());
+					setDasTimeout(() => playMoveSFX(game.right()));
 					break;
 				case "ArrowLeft":
-					setDasTimeout(() => game.left());
+					setDasTimeout(() => playMoveSFX(game.left()));
 					break;
 				case "ArrowDown":
-					setDasTimeout(() => game.down());
+					setDasTimeout(() => playMoveSFX(game.down()));
 					break;
 				case "ArrowUp":
-					game.rotateCW();
+					playMoveSFX(game.rotateCW());
 					break;
 				case " ":
 					game.hardDrop();
@@ -124,26 +148,27 @@
 					game.tick();
 					break;
 				case "a":
-					game.rotateFlip();
+					playMoveSFX(game.rotateFlip());
 					break;
 				case "z":
-					game.rotateCCW();
+					playMoveSFX(game.rotateCCW());
 					break;
 				case "r":
 					restartGame();
 					break;
 				case "c":
-					game.hold();
+					playHoldSFX(game.hold());
 					break;
 			}
 			updateVis();
 		});
 		game.start();
+		gameStartTimestamp = Date.now();
 		updateVis();
 	});
 </script>
 
-<main>
+<main class:_shake>
 	<div class="stats">
 		<div>
 			{#if holdPiece}
@@ -152,6 +177,7 @@
 			{/if}
 		</div>
 		<div>
+			<h2>{Math.round(pps * 100) / 100} PPS</h2>
 			<h1>{linesCleared} {linesCleared == 1 ? "line" : "lines"}</h1>
 			{#if gameOver}
 				<h2 style="color: red;">Game Over</h2>

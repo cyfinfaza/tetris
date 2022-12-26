@@ -49,6 +49,7 @@ export default class TetrisGame {
 		this.onGameOver = () => {};
 		this.onRequestTick = (dt) => {};
 		this.onCancelTick = () => {};
+		this.onDrop = () => {};
 
 		while (this.queue.length < queueLength) {
 			this.queue.push(this.genRandomPiece());
@@ -127,9 +128,10 @@ export default class TetrisGame {
 		};
 		if (this.checkMiniMatrixCollision(newPiece)) {
 			this.triggerGameOver();
-			return;
+			return true;
 		} else {
 			this.activePiece = newPiece;
+			return false;
 		}
 	}
 
@@ -211,14 +213,17 @@ export default class TetrisGame {
 	}
 
 	runPieceLockSequence() {
+		const events = [];
 		this.staticMatrix = this.flatten();
-		this.spawnBlock();
+		events.push(this.spawnBlock());
 		const clearedLines = this.clearFilledLines();
 		if (clearedLines > 0) {
 			this.numLinesCleared += clearedLines;
 			this.onLinesCleared(clearedLines);
+			events.push(true);
 		}
 		this.holdAvailable = true;
+		this.onDrop({ otherEventsFired: events.some((x) => x) });
 	}
 
 	resetTickIfAboutToLock() {
@@ -238,16 +243,28 @@ export default class TetrisGame {
 		// console.log(this.activePiece.floorMoves);
 	}
 
+	move(x, y) {
+		if (this.activePiece) {
+			const collision = this.translateActivePiece(x, y);
+			if (!collision) {
+				this.resetTickIfAboutToLock();
+			}
+			return collision;
+		} else {
+			return true;
+		}
+	}
+
 	right() {
-		if (!this.translateActivePiece(1, 0)) this.resetTickIfAboutToLock();
+		return this.move(1, 0);
 	}
 
 	left() {
-		if (!this.translateActivePiece(-1, 0)) this.resetTickIfAboutToLock();
+		return this.move(-1, 0);
 	}
 
 	down() {
-		if (!this.translateActivePiece(0, 1)) this.resetTickIfAboutToLock();
+		return this.move(0, 1);
 	}
 
 	rotate(n) {
@@ -261,27 +278,30 @@ export default class TetrisGame {
 			if (!this.checkMiniMatrixCollision(newTraslatedPiece)) {
 				this.activePiece = newTraslatedPiece;
 				this.resetTickIfAboutToLock();
-				return;
+				return false;
 			}
 		}
+		return true;
 	}
 
 	// tetrominoKicks[I][rot + CCW][test#]
 	rotateCCW() {
-		this.rotate(3);
+		return this.rotate(3);
 	}
 
 	rotateCW() {
-		this.rotate(1);
+		return this.rotate(1);
 	}
 
 	rotateFlip() {
-		this.rotate(2);
+		return this.rotate(2);
 	}
 
 	hardDrop() {
-		while (this.activePiece && !this.translateActivePiece(0, 1)) {}
-		this.runPieceLockSequence();
+		if (!this.gameOver) {
+			while (this.activePiece && !this.translateActivePiece(0, 1)) {}
+			this.runPieceLockSequence();
+		}
 	}
 
 	hold() {
@@ -315,7 +335,9 @@ export default class TetrisGame {
 			this.holdAvailable = false;
 			this.onCancelTick();
 			this.onRequestTick(this.tickDelay);
+			return false;
 		}
+		return true;
 	}
 
 	get ghostPiece() {
