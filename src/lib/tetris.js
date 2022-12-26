@@ -24,7 +24,7 @@ function deepCopy2d(arr) {
 }
 
 export default class TetrisGame {
-	constructor() {
+	constructor({ randomSeed } = { randomSeed: null }) {
 		this.staticMatrix = [];
 		for (let i = 0; i < sy; i++) {
 			this.staticMatrix[i] = [];
@@ -39,6 +39,9 @@ export default class TetrisGame {
 		this.gameOver = false;
 		// this.autoTick = autoTick;
 		this.numLinesCleared = 0;
+		this.initialSeed = randomSeed || Math.floor(Math.random() * 1000000);
+		this.seed = this.initialSeed;
+		this.bag = [0, 1, 2, 3, 4, 5, 6];
 		this.onLinesCleared = (clearedLines) => {};
 		this.onGameOver = () => {};
 		this.onRequestTick = (dt) => {};
@@ -78,8 +81,21 @@ export default class TetrisGame {
 		this.onGameOver();
 	}
 
+	genRandomNumber() {
+		return (this.seed = (742938285 * this.seed) % (2 ** 31 - 1));
+	}
+
+	genRandomPiece() {
+		if (this.bag.length == 0) {
+			this.bag = [0, 1, 2, 3, 4, 5, 6];
+		}
+		const length = this.bag.length;
+		const index = this.genRandomNumber() % length;
+		return blocks[this.bag.splice(index, 1)[0]];
+	}
+
 	spawnBlock() {
-		const chosenBlock = blocks[Math.floor(Math.random() * blocks.length)];
+		const chosenBlock = this.genRandomPiece();
 		// console.error(chosenBlock);
 		let newPiece = {
 			...chosenBlock,
@@ -87,6 +103,7 @@ export default class TetrisGame {
 			y: chosenBlock.spawnY,
 			floorMoves: 0,
 			originalShape: deepCopy2d(chosenBlock.shape),
+			rotationState: 0,
 		};
 		if (this.checkMiniMatrixCollision(newPiece)) {
 			this.triggerGameOver();
@@ -210,6 +227,7 @@ export default class TetrisGame {
 		let newPiece = { ...this.activePiece, shape: this.rotateMiniMatrix(this.activePiece.shape, -1) };
 		if (!this.checkMiniMatrixCollision(newPiece)) {
 			this.activePiece = newPiece;
+			this.activePiece.rotationState = (this.activePiece.rotationState + 3) % 4;
 			this.resetTickIfAboutToLock();
 		}
 	}
@@ -218,14 +236,16 @@ export default class TetrisGame {
 		let newPiece = { ...this.activePiece, shape: this.rotateMiniMatrix(this.activePiece.shape, 1) };
 		if (!this.checkMiniMatrixCollision(newPiece)) {
 			this.activePiece = newPiece;
+			this.activePiece.rotationState = (this.activePiece.rotationState + 1) % 4;
 			this.resetTickIfAboutToLock();
 		}
 	}
-	
+
 	rotateFlip() {
 		let newPiece = { ...this.activePiece, shape: this.rotateMiniMatrix(this.activePiece.shape, 0) };
 		if (!this.checkMiniMatrixCollision(newPiece)) {
 			this.activePiece = newPiece;
+			this.activePiece.rotationState = (this.activePiece.rotationState + 2) % 4;
 			this.resetTickIfAboutToLock();
 		}
 	}
