@@ -25,7 +25,7 @@
 			}
 			tickTimeout = setTimeout(() => {
 				g.tick();
-				grid = g.grid;
+				updateVis();
 			}, dt);
 			dispatch("tickRequested");
 		};
