@@ -1,6 +1,5 @@
 <script>
 	export let piece;
-	console.log(piece);
 </script>
 
 {#if piece}
