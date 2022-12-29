@@ -26,7 +26,7 @@
 		gameStartTimestamp = Date.now();
 		dropTimestamps = [];
 		pps = 0;
-		handleLinesCleared = 0;
+		linesCleared = 0;
 		cg.restartGame();
 		game.start();
 	}
