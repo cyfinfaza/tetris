@@ -207,4 +207,21 @@
 	<svelte:fragment slot="stats">
 		<slot name="stats" />
 	</svelte:fragment>
+	<svelte:fragment slot="belowQueue">
+		<div class="bottomRight">
+			<slot name="gameName" />
+		</div>
+	</svelte:fragment>
 </Vis>
+
+<style>
+	.bottomRight {
+		display: flex;
+		flex-direction: column;
+		align-self: stretch;
+		gap: 6px;
+	}
+	button {
+		text-align: start;
+	}
+</style>

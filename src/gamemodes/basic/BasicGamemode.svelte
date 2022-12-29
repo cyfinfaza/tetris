@@ -48,4 +48,5 @@
 		<h2>{Math.round(pps * 100) / 100} PPS</h2>
 		<h1>{linesCleared} {linesCleared == 1 ? "line" : "lines"}</h1>
 	</svelte:fragment>
+	<h1 slot="gameName">BASIC</h1>
 </CoreGame>
