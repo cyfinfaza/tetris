@@ -4,6 +4,7 @@
 	import { sounds, playClearSFX, playMoveSFX, playDropSFX, playHoldSFX } from "../lib/sounds";
 	import Vis from "./Vis.svelte";
 	import { createEventDispatcher } from "svelte";
+	import PieceViewer from "./PieceViewer.svelte";
 
 	const dispatch = createEventDispatcher();
 
@@ -18,21 +19,52 @@
 
 	let gravityTimeout = null;
 
+	const measuredTimeoutLimit = 23;
+	function measuredInterval(callback, dt, ...args) {
+		const retValue = { timeout: null, running: true }
+		let lastCall = Date.now();
+		let totalMs = 0;
+
+		function f() {
+			if (!retValue.running) { return retValue; }
+			const now = Date.now();
+			totalMs += now - lastCall;
+			lastCall = now;
+			{
+				let i = 0
+				while (i < measuredTimeoutLimit && totalMs > dt) {
+					callback();
+					totalMs -= dt;
+					i++;
+				}
+				updateVis();
+			}
+			retValue.timeout = setTimeout(f, dt, ...args);
+			return retValue;
+		}
+		
+		return f();
+	}
+
+	function clearMeasuredInterval(info) {
+		if (info === null) { return; }
+		info.running = false;
+		clearTimeout(info.timeout);
+	}
+
 	function assignEventHandlersForGame(g) {
 		g.onRequestGravity = (dt) => {
 			if (gravityTimeout) {
 				clearTimeout(gravityTimeout);
 			}
-			gravityTimeout = setTimeout(() => {
+			gravityTimeout = measuredInterval(() => {
 				g.applyGravity();
 				updateVis();
 			}, 1000 / 60 / dt);
 			dispatch("gravityRequested");
 		};
 		g.onCancelGravity = () => {
-			if (gravityTimeout) {
-				clearTimeout(gravityTimeout);
-			}
+			clearMeasuredInterval(gravityTimeout);
 			dispatch("gravityCancelled");
 		};
 		g.onGameOver = () => {
@@ -75,35 +107,45 @@
 
 	const das = 140; // Delayed Auto Shift	
 	const arr = 10;  // Automatic Repeat Rate
-	const sdf = 1;   // Soft Drop Factor
+	const sdf = 20;   // Soft Drop Factor
 	let dasTimeout = null;
+	let arrInterval = null;
 	let dasDirection = null;
 	function setDasTimeout(callback) {
-		function setArrTimeout() {
-			clearTimeout(dasTimeout);
-			dasTimeout = setTimeout(() => {
-				callback();
-				updateVis();
-				setArrTimeout(callback);
-			}, arr);
-		}
-		callback();
-		clearTimeout(dasTimeout);
-		dasTimeout = setTimeout(() => {
-			callback();
-			updateVis();
-			setArrTimeout(() => {
-				callback;
-				updateVis();
-			});
-		}, das);
-	}
-
-	let downTimeout = null;
-	function setDownTimeout(callback) {
 		callback();
 		updateVis();
-		downTimeout = setTimeout(setDownTimeout, sdf * game.gravityLevel * 20, callback);
+
+		clearMeasuredInterval(arrInterval);
+		dasTimeout = setTimeout(() => {
+			clearMeasuredInterval(arrInterval);
+			arrInterval = measuredInterval(() => {
+				callback();
+				updateVis();
+			}, arr);
+		}, das)
+
+		// function setArrTimeout() {
+		// 	clearMeasuredTimeout(dasTimeout);
+		// 	dasTimeout = measuredTimeout(() => {
+		// 		callback();
+		// 		updateVis();
+		// 		setArrTimeout(callback);
+		// 	}, arr);
+		// }
+		// callback();
+		// clearMeasuredTimeout(dasTimeout);
+		// dasTimeout = setTimeout(() => {
+		// 	callback();
+		// 	updateVis();
+		// 	clearMeasuredTimeout(dasTimeout);
+		// 	setArrTimeout();
+		// }, das);
+	}
+
+	let downInterval = null;
+	function setDownTimeout(callback) {
+		const dt = 1000 / 60 / game.gravityLevel / 20 / sdf; // G_down = G * 20 * SDF, as per Tetris Guideline
+		downInterval = measuredInterval(callback, dt);
 	}
 
 	// $: console.log(
@@ -126,15 +168,15 @@
 		switch (e.key) {
 			case "ArrowLeft":
 			case "ArrowRight":
+				clearMeasuredInterval(arrInterval);
 				if (dasDirection === e.key) {
-					clearTimeout(dasTimeout, e.key);
-					dasTimeout = null;
+					clearMeasuredInterval(arrInterval);
+					clearTimeout(dasTimeout);
 					dasDirection = null;
 				}
 				break;
 			case "ArrowDown":
-				clearTimeout(downTimeout);
-				downTimeout = null;
+				clearMeasuredInterval(downInterval);
 				break;
 		}
 	}

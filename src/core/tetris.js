@@ -293,7 +293,7 @@ export default class {
 		if (this.translateActivePiece(0, 1)) {
 			this.runPieceLockSequence();
 		}
-		this.onRequestGravity(this.gravityLevel);
+		// this.onRequestGravity(this.gravityLevel);
 	}
 
 	right() {

@@ -8,12 +8,13 @@
 - [ ] Stat Counter (PPS, DMG)
 - [ ] Theme Picker
 - [ ] Double tetris
+- [ ] 10x40 Board
 
 # Steggy's big pile of ambition
 - [ ] VS Ranked 1v1
 - [ ] VS Ranked 5 FFA
 - [ ] Race (Lines)
-- [ ] Race (Downstack, Large map)
+- [ ] Race (Downstack, Dig)
 - [ ] Race (Downstack, Multiple maps)
 - [ ] Big Bang
 - [ ] Survival
