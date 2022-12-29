@@ -1,5 +1,5 @@
-import tetrisBlocks from "../constants/blocks/blocks.js";
-import srsPlus from "../constants/kicks/srs+.js";
+import tetrisBlocks from "~/constants/blocks/blocks.js";
+import srsPlus from "~/constants/kicks/srs+.js";
 
 export const sx = 10;
 export const sy = 20;
@@ -31,6 +31,8 @@ export default class {
 		this.onRequestGravity = (dt) => {};
 		this.onCancelGravity = () => {};
 		this.onDrop = (e) => {};
+		this.onPause = () => {};
+		this.onResume = () => {};
 		this.initGame(config);
 		console.log(this.config);
 	}
@@ -55,13 +57,14 @@ export default class {
 		this.activePiece = null;
 		this.holdPiece = null;
 		this.holdAvailable = true;
-		this.gravityLevel = 1/60; // "G" Level, 1G = 1 cell / frame, or 1 cell / (1/60) seconds, or 60 cells/s
+		this.gravityLevel = 1 / 60; // "G" Level, 1G = 1 cell / frame, or 1 cell / (1/60) seconds, or 60 cells/s
 		this.gameOver = false;
 		this.numLinesCleared = 0;
 		this.initialSeed = randomSeed || Math.floor(Math.random() * 1000000);
 		this.seed = this.initialSeed;
 		this.bag = [];
 		this.queue = [];
+		this._running = false;
 
 		while (this.queue.length < this.config.queueLength) {
 			this.queue.push(this.genRandomPiece());
@@ -72,6 +75,24 @@ export default class {
 	start() {
 		this.spawnBlock();
 		this.onRequestGravity(this.gravityLevel);
+		this.running = true;
+	}
+
+	set running(newState) {
+		if (!newState && this._running) {
+			this.onCancelGravity();
+			this._running = false;
+			this.onPause();
+		}
+		if (newState && !this._running) {
+			this.applyGravity(this.gravityLevel);
+			this._running = true;
+			this.onResume();
+		}
+	}
+
+	get running() {
+		return this._running;
 	}
 
 	triggerGameOver() {

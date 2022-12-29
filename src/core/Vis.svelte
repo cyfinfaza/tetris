@@ -21,7 +21,7 @@
 	const dispatch = createEventDispatcher();
 </script>
 
-<main class:_shake>
+<div class="vis" class:_shake>
 	<div class="stats">
 		<div>
 			{#if holdPiece}
@@ -61,10 +61,10 @@
 			<PieceViewer {piece} />
 		{/each}
 	</div>
-</main>
+</div>
 
 <style lang="scss">
-	main {
+	.vis {
 		display: flex;
 		align-items: flex-end;
 		gap: 12px;

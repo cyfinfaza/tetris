@@ -1,51 +1,190 @@
 <script>
+	import GameModes from "~/gamemodes/index-singleplayer";
 	import { onMount } from "svelte";
-	import TetrisGame from "./core/tetris";
-	import CoreGame from "./core/CoreGame.svelte";
+	import Setting from "./components/Setting.svelte";
+	import { userConfig } from "./lib/stores";
 
-	let linesCleared = 0;
-	let dropTimestamps = [];
-	let gameStartTimestamp = Infinity;
-	let pps = 0;
+	import { inMenu } from "./lib/stores";
 
-	let game = new TetrisGame();
+	const menus = [
+		{ id: "play", name: "Play" },
+		{ id: "settings", name: "Settings" },
+	];
+	let currentMenu = "play";
 
-	let cg;
+	let gameComponent;
+	const gameModeIds = Object.keys(GameModes);
+	let currentGameMode = null;
 
-	function handleLinesCleared(e) {
-		linesCleared += e.detail.numLines;
-	}
-
-	function handleDrop() {
-		dropTimestamps.push(Date.now());
-		pps = dropTimestamps.length / ((Date.now() - gameStartTimestamp) / 1000);
-	}
-
-	function handleRestartRequested() {
-		game.resetGame();
-		gameStartTimestamp = Date.now();
-		dropTimestamps = [];
-		pps = 0;
-		linesCleared = 0;
-		cg.restartGame();
-		game.start();
+	$: if (currentGameMode !== null) {
+		gameComponent = GameModes[currentGameMode].component;
 	}
 
 	onMount(() => {
-		game.start();
-		gameStartTimestamp = Date.now();
+		// gameComponent = GameModes["basic"].component;
+		window.addEventListener("keydown", (e) => {
+			if (e.key === "Escape") {
+				console.log(!currentGameMode || !$inMenu);
+				$inMenu = !currentGameMode || !$inMenu;
+			}
+		});
 	});
 </script>
 
-<CoreGame
-	{game}
-	bind:this={cg}
-	on:restartRequested={handleRestartRequested}
-	on:drop={handleDrop}
-	on:linesCleared={handleLinesCleared}
->
-	<svelte:fragment slot="stats">
-		<h2>{Math.round(pps * 100) / 100} PPS</h2>
-		<h1>{linesCleared} {linesCleared == 1 ? "line" : "lines"}</h1>
-	</svelte:fragment>
-</CoreGame>
+<div class="game" class:inMenu={$inMenu}>
+	{#if gameComponent}
+		<svelte:component this={gameComponent} />
+	{/if}
+</div>
+
+<div class="menu" class:inMenu={$inMenu}>
+	<div class="menuContainer">
+		<h1>JLSTZIO</h1>
+		<div class="tabs">
+			{#each menus as menuType}
+				<button
+					class:selected={menuType.id === currentMenu}
+					on:click={() => {
+						currentMenu = menuType.id;
+					}}>{menuType.name}</button
+				>
+			{/each}
+		</div>
+		<div class="content">
+			{#if currentMenu === "play"}
+				<div class="gameModeList">
+					{#each Object.keys(GameModes) as gameMode}
+						<button
+							class="gameMode"
+							class:selected={gameMode === currentGameMode}
+							on:click={() => {
+								currentGameMode = gameMode;
+								$inMenu = false;
+							}}
+						>
+							<div>
+								<h2>{GameModes[gameMode].title}</h2>
+								{#if gameMode === currentGameMode}
+									<p style="color: #0F0;">Press ESC to return to game</p>
+								{/if}
+							</div>
+							<p>{GameModes[gameMode].description}</p>
+						</button>
+					{/each}
+				</div>
+			{/if}
+			{#if currentMenu === "settings"}
+				<div class="settingList">
+					<Setting name="DAS" bind:value={$userConfig.das} description="Delayed auto shift" unit="ms" type="number" />
+					<Setting name="ARR" bind:value={$userConfig.arr} description="Auto repeat rate" unit="ms" type="number" />
+					<Setting name="SDF" bind:value={$userConfig.sdf} description="Soft drop factor" unit="ms" type="number" />
+					<Setting
+						name="SFX"
+						bind:value={$userConfig.sfx}
+						description="Enable or disable sound effects"
+						type="toggle"
+					/>
+					<Setting
+						name="Console Game"
+						bind:value={$userConfig.consoleGame}
+						description="Play in the browser console"
+						type="toggle"
+					/>
+				</div>
+			{/if}
+		</div>
+	</div>
+</div>
+
+<style lang="scss">
+	.game {
+		transition: var(--menu-transition);
+		&.inMenu {
+			filter: blur(24px) grayscale(0.4);
+			transform: scale(0.8);
+			opacity: 0.5;
+			pointer-events: none;
+		}
+	}
+	.menu {
+		inset: 0;
+		background: #8882;
+		border-bottom: 4px solid #fff8;
+		transition: var(--menu-transition);
+		&:not(.inMenu) {
+			pointer-events: none;
+			transform: translateY(-100%);
+			// opacity: 0;
+		}
+		padding: 5vh;
+		display: flex;
+		justify-content: center;
+		.menuContainer {
+			display: grid;
+			grid-template-columns: 1fr;
+			grid-template-rows: 10vh 10vh 1fr;
+			justify-items: center;
+			align-items: center;
+			width: 100%;
+			max-width: 1400px;
+			h1 {
+				font-size: 5vh;
+				margin: 0;
+			}
+			.tabs {
+				display: flex;
+				align-items: stretch;
+				width: 100%;
+				height: 100%;
+				button {
+					flex: 1;
+					background-color: transparent;
+					border-bottom: 4px solid #fff2;
+					color: #fff4;
+					box-sizing: border-box;
+					font-size: 3vh;
+					cursor: pointer;
+					&.selected {
+						border-bottom: 8px solid #fff;
+						color: #fff;
+						font-weight: 700;
+					}
+				}
+			}
+			.content {
+				width: 100%;
+				height: 100%;
+				padding-top: 3vh;
+				overflow: auto;
+			}
+			.gameModeList {
+				display: grid;
+				width: 100%;
+				box-sizing: border-box;
+				grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+				gap: 3vh;
+				.gameMode {
+					height: 160px;
+					text-align: start;
+					padding: 3vh;
+					display: flex;
+					flex-direction: column;
+					justify-content: space-between;
+					h2 {
+						margin: 0;
+						font-size: 3vh;
+					}
+					&.selected {
+						background-color: #4f42;
+					}
+				}
+			}
+			.settingList {
+				display: flex;
+				flex-direction: column;
+				width: 100%;
+				gap: 3vh;
+			}
+		}
+	}
+</style>

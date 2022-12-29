@@ -1,4 +1,6 @@
 import { Howl, Howler } from "howler";
+import { userConfig, windowInFocus } from "./stores";
+import { get } from "svelte/store";
 
 Howler.volume(0.5);
 
@@ -67,3 +69,10 @@ export function playHoldSFX(fail) {
 		sounds.hold.play();
 	}
 }
+
+function recheckMute() {
+	Howler.mute(!get(userConfig).sfx || !get(windowInFocus));
+}
+
+userConfig.subscribe(recheckMute);
+windowInFocus.subscribe(recheckMute);
