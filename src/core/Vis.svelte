@@ -1,5 +1,6 @@
 <script>
 	import { createEventDispatcher } from "svelte";
+	import { inMenu } from "~/lib/stores";
 	import PieceViewer from "./PieceViewer.svelte";
 
 	export let grid = game.grid;
@@ -21,7 +22,7 @@
 	const dispatch = createEventDispatcher();
 </script>
 
-<main class:_shake>
+<div class="vis" class:_shake>
 	<div class="stats">
 		<div>
 			{#if holdPiece}
@@ -40,6 +41,7 @@
 					gameGridElement.focus();
 				}}>Restart (R)</button
 			>
+			<button on:click={() => ($inMenu = true)}>Menu (ESC)</button>
 		</div>
 	</div>
 	<div class="grid" tabindex="0" bind:this={gameGridElement}>
@@ -56,15 +58,18 @@
 			{/each}
 		{/each}
 	</div>
-	<div class="queue">
-		{#each queue as piece}
-			<PieceViewer {piece} />
-		{/each}
+	<div class="right">
+		<div class="queue">
+			{#each queue as piece}
+				<PieceViewer {piece} />
+			{/each}
+		</div>
+		<slot name="belowQueue" />
 	</div>
-</main>
+</div>
 
 <style lang="scss">
-	main {
+	.vis {
 		display: flex;
 		align-items: flex-end;
 		gap: 12px;
@@ -91,13 +96,21 @@
 		aspect-ratio: 1;
 	}
 
+	.right {
+		width: calc(var(--block-size) * 4);
+		align-self: stretch;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+	}
+
 	.queue {
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
 		align-self: flex-start;
 		gap: 12px;
-		width: calc(var(--block-size) * 4);
+		width: 100%;
 	}
 
 	.stats {
