@@ -28,8 +28,8 @@ export default class {
 		this.config = { ...defaultConfig, ...config };
 		this.onLinesCleared = (e) => {};
 		this.onGameOver = () => {};
-		this.onRequestTick = (dt) => {};
-		this.onCancelTick = () => {};
+		this.onRequestGravity = (dt) => {};
+		this.onCancelGravity = () => {};
 		this.onDrop = (e) => {};
 		this.initGame(config);
 		console.log(this.config);
@@ -38,7 +38,7 @@ export default class {
 	// BEGIN GAME INIT FUNCTIONS
 
 	resetGame(config) {
-		this.onCancelTick();
+		this.onCancelGravity();
 		this.initGame({ randomSeed: null, ...config });
 	}
 
@@ -55,7 +55,7 @@ export default class {
 		this.activePiece = null;
 		this.holdPiece = null;
 		this.holdAvailable = true;
-		this.tickDelay = 1000;
+		this.gravityLevel = 1/60; // "G" Level, 1G = 1 cell / frame, or 1 cell / (1/60) seconds, or 60 cells/s
 		this.gameOver = false;
 		this.numLinesCleared = 0;
 		this.initialSeed = randomSeed || Math.floor(Math.random() * 1000000);
@@ -71,11 +71,11 @@ export default class {
 
 	start() {
 		this.spawnBlock();
-		this.onRequestTick(this.tickDelay);
+		this.onRequestGravity(this.gravityLevel);
 	}
 
 	triggerGameOver() {
-		this.onCancelTick();
+		this.onCancelGravity();
 		this.gameOver = true;
 		this.activePiece = null;
 		this.onGameOver();
@@ -235,12 +235,12 @@ export default class {
 		this.onDrop({ otherEventsFired: events.some((x) => x) });
 	}
 
-	resetTickIfAboutToLock() {
+	resetGravityIfAboutToLock() {
 		if (this.activePiece) {
 			if (this.translateActivePiece(0, 1, true)) {
 				if (this.activePiece.floorMoves < this.config.floorMoveLimit) {
-					this.onCancelTick();
-					this.onRequestTick(this.tickDelay);
+					this.onCancelGravity();
+					this.onRequestGravity(this.gravityLevel);
 					this.activePiece.floorMoves++;
 				} else {
 					this.runPieceLockSequence();
@@ -259,7 +259,7 @@ export default class {
 		if (this.activePiece) {
 			const collision = this.translateActivePiece(x, y);
 			if (!collision) {
-				this.resetTickIfAboutToLock();
+				this.resetGravityIfAboutToLock();
 			}
 			return collision;
 		} else {
@@ -278,7 +278,7 @@ export default class {
 				let newTraslatedPiece = { ...newPiece, x: newPiece.x + kickset[i][0], y: newPiece.y + kickset[i][1] };
 				if (!this.checkMiniMatrixCollision(newTraslatedPiece)) {
 					this.activePiece = newTraslatedPiece;
-					this.resetTickIfAboutToLock();
+					this.resetGravityIfAboutToLock();
 					return false;
 				}
 			}
@@ -289,11 +289,11 @@ export default class {
 	// END GENERAL FORM GAME CONTROL FUNCTIONS
 	// BEGIN GAME INPUT HANDLERS
 
-	tick() {
+	applyGravity() {
 		if (this.translateActivePiece(0, 1)) {
 			this.runPieceLockSequence();
 		}
-		this.onRequestTick(this.tickDelay);
+		this.onRequestGravity(this.gravityLevel);
 	}
 
 	right() {
@@ -356,8 +356,8 @@ export default class {
 				this.spawnBlock();
 			}
 			this.holdAvailable = false;
-			this.onCancelTick();
-			this.onRequestTick(this.tickDelay);
+			this.onCancelGravity();
+			this.onRequestGravity(this.gravityLevel);
 			return false;
 		}
 		return true;

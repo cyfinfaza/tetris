@@ -16,24 +16,24 @@
 
 	let vis;
 
-	let tickTimeout = null;
+	let gravityTimeout = null;
 
 	function assignEventHandlersForGame(g) {
-		g.onRequestTick = (dt) => {
-			if (tickTimeout) {
-				clearTimeout(tickTimeout);
+		g.onRequestGravity = (dt) => {
+			if (gravityTimeout) {
+				clearTimeout(gravityTimeout);
 			}
-			tickTimeout = setTimeout(() => {
-				g.tick();
+			gravityTimeout = setTimeout(() => {
+				g.applyGravity();
 				updateVis();
-			}, dt);
-			dispatch("tickRequested");
+			}, 1000 / 60 / dt);
+			dispatch("gravityRequested");
 		};
-		g.onCancelTick = () => {
-			if (tickTimeout) {
-				clearTimeout(tickTimeout);
+		g.onCancelGravity = () => {
+			if (gravityTimeout) {
+				clearTimeout(gravityTimeout);
 			}
-			dispatch("tickCancelled");
+			dispatch("gravityCancelled");
 		};
 		g.onGameOver = () => {
 			gameOver = true;
@@ -66,16 +66,18 @@
 	}
 
 	export function restartGame() {
-		clearTimeout(tickTimeout);
+		clearTimeout(gravityTimeout);
 		gameOver = false;
 		updateVis();
 		vis.shake();
 		sounds.restart.play();
 	}
 
-	const das = 140;
-	const arr = 10;
+	const das = 140; // Delayed Auto Shift	
+	const arr = 10;  // Automatic Repeat Rate
+	const sdf = 1;   // Soft Drop Factor
 	let dasTimeout = null;
+	let dasDirection = null;
 	function setDasTimeout(callback) {
 		function setArrTimeout() {
 			clearTimeout(dasTimeout);
@@ -95,6 +97,13 @@
 				updateVis();
 			});
 		}, das);
+	}
+
+	let downTimeout = null;
+	function setDownTimeout(callback) {
+		callback();
+		updateVis();
+		downTimeout = setTimeout(setDownTimeout, sdf * game.gravityLevel * 20, callback);
 	}
 
 	// $: console.log(
@@ -117,9 +126,15 @@
 		switch (e.key) {
 			case "ArrowLeft":
 			case "ArrowRight":
+				if (dasDirection === e.key) {
+					clearTimeout(dasTimeout, e.key);
+					dasTimeout = null;
+					dasDirection = null;
+				}
+				break;
 			case "ArrowDown":
-				clearTimeout(dasTimeout);
-				dasTimeout = null;
+				clearTimeout(downTimeout);
+				downTimeout = null;
 				break;
 		}
 	}
@@ -132,12 +147,14 @@
 		switch (e.key) {
 			case "ArrowRight":
 				setDasTimeout(() => playMoveSFX(game.right()));
+				dasDirection = e.key
 				break;
 			case "ArrowLeft":
 				setDasTimeout(() => playMoveSFX(game.left()));
+				dasDirection = e.key
 				break;
 			case "ArrowDown":
-				setDasTimeout(() => playMoveSFX(game.down()));
+				setDownTimeout(() => playMoveSFX(game.down()));
 				break;
 			case "ArrowUp":
 				playMoveSFX(game.rotateCW());
@@ -146,7 +163,7 @@
 				game.hardDrop();
 				break;
 			case "Enter":
-				game.tick();
+				game.applyGravity();
 				break;
 			case "a":
 				playMoveSFX(game.rotateFlip());
