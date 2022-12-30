@@ -53,7 +53,7 @@
 					class:piece-ghost={cell?.ghost}
 					style:background={cell?.type ? `var(--piece-${cell.type})` : `var(--piece-empty)`}
 				>
-					<!-- {i},{j} -->
+					<!-- {i}<br />{j} -->
 				</div>
 			{/each}
 		{/each}

@@ -39,7 +39,7 @@
 
 <div class="menu" class:inMenu={$inMenu}>
 	<div class="menuContainer">
-		<h1>JLSTZIO</h1>
+		<h1>JSTLZIO</h1>
 		<div class="tabs">
 			{#each menus as menuType}
 				<button

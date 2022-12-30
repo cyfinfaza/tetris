@@ -24,17 +24,19 @@
 
 	const measuredTimeoutLimit = 23;
 	function measuredInterval(callback, dt, ...args) {
-		const retValue = { timeout: null, running: true }
+		const retValue = { timeout: null, running: true };
 		let lastCall = Date.now();
 		let totalMs = 0;
 
 		function f() {
-			if (!retValue.running) { return retValue; }
+			if (!retValue.running) {
+				return retValue;
+			}
 			const now = Date.now();
 			totalMs += now - lastCall;
 			lastCall = now;
 			{
-				let i = 0
+				let i = 0;
 				while (i < measuredTimeoutLimit && totalMs > dt) {
 					callback();
 					totalMs -= dt;
@@ -45,12 +47,14 @@
 			retValue.timeout = setTimeout(f, dt, ...args);
 			return retValue;
 		}
-		
+
 		return f();
 	}
 
 	function clearMeasuredInterval(info) {
-		if (info === null) { return; }
+		if (info === null) {
+			return;
+		}
 		info.running = false;
 		clearTimeout(info.timeout);
 	}
@@ -91,6 +95,14 @@
 		g.onResume = () => {
 			dispatch("resume");
 		};
+		g.onPerfectClear = () => {
+			console.log("perfect clear");
+			dispatch("perfectClear");
+		};
+		g.onSpin = (e) => {
+			console.log(e.type + " spin", e);
+			dispatch("spin", e);
+		};
 	}
 
 	$: assignEventHandlersForGame(game);
@@ -129,7 +141,7 @@
 				callback();
 				updateVis();
 			}, $userConfig.arr);
-		}, $userConfig.das)
+		}, $userConfig.das);
 
 		// function setArrTimeout() {
 		// 	clearMeasuredTimeout(dasTimeout);

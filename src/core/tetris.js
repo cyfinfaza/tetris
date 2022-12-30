@@ -33,6 +33,8 @@ export default class {
 		this.onDrop = (e) => {};
 		this.onPause = () => {};
 		this.onResume = () => {};
+		this.onPerfectClear = () => {};
+		this.onSpin = (e) => {};
 		this.initGame(config);
 		console.log(this.config);
 	}
@@ -159,6 +161,68 @@ export default class {
 		return { ...piece, shape: this.rotateMiniMatrix(piece.shape, piece.rotationState), rotationState: 0 };
 	}
 
+	checkTCorners(piece) {
+		const checkCorner = (x, y) => {
+			if (x < 0 || x >= sx || y < 0 || y >= sy) {
+				return 1;
+			}
+			// console.table(this.staticMatrix);
+			// console.log(x, y, this.staticMatrix[x][y]);
+			return !!this.staticMatrix[y][x];
+		};
+
+		let corners = 0;
+		let facingCorners = 0;
+
+		const x = piece.x;
+		const y = piece.y;
+		const rot = piece.rotationState;
+
+		const tl = checkCorner(x, y);
+		const tr = checkCorner(x + 2, y);
+		const bl = checkCorner(x, y + 2);
+		const br = checkCorner(x + 2, y + 2);
+
+		corners = tl + tr + bl + br;
+		switch (rot) {
+			case 0:
+				facingCorners = tl + tr;
+				break;
+			case 1:
+				facingCorners = tr + br;
+				break;
+			case 2:
+				facingCorners = br + bl;
+				break;
+			case 3:
+				facingCorners = bl + tl;
+				break;
+		}
+
+		const isSpin = corners >= 3;
+		const isMini = facingCorners < 2 && isSpin;
+
+		return { isSpin, isMini };
+	}
+
+	checkPieceMobility(piece) {
+		const rotatedPiece = piece;
+		const tests = [
+			[0, 1],
+			[0, -1],
+			[1, 0],
+			[-1, 0],
+		];
+		for (let i = 0; i < tests.length; i++) {
+			const [dx, dy] = tests[i];
+			const testPiece = { ...rotatedPiece, x: rotatedPiece.x + dx, y: rotatedPiece.y + dy };
+			if (!this.checkMiniMatrixCollision(testPiece)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	overlay(staticMatrix, piece, options = {}) {
 		let rotatedPiece;
 		if (piece) {
@@ -239,6 +303,13 @@ export default class {
 				this.staticMatrix.unshift(new Array(sx).fill(null));
 			}
 		}
+		let totalPieces = 0;
+		for (let i = 0; i < sy; i++) {
+			for (let j = 0; j < sx; j++) {
+				if (this.staticMatrix[i][j]) totalPieces++;
+			}
+		}
+		if (totalPieces === 0) this.onPerfectClear();
 		return clearedLines;
 	}
 
@@ -288,6 +359,21 @@ export default class {
 		}
 	}
 
+	checkSpin(rot, kick) {
+		if (this.activePiece) {
+			if (this.activePiece.type === "T") {
+				const spin = this.checkTCorners(this.activePiece);
+				console.log(rot, kick);
+				if ((rot === 0 && kick === 4) || (rot === 2 && kick === 4)) {
+					spin.isMini = false;
+				}
+				return spin;
+			} else {
+				return { isSpin: !this.checkPieceMobility(this.activePiece), isMini: false };
+			}
+		}
+	}
+
 	rotate(n) {
 		if (this.activePiece) {
 			let newPiece = { ...this.activePiece, rotationState: (this.activePiece.rotationState + n) % 4 };
@@ -298,7 +384,12 @@ export default class {
 			for (let i = 0; i < kickset.length; i++) {
 				let newTraslatedPiece = { ...newPiece, x: newPiece.x + kickset[i][0], y: newPiece.y + kickset[i][1] };
 				if (!this.checkMiniMatrixCollision(newTraslatedPiece)) {
+					const prevRot = this.activePiece.rotationState;
 					this.activePiece = newTraslatedPiece;
+					const spinData = this.checkSpin(prevRot, i);
+					if (spinData.isSpin) {
+						this.onSpin({ type: this.activePiece.type, isMini: spinData.isMini || false });
+					}
 					this.resetGravityIfAboutToLock();
 					return false;
 				}
