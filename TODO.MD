@@ -17,6 +17,9 @@
 - [ ] perfect clear
 - [ ] game complete
 
+# other things
+- [ ] share button (for game completed/over results)
+
 # Steggy's big pile of ambition
 - [ ] VS Ranked 1v1
 - [ ] VS Ranked 5 FFA
