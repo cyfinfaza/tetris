@@ -263,6 +263,7 @@
 	}
 
 	function handleKeyDown(e) {
+		console.log(game.grid);
 		// console.log(e);
 		if (e.repeat) {
 			return;

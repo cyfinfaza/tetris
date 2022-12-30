@@ -502,8 +502,8 @@ export default class {
 	// BEGIN COMPLETE RENDER FUNCTIONS
 
 	renderWithGhost() {
-		if (!this.activePiece) return this.flatten();
-		return this.overlay(this.overlay(this.staticMatrix, this.ghostPiece, { ghost: true }), this.activePiece).slice(20, 40);
+		if (!this.activePiece) return this.flatten().slice(ry, sy);
+		return this.overlay(this.overlay(this.staticMatrix, this.ghostPiece, { ghost: true }), this.activePiece).slice(ry, sy);
 	}
 
 	get grid() {

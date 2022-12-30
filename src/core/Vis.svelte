@@ -2,7 +2,7 @@
 	import { createEventDispatcher } from "svelte";
 	import { inMenu } from "~/lib/stores";
 	import PieceViewer from "./PieceViewer.svelte";
-	import { sx, sy } from "./tetris";
+	import { sx, sy, ry } from "./tetris";
 	import { userConfig } from "~/lib/stores";
 
 	export let grid = game.grid;

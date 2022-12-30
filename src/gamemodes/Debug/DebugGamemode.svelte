@@ -1,6 +1,6 @@
 <script>
 	import { onMount } from "svelte";
-	import TetrisGame from "~/core/tetris";
+	import TetrisGame, { ry } from "~/core/tetris";
 	import CoreGame from "~/core/CoreGame.svelte";
 	import PpsCounter from "~/components/PPSCounter.svelte";
 	import Setting from "~/components/Setting.svelte";
@@ -39,12 +39,11 @@
 	}
 
 	function draw(x, y, piece) {
-		game.staticMatrix[y][x] = piece;
+		game.staticMatrix[y+ry][x] = piece;
 		cg.updateVis();
 	}
 
 	function addDebugListeners() {
-		console.log(pieceElements);
 		pieceElements.forEach((elements, y) => {
 			elements.forEach((element, x) => {
 				function handleMouse(e) {
@@ -55,7 +54,7 @@
 						draw(x, y, null);
 					}
 				}
-
+				if (element === null) { return; }
 				element.addEventListener("contextmenu", (e) => {
 					e.preventDefault();
 				});
