@@ -63,6 +63,8 @@ export default class {
 		this.gravityLevel = 1 / 60; // "G" Level, 1G = 1 cell / frame, or 1 cell / (1/60) seconds, or 60 cells/s
 		this.gameOver = false;
 		this.numLinesCleared = 0;
+		this.currentCombo = 0;
+		this.comboActive = false;
 		this.initialSeed = randomSeed || Math.floor(Math.random() * 1000000);
 		this.seed = this.initialSeed;
 		this.bag = [];
@@ -327,10 +329,15 @@ export default class {
 		this.staticMatrix = this.flatten();
 		const { clearedLines, isPerfectClear } = this.clearFilledLines();
 		if (clearedLines > 0) {
+			this.currentCombo += 1;
+			this.comboActive = true;
 			this.numLinesCleared += clearedLines;
 			this.onLinesCleared({ numLines: clearedLines, ...(this.lastSpin || {}), isPerfectClear });
 			this.lastSpin = null;
 			events.push(true);
+		} else {
+			this.currentCombo = 0;
+			this.comboActive = false;
 		}
 		events.push(this.spawnBlock());
 		this.holdAvailable = true;

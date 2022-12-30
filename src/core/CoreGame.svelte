@@ -18,6 +18,8 @@
 	export let blurGame;
 	export let inputDisabled = false;
 
+	export let gravityEnabled = true;
+
 	let grid = game.grid;
 	let queue = game.queue;
 	let holdPiece = null;
@@ -116,6 +118,9 @@
 				clearMeasuredInterval(gravityTimeout);
 			}
 			gravityTimeout = measuredInterval(() => {
+				if (!gravityEnabled) {
+					return;
+				}
 				g.applyGravity();
 				updateVis();
 			}, 1000 / 60 / dt);
@@ -262,7 +267,8 @@
 		if (e.repeat) {
 			return;
 		}
-		if (!$inMenu && !inputDisabled) {
+		if (!$inMenu) {
+			if (inputDisabled && e.key !== "r") return;
 			switch (e.key) {
 				case "ArrowRight":
 					setDasTimeout(() => playMoveSFX(game.right()));
@@ -336,6 +342,9 @@
 				{achievementMessage.text || ""}
 			</p>
 		{/each}
+	</svelte:fragment>
+	<svelte:fragment slot="sidePane">
+		<slot name="sidePane" />
 	</svelte:fragment>
 </Vis>
 

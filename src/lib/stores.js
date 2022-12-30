@@ -4,7 +4,7 @@ import { defaultUserConfig } from "./config";
 function getLocalConfig() {
 	const config = localStorage.getItem("userConfig");
 	if (config) {
-		return JSON.parse(config);
+		return { defaultUserConfig, ...JSON.parse(config) };
 	}
 	return defaultUserConfig;
 }

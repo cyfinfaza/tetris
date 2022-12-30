@@ -45,5 +45,5 @@
 		<h2><PpsCounter bind:this={ppscounter} /> PPS</h2>
 		<h1>{linesCleared} {linesCleared == 1 ? "line" : "lines"}</h1>
 	</svelte:fragment>
-	<h1 slot="gameName">BASIC</h1>
+	<h1 slot="gameName">ZEN</h1>
 </CoreGame>

@@ -32,7 +32,7 @@
 - [ ] Blitz
 - [x] 40L
 - [ ] Marathon (40L)
-- [ ] Combo Challenge
+- [x] Combo Challenge
 - [ ] Map downstack (Sakura)
 - [ ] Map downstack
 - [ ] Big Bang

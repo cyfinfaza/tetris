@@ -3,11 +3,14 @@
 	import TetrisGame from "~/core/tetris";
 	import CoreGame from "~/core/CoreGame.svelte";
 	import PpsCounter from "~/components/PPSCounter.svelte";
+	import Setting from "~/components/Setting.svelte";
 
 	let linesCleared = 0;
 	let dropTimestamps = [];
 	let gameStartTimestamp = Infinity;
 	let ppscounter;
+
+	let gravityEnabled = true;
 
 	let showingEndGame = false;
 
@@ -35,14 +38,29 @@
 		ppscounter.start();
 	}
 
+	function draw(x, y, piece) {
+		game.staticMatrix[y][x] = piece;
+		cg.updateVis();
+	}
+
 	function addDebugListeners() {
 		console.log(pieceElements);
 		pieceElements.forEach((elements, y) => {
 			elements.forEach((element, x) => {
-				element.addEventListener("click", () => {
-					game.staticMatrix[y][x] = { type: "clearable-garbage" };
-					cg.updateVis();
+				function handleMouse(e) {
+					if (e.buttons & 1) {
+						draw(x, y, { type: "clearable-garbage" });
+					}
+					if (e.buttons & 2) {
+						draw(x, y, null);
+					}
+				}
+
+				element.addEventListener("contextmenu", (e) => {
+					e.preventDefault();
 				});
+				element.addEventListener("mousedown", handleMouse);
+				element.addEventListener("mouseover", handleMouse);
 			});
 		});
 	}
@@ -63,10 +81,21 @@
 	on:drop={handleDrop}
 	on:linesCleared={handleLinesCleared}
 	blurGame={showingEndGame}
+	{gravityEnabled}
 >
 	<svelte:fragment slot="stats">
 		<h2><PpsCounter bind:this={ppscounter} /> PPS</h2>
 		<h1>{linesCleared} {linesCleared == 1 ? "line" : "lines"}</h1>
 	</svelte:fragment>
 	<h1 slot="gameName">Debug Mode</h1>
+	<div class="sideSettings" slot="sidePane">
+		<Setting name="Gravity" bind:value={gravityEnabled} type="toggle" />
+	</div>
 </CoreGame>
+
+<style>
+	.sideSettings {
+		/* flex: 1; */
+		width: 400px;
+	}
+</style>

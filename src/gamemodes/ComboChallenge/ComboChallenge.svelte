@@ -1,13 +1,16 @@
 <script>
 	import { onMount } from "svelte";
+	import { sx } from "~/core/tetris";
 	import TetrisGame from "~/core/tetris";
 	import CoreGame from "~/core/CoreGame.svelte";
 	import EndGameScreen from "~/components/EndGameScreen.svelte";
 	import Countdown from "~/components/Countdown.svelte";
 	import Timer from "~/components/Timer.svelte";
 	import PpsCounter from "~/components/PPSCounter.svelte";
+	import comboMap from "~/maps/4wide.js";
 
-	let linesCleared = 0;
+	let currentCombo = 0;
+	let maxCombo = 0;
 
 	let game = new TetrisGame();
 
@@ -19,32 +22,51 @@
 
 	let gameRunning = false;
 
-	let finalTime = 0;
-
 	let cg;
 
 	function handleLinesCleared(e) {
-		linesCleared += e.detail.numLines;
-		if (linesCleared >= 40) {
-			game.triggerGameComplete();
-			showingEndGame = true;
-			finalTime = timer.pause().timerString;
-			gameRunning = false;
+		const clearedLines = e.detail.numLines;
+		console.log(clearedLines);
+		for (let y = 0; y < clearedLines; y++) {
+			for (let x = 0; x < sx; x++) {
+				if (2 < x && x < 7) {
+					continue;
+				}
+				console.log(x, y);
+				game.staticMatrix[y][x] = { type: "clearable-garbage" };
+			}
 		}
+		cg.updateVis();
 	}
 
 	function handleDrop() {
 		ppscounter.handleDrop();
+		currentCombo = game.currentCombo;
+		if (currentCombo > maxCombo) {
+			maxCombo = currentCombo;
+		}
+	}
+
+	function handleTimeLimit() {
+		game.triggerGameComplete();
+		showingEndGame = true;
+		gameRunning = false;
+	}
+
+	function handleGameOver() {
+		timer.pause();
+		handleTimeLimit();
 	}
 
 	function clearGame() {
 		gameRunning = false;
 		game.resetGame();
-		linesCleared = 0;
 		showingEndGame = false;
 		cg.restartGame();
 		ppscounter.reset();
 		timer.reset();
+		currentCombo = 0;
+		maxCombo = 0;
 	}
 
 	function startGame() {
@@ -57,6 +79,8 @@
 
 	function handleRestartRequested() {
 		clearGame();
+		game.staticMatrix = comboMap;
+		cg.updateVis();
 
 		countdown.start(() => {
 			startGame();
@@ -64,6 +88,8 @@
 	}
 
 	onMount(() => {
+		game.staticMatrix = comboMap;
+		cg.updateVis();
 		countdown.start(() => {
 			startGame();
 		});
@@ -77,21 +103,21 @@
 	on:restartRequested={handleRestartRequested}
 	on:drop={handleDrop}
 	on:linesCleared={handleLinesCleared}
+	on:gameOver={handleGameOver}
 	blurGame={showingEndGame}
 	inputDisabled={!gameRunning}
 >
 	<svelte:fragment slot="stats">
 		<h2><PpsCounter bind:this={ppscounter} /> PPS</h2>
-		<h2><Timer bind:this={timer} /></h2>
-		<!-- <h1>{linesCleared - 40} {Math.abs(linesCleared - 40) == 1 ? "line" : "lines"}</h1> -->
-		<h1>{linesCleared}/40</h1>
+		<h2><Timer timerLimit={1000 * 60 * 2} bind:this={timer} on:limitReached={handleTimeLimit} /></h2>
+		<h1>{currentCombo}/{maxCombo}</h1>
 	</svelte:fragment>
-	<h1 slot="gameName">40L</h1>
+	<h1 slot="gameName">Combo Challenge</h1>
 </CoreGame>
 
 <EndGameScreen {showingEndGame}>
 	<h1>GAME COMPLETE!</h1>
-	<p style="font-size: 4rem;">{finalTime}</p>
+	<p style="font-size: 4rem;">{maxCombo}</p>
 	<button on:click={handleRestartRequested}>Restart (R)</button>
 </EndGameScreen>
 

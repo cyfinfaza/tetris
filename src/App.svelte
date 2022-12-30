@@ -34,7 +34,9 @@
 
 <div class="game" class:inMenu={$inMenu}>
 	{#if gameComponent}
-		<svelte:component this={gameComponent} />
+		{#key currentGameMode}
+			<svelte:component this={gameComponent} {...GameModes[currentGameMode].props} />
+		{/key}
 	{/if}
 </div>
 
@@ -110,6 +112,12 @@
 						name="Console Game"
 						bind:value={$userConfig.consoleGame}
 						description="Play in the browser console"
+						type="toggle"
+					/>
+					<Setting
+						name="Grid Lines"
+						bind:value={$userConfig.showGridLines}
+						description="Show grid lines on the game board"
 						type="toggle"
 					/>
 				</div>

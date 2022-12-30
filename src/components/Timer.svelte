@@ -63,8 +63,11 @@
 		} else {
 			timerValue = pausedTime;
 		}
+		if (timerLimit !== null) {
+			timerValue = timerLimit - timerValue;
+		}
 
-		if (timerLimit !== null && timerValue > timerLimit) {
+		if (timerLimit !== null && timerValue < 0) {
 			pause();
 			timerValue = timerLimit;
 			dispatch("limitReached");

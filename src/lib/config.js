@@ -4,4 +4,5 @@ export const defaultUserConfig = {
 	sdf: 1,
 	sfx: true,
 	consoleGame: false,
+	showGridLines: false,
 };

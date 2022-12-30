@@ -3,6 +3,7 @@
 	import { inMenu } from "~/lib/stores";
 	import PieceViewer from "./PieceViewer.svelte";
 	import { sx, sy } from "./tetris";
+	import { userConfig } from "~/lib/stores";
 
 	export let grid = game.grid;
 	export let queue = game.queue;
@@ -27,7 +28,7 @@
 	export let pieceElements = new Array(sy).fill(null).map(() => new Array(sx).fill(null));
 </script>
 
-<div class="vis" class:disabled class:_shake>
+<div class="vis" class:showGridLines={$userConfig.showGridLines} class:disabled class:_shake>
 	<div class="stats">
 		<div>
 			{#if holdPiece}
@@ -60,7 +61,7 @@
 					bind:this={pieceElements[i][j]}
 					class:piece-active={cell && !cell?.ghost}
 					class:piece-ghost={cell?.ghost}
-					style:background={cell?.type ? `var(--piece-${cell.type})` : `var(--piece-empty)`}
+					style:background={cell?.type ? `var(--piece-${cell.type})` : null}
 				>
 					<!-- {i}<br />{j} -->
 				</div>
@@ -74,6 +75,9 @@
 			{/each}
 		</div>
 		<slot name="belowQueue" />
+	</div>
+	<div class="sidePane">
+		<slot name="sidePane" />
 	</div>
 </div>
 
@@ -102,16 +106,23 @@
 		grid-template-columns: repeat(10, 1fr);
 		/* grid-template-rows: repeat(sy, 1fr); */
 		background-color: var(--board-bg);
-		padding: 2px;
 		/* gap: 2px; */
 		box-sizing: border-box;
 		&:focus {
 			outline: none;
 		}
-	}
-	.grid > div {
-		height: var(--block-size);
-		aspect-ratio: 1;
+		.showGridLines > & {
+			background-color: #fff4;
+			gap: 1px;
+			padding: 1px;
+		}
+		> div {
+			height: var(--block-size);
+			aspect-ratio: 1;
+			.showGridLines > & {
+				background: #222;
+			}
+		}
 	}
 
 	.right {
@@ -151,5 +162,9 @@
 				text-align: right;
 			}
 		}
+	}
+
+	.sidePane {
+		align-self: stretch;
 	}
 </style>
