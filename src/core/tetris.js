@@ -61,7 +61,9 @@ export default class {
 		this.activePiece = null;
 		this.holdPiece = null;
 		this.holdAvailable = true;
-		this.gravityLevel = 1 / 60; // "G" Level, 1G = 1 cell / frame, or 1 cell / (1/60) seconds, or 60 cells/s
+		this.gravityLevel = 20; // "G" Level, 1G = 1 cell / frame, or 1 cell / (1/60) seconds, or 60 cells/s
+		this.lockDelay = 500;
+		this.lockTimeout = null;
 		this.gameOver = false;
 		this.numLinesCleared = 0;
 		this.currentCombo = 0;
@@ -328,6 +330,8 @@ export default class {
 	runPieceLockSequence() {
 		const events = [];
 		this.staticMatrix = this.flatten();
+		clearInterval(this.lockTimeout);
+		this.lockTimeout = null;
 		const { clearedLines, isPerfectClear } = this.clearFilledLines();
 		if (clearedLines > 0) {
 			this.currentCombo += 1;
@@ -349,14 +353,13 @@ export default class {
 		if (this.activePiece) {
 			if (this.translateActivePiece(0, 1, true)) {
 				if (this.activePiece.floorMoves < this.config.floorMoveLimit) {
+					this.checkLockTimeout();
 					this.onCancelGravity();
 					this.onRequestGravity(this.gravityLevel);
 					this.activePiece.floorMoves++;
 				} else {
 					this.runPieceLockSequence();
 				}
-			} else {
-				this.activePiece.floorMoves = 0;
 			}
 		}
 		// console.log(this.activePiece.floorMoves);
@@ -419,13 +422,28 @@ export default class {
 		return true;
 	}
 
+	checkLockTimeout() {
+		const attemptLockDelay = () => {
+			if (this.translateActivePiece(0, 1, true)) {
+				this.runPieceLockSequence();
+			}
+		}
+
+		if (this.activePiece === null) { return; }
+		if (this.translateActivePiece(0, 1, true)) {
+			clearTimeout(this.lockTimeout);
+			this.lockTimeout = setTimeout(() => { attemptLockDelay(); }, this.lockDelay);
+		}
+	}
+
 	// END GENERAL FORM GAME CONTROL FUNCTIONS
 	// BEGIN GAME INPUT HANDLERS
 
 	applyGravity() {
 		if (this.translateActivePiece(0, 1)) {
-			this.runPieceLockSequence();
+			// this.runPieceLockSequence();
 		} else {
+			this.checkLockTimeout();
 			this.lastSpin = null;
 		}
 		this.onRequestGravity(this.gravityLevel);

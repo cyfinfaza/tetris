@@ -37,7 +37,7 @@
 
 	const measuredTimeoutLimit = 23;
 	function measuredInterval(callback, dt, ...args) {
-		const retValue = { timeout: null, running: true, id: Math.random() * 1000 |0 };
+		const retValue = { timeout: null, running: true };
 		let lastCall = Date.now();
 		let totalMs = 0;
 
@@ -57,7 +57,7 @@
 				}
 				updateVis();
 			}
-			retValue.timeout = setTimeout(f, dt, ...args);
+			retValue.timeout = setTimeout(f, dt / 10, ...args);
 			return retValue;
 		}
 
@@ -114,8 +114,9 @@
 
 	function assignEventHandlersForGame(g) {
 		g.onRequestGravity = (dt) => {
-			if (gravityTimeout) {
-				clearMeasuredInterval(gravityTimeout);
+			if (gravityTimeout?.running || false) {
+				dispatch("gravityRequested");
+				return;
 			}
 			gravityTimeout = measuredInterval(() => {
 				if (!gravityEnabled) {
@@ -143,6 +144,7 @@
 			if (!e.otherEventsFired) {
 				playDropSFX();
 			}
+			updateVis();
 			dispatch("drop", e);
 		};
 		g.onLinesCleared = (e) => {
