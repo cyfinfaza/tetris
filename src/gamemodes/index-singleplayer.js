@@ -1,5 +1,5 @@
 import BasicGamemode from "./basic/BasicGamemode.svelte";
-import fortyL from "./40l/40L.svelte";
+import fortyL from "./40L/40L.svelte";
 import debugGamemode from "./Debug/DebugGamemode.svelte";
 
 export default {
