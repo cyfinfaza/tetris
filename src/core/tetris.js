@@ -1,8 +1,9 @@
 import tetrisBlocks from "~/constants/blocks/blocks.js";
 import srsPlus from "~/constants/kicks/srs+.js";
 
-export const sx = 10;
-export const sy = 20;
+export const sx = 10; // SizeX
+export const sy = 40; // SizeY
+export const ry = 20; // RenderedY
 
 function deepCopy2d(arr) {
 	let newArr = [];
@@ -502,7 +503,7 @@ export default class {
 
 	renderWithGhost() {
 		if (!this.activePiece) return this.flatten();
-		return this.overlay(this.overlay(this.staticMatrix, this.ghostPiece, { ghost: true }), this.activePiece);
+		return this.overlay(this.overlay(this.staticMatrix, this.ghostPiece, { ghost: true }), this.activePiece).slice(20, 40);
 	}
 
 	get grid() {
