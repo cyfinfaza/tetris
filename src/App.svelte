@@ -2,6 +2,7 @@
 	import GameModes from "~/gamemodes/index-singleplayer";
 	import { onMount } from "svelte";
 	import Setting from "./components/Setting.svelte";
+	import Heading from "./components/Heading.svelte";
 	import { userConfig } from "./lib/stores";
 
 	import { inMenu } from "./lib/stores";
@@ -24,7 +25,7 @@
 		// gameComponent = GameModes["basic"].component;
 		window.addEventListener("keydown", (e) => {
 			if (e.key === "Escape") {
-				console.log(!currentGameMode || !$inMenu);
+				// console.log(!currentGameMode || !$inMenu);
 				$inMenu = !currentGameMode || !$inMenu;
 			}
 		});
@@ -75,15 +76,36 @@
 			{/if}
 			{#if currentMenu === "settings"}
 				<div class="settingList">
-					<Setting name="DAS" bind:value={$userConfig.das} description="Delayed auto shift" unit="ms" type="number" />
-					<Setting name="ARR" bind:value={$userConfig.arr} description="Auto repeat rate" unit="ms" type="number" />
-					<Setting name="SDF" bind:value={$userConfig.sdf} description="Soft drop factor" unit="ms" type="number" />
+					<Heading name="Handling" description="Change the feel of the controls" />
+					<Setting
+						name="DAS"
+						bind:value={$userConfig.das}
+						description="Delayed Auto Shift: Delay between pressing the key and repeating the input automatically"
+						unit="ms"
+						type="number"
+					/>
+					<Setting
+						name="ARR"
+						bind:value={$userConfig.arr}
+						description="Auto Repeat Rate: The delay between the repeated input"
+						unit="ms"
+						type="number"
+					/>
+					<Setting
+						name="SDF"
+						bind:value={$userConfig.sdf}
+						description="Soft Drop Factor: Multiplies how quickly a piece drops when down is pressed"
+						unit="X"
+						type="number"
+					/>
+					<Heading name="Audio" />
 					<Setting
 						name="SFX"
 						bind:value={$userConfig.sfx}
 						description="Enable or disable sound effects"
 						type="toggle"
 					/>
+					<Heading name="Extra" />
 					<Setting
 						name="Console Game"
 						bind:value={$userConfig.consoleGame}
@@ -99,12 +121,17 @@
 <style lang="scss">
 	.game {
 		transition: var(--menu-transition);
+		// width: 100%;
+		// height: 100%;
 		&.inMenu {
 			filter: blur(24px) grayscale(0.4);
 			transform: scale(0.8);
 			opacity: 0.5;
 			pointer-events: none;
 		}
+		// > :global(*) {
+		// 	position: absolute;
+		// }
 	}
 	.menu {
 		inset: 0;
@@ -156,6 +183,15 @@
 				height: 100%;
 				padding-top: 3vh;
 				overflow: auto;
+				&::-webkit-scrollbar {
+					width: 16px;
+				}
+				&::-webkit-scrollbar-track {
+					border-right: 4px solid #8884;
+				}
+				&::-webkit-scrollbar-thumb {
+					border-right: 4px solid #fff4;
+				}
 			}
 			.gameModeList {
 				display: grid;
@@ -184,6 +220,7 @@
 				flex-direction: column;
 				width: 100%;
 				gap: 3vh;
+				scrollbar-width: thin;
 			}
 		}
 	}

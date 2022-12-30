@@ -28,6 +28,7 @@ export default class {
 		this.config = { ...defaultConfig, ...config };
 		this.onLinesCleared = (e) => {};
 		this.onGameOver = () => {};
+		this.onGameComplete = () => {};
 		this.onRequestGravity = (dt) => {};
 		this.onCancelGravity = () => {};
 		this.onDrop = (e) => {};
@@ -67,6 +68,7 @@ export default class {
 		this.bag = [];
 		this.queue = [];
 		this._running = false;
+		this.lastSpin = null;
 
 		while (this.queue.length < this.config.queueLength) {
 			this.queue.push(this.genRandomPiece());
@@ -102,6 +104,13 @@ export default class {
 		this.gameOver = true;
 		this.activePiece = null;
 		this.onGameOver();
+	}
+
+	triggerGameComplete() {
+		this.onCancelGravity();
+		this.gameOver = true;
+		this.activePiece = null;
+		this.onGameComplete();
 	}
 
 	// END GAME INIT FUNCTIONS
@@ -310,19 +319,20 @@ export default class {
 			}
 		}
 		if (totalPieces === 0) this.onPerfectClear();
-		return clearedLines;
+		return { clearedLines, isPerfectClear: totalPieces === 0 };
 	}
 
 	runPieceLockSequence() {
 		const events = [];
 		this.staticMatrix = this.flatten();
-		events.push(this.spawnBlock());
-		const clearedLines = this.clearFilledLines();
+		const { clearedLines, isPerfectClear } = this.clearFilledLines();
 		if (clearedLines > 0) {
 			this.numLinesCleared += clearedLines;
-			this.onLinesCleared({ numLines: clearedLines });
+			this.onLinesCleared({ numLines: clearedLines, ...(this.lastSpin || {}), isPerfectClear });
+			this.lastSpin = null;
 			events.push(true);
 		}
+		events.push(this.spawnBlock());
 		this.holdAvailable = true;
 		this.onDrop({ otherEventsFired: events.some((x) => x) });
 	}
@@ -351,6 +361,7 @@ export default class {
 		if (this.activePiece) {
 			const collision = this.translateActivePiece(x, y);
 			if (!collision) {
+				this.lastSpin = null;
 				this.resetGravityIfAboutToLock();
 			}
 			return collision;
@@ -363,7 +374,6 @@ export default class {
 		if (this.activePiece) {
 			if (this.activePiece.type === "T") {
 				const spin = this.checkTCorners(this.activePiece);
-				console.log(rot, kick);
 				if ((rot === 0 && kick === 4) || (rot === 2 && kick === 4)) {
 					spin.isMini = false;
 				}
@@ -388,7 +398,10 @@ export default class {
 					this.activePiece = newTraslatedPiece;
 					const spinData = this.checkSpin(prevRot, i);
 					if (spinData.isSpin) {
+						this.lastSpin = { ...spinData, spinType: this.activePiece.type };
 						this.onSpin({ type: this.activePiece.type, isMini: spinData.isMini || false });
+					} else {
+						this.lastSpin = null;
 					}
 					this.resetGravityIfAboutToLock();
 					return false;
@@ -404,8 +417,10 @@ export default class {
 	applyGravity() {
 		if (this.translateActivePiece(0, 1)) {
 			this.runPieceLockSequence();
+		} else {
+			this.lastSpin = null;
 		}
-		// this.onRequestGravity(this.gravityLevel);
+		this.onRequestGravity(this.gravityLevel);
 	}
 
 	right() {

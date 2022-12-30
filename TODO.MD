@@ -2,13 +2,20 @@
 - [x] Sound
 - [x] Preview boxes (looking into the future queue)
 - [x] Kick tables
-- [ ] T-spin detection (Normal, Mini)
+- [x] T-spin detection (Normal, Mini)
+- [x] Timer
 - [ ] Combos
-- [ ] Timer
 - [ ] Stat Counter (PPS, DMG)
 - [ ] Theme Picker
 - [ ] Double tetris
 - [ ] 10x40 Board
+
+# sounds
+- [ ] more than 4
+- [ ] spin rotate
+- [ ] spin clear
+- [ ] perfect clear
+- [ ] game complete
 
 # Steggy's big pile of ambition
 - [ ] VS Ranked 1v1
@@ -23,7 +30,7 @@
 - [ ] Custom (See below)
 
 - [ ] Blitz
-- [ ] 40L
+- [x] 40L
 - [ ] Marathon (40L)
 - [ ] Combo Challenge
 - [ ] Map downstack (Sakura)

@@ -11,12 +11,23 @@
 
 	export let pauseEnabled = true;
 
+	export let pieceElements;
+
 	export let game;
+
+	export let blurGame;
+	export let inputDisabled = false;
 
 	let grid = game.grid;
 	let queue = game.queue;
 	let holdPiece = null;
 	export let gameOver = false;
+
+	let achievementMessages = [
+		{ text: "", id: Math.random() },
+		{ text: "", id: Math.random() },
+		{ text: "", id: Math.random() },
+	];
 
 	let vis;
 
@@ -59,10 +70,50 @@
 		clearTimeout(info.timeout);
 	}
 
+	let amIndex = 0;
+	function updateAchievementMessage(e) {
+		if (e.isPerfectClear) {
+			achievementMessages[amIndex] = { text: "Perfect Clear", timestamp: Date.now(), id: Math.random() };
+		}
+		amIndex = (amIndex + 1) % 2;
+		const clearedWord =
+			[
+				"Single",
+				"Double",
+				"Triple",
+				"Quad",
+				"Quintris",
+				"Sextris",
+				"Kiliminojaro",
+				"Octoris",
+				"9tris",
+				"Decatris",
+				"11tris",
+				"12 Minos Mining",
+				"undefined",
+				"[object Object]",
+				"NaN",
+				"Kagaris",
+				"MONSTER-TRIS!!!",
+				"18",
+				"19",
+				"20",
+				"Kirbtris",
+				"22",
+			]?.[e.numLines - 1] || e.numLines + "tris";
+		let spinType = null;
+		if (e.isSpin) {
+			spinType = e.spinType + " Spin" + (e.isMini ? " Mini" : "");
+		}
+		achievementMessages[amIndex].text = `${spinType || ""} ${clearedWord}`.trim();
+		achievementMessages[amIndex].timestamp = Date.now();
+		achievementMessages[amIndex].id = Math.random();
+	}
+
 	function assignEventHandlersForGame(g) {
 		g.onRequestGravity = (dt) => {
 			if (gravityTimeout) {
-				clearTimeout(gravityTimeout);
+				clearMeasuredInterval(gravityTimeout);
 			}
 			gravityTimeout = measuredInterval(() => {
 				g.applyGravity();
@@ -79,6 +130,10 @@
 			sounds.gameover.play();
 			dispatch("gameOver");
 		};
+		g.onGameComplete = () => {
+			gameOver = true;
+			dispatch("gameComplete");
+		};
 		g.onDrop = (e) => {
 			if (!e.otherEventsFired) {
 				playDropSFX();
@@ -87,6 +142,7 @@
 		};
 		g.onLinesCleared = (e) => {
 			playClearSFX(e.numLines);
+			updateAchievementMessage(e);
 			dispatch("linesCleared", e);
 		};
 		g.onPause = () => {
@@ -206,7 +262,7 @@
 		if (e.repeat) {
 			return;
 		}
-		if (!$inMenu) {
+		if (!$inMenu && !inputDisabled) {
 			switch (e.key) {
 				case "ArrowRight":
 					setDasTimeout(() => playMoveSFX(game.right()));
@@ -256,7 +312,16 @@
 	});
 </script>
 
-<Vis {grid} {queue} {holdPiece} {gameOver} bind:this={vis} on:restartRequested>
+<Vis
+	{grid}
+	{queue}
+	{holdPiece}
+	{gameOver}
+	bind:this={vis}
+	on:restartRequested
+	bind:pieceElements
+	bind:disabled={blurGame}
+>
 	<svelte:fragment slot="stats">
 		<slot name="stats" />
 	</svelte:fragment>
@@ -264,6 +329,13 @@
 		<div class="bottomRight">
 			<slot name="gameName" />
 		</div>
+	</svelte:fragment>
+	<svelte:fragment slot="belowHold">
+		{#each achievementMessages as achievementMessage (achievementMessage.id)}
+			<p class="bounceIn" style="font-size: 3rem" style:transform={`rotate(${Math.random() * 20 - 10 + "deg"})`}>
+				{achievementMessage.text || ""}
+			</p>
+		{/each}
 	</svelte:fragment>
 </Vis>
 
@@ -276,5 +348,21 @@
 	}
 	button {
 		text-align: start;
+	}
+	@keyframes zoomIn {
+		0% {
+			transform: scale(0.5);
+			opacity: 0;
+		}
+	}
+
+	@keyframes fadeOut {
+		100% {
+			opacity: 0;
+		}
+	}
+
+	.bounceIn {
+		animation: zoomIn 240ms cubic-bezier(0.175, 0.885, 0.32, 1.275) backwards, fadeOut 5s 240ms linear forwards;
 	}
 </style>

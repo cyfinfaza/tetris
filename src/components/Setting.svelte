@@ -37,12 +37,14 @@
 		justify-content: space-between;
 		align-items: flex-end;
 		padding-bottom: 8px;
+		gap: 12px;
 		h2 {
 			font-size: 2rem;
 		}
 		.input {
 			font-size: 1.2rem;
 			font-weight: 700;
+			flex-shrink: 0;
 			input[type="number"] {
 				width: 10rem;
 				text-align: end;
