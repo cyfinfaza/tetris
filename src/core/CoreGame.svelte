@@ -37,7 +37,7 @@
 
 	const measuredTimeoutLimit = 23;
 	function measuredInterval(callback, dt, ...args) {
-		const retValue = { timeout: null, running: true };
+		const retValue = { timeout: null, running: true, id: Math.random() * 1000 |0 };
 		let lastCall = Date.now();
 		let totalMs = 0;
 
@@ -70,6 +70,7 @@
 		}
 		info.running = false;
 		clearTimeout(info.timeout);
+
 	}
 
 	let amIndex = 0;
@@ -109,7 +110,6 @@
 		}
 		achievementMessages[amIndex].text = `${spinType || ""} ${clearedWord}`.trim();
 		achievementMessages[amIndex].timestamp = Date.now();
-		achievementMessages[amIndex].id = Math.random();
 	}
 
 	function assignEventHandlersForGame(g) {
@@ -225,6 +225,7 @@
 	let downInterval = null;
 	function setDownTimeout(callback) {
 		const dt = 1000 / 60 / game.gravityLevel / 20 / $userConfig.sdf; // G_down = G * 20 * SDF, as per Tetris Guideline
+		clearMeasuredInterval(downInterval);
 		downInterval = measuredInterval(callback, dt);
 	}
 
@@ -263,7 +264,6 @@
 	}
 
 	function handleKeyDown(e) {
-		console.log(game.grid);
 		// console.log(e);
 		if (e.repeat) {
 			return;
