@@ -44,6 +44,7 @@
 		showingEndGame = false;
 		cg.restartGame();
 		ppscounter.reset();
+		timer.reset();
 	}
 
 	function startGame() {

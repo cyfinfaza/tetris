@@ -15,6 +15,7 @@
 		timerValue = 0;
 		timerString = "0:00.00";
 		pausedTime = 0;
+		running = false;
 	}
 
 	export function start() {
