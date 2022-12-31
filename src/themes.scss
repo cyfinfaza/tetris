@@ -6,6 +6,7 @@ body.theme-default {
 	--board-bg: #fff2;
 	--text: #fff;
 	--piece-empty: transparent;
+	--piece-ghost: #444;
 	--piece-I: #31c7ef;
 	--piece-O: #f7d308;
 	--piece-T: #ad4d9c;
@@ -20,8 +21,5 @@ body.theme-default {
 	}
 	.piece-active {
 		transform: scale(1);
-	}
-	.piece-ghost {
-		background: #444 !important;
 	}
 }

@@ -57,3 +57,10 @@
 - [ ] Kick tables: SRS+, SRS-X, SRS, ARS, None
 - [ ] Spins: T, All, Stupid, None
 - [ ] Randomization: 7-Bag, 14-Bag, Arika, Classic, Random
+
+# Achievements
+- [ ] 40L IS MY PASSION: Complete `40L` in under `30 seconds`
+- [ ] CHEATING DEATH: Complete `20G Death` in under `5:00`
+- [ ] WUMBOTIZE'D: Finish `20L Sprint` with a `20 Combo`
+- [ ] C-C-C-COMBO BREAKER: Complete `Combo Challenge` with a `200 Combo`
+- [ ] SPRINTER: Complete `5L Sprint` in under `3 seconds`

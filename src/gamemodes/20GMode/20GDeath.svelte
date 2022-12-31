@@ -117,7 +117,7 @@
 		<h2><Timer bind:this={timer} /></h2>
 		<h1>{level}/{levelTarget}</h1>
 	</svelte:fragment>
-	<h1 slot="gameName">20G Mode</h1>
+	<h1 slot="gameName">20G Death</h1>
 </CoreGame>
 
 <EndGameScreen {showingEndGame}>

@@ -64,8 +64,7 @@
 					class="piece"
 					bind:this={pieceElements[i][j]}
 					class:piece-active={cell && !cell?.ghost}
-					class:piece-ghost={cell?.ghost}
-					style:background={cell?.type ? `var(--piece-${cell.type})` : null}
+					style:background={cell?.type ? `var(--piece-${cell?.ghost ? "ghost" : cell.type })` : null}
 				>
 					<!-- {i}<br />{j} -->
 				</div>

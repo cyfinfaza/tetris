@@ -238,7 +238,7 @@ export default class {
 		return false;
 	}
 
-	overlay(staticMatrix, piece, options = {}) {
+	overlay(staticMatrix, piece, options = {}, requireInBounds = false) {
 		let rotatedPiece;
 		if (piece) {
 			rotatedPiece = this.calculateRotatedPiece(piece);
@@ -246,6 +246,7 @@ export default class {
 			return staticMatrix;
 		}
 		let renderedGrid = [];
+		let inBounds = false;
 		for (let i = 0; i < sy; i++) {
 			renderedGrid[i] = [];
 			for (let j = 0; j < sx; j++) {
@@ -254,9 +255,15 @@ export default class {
 					const { x, y, shape } = rotatedPiece;
 					if (shape[i - y] && shape[i - y][j - x]) {
 						renderedGrid[i][j] = { type: piece.type, ...options };
+						if (i > sy-ry-1) {
+							inBounds = true;
+						}
 					}
 				}
 			}
+		}
+		if (!inBounds && requireInBounds) {
+			this.triggerGameOver();
 		}
 		return renderedGrid;
 	}
@@ -343,6 +350,7 @@ export default class {
 			this.lastSpin = null;
 			events.push(true);
 		} else {
+			this.overlay(this.staticMatrix, this.activePiece, {}, true);
 			this.currentCombo = 0;
 			this.comboActive = false;
 		}
@@ -425,6 +433,9 @@ export default class {
 	}
 
 	checkLockTimeout() {
+		if (this.lockDelay == Infinity || this.lockDelay == null) {
+			return;
+		}
 		const attemptLockDelay = () => {
 			if (this.translateActivePiece(0, 1, true)) {
 				this.runPieceLockSequence();

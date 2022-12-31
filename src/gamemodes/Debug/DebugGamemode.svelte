@@ -64,6 +64,8 @@
 		});
 	}
 
+	$: game.lockDelay = gravityEnabled ? 500 : Infinity;
+
 	onMount(() => {
 		game.start();
 		ppscounter.start();
