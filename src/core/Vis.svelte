@@ -21,6 +21,10 @@
 		}, 10);
 	}
 
+	export function focus() {
+		gameGridElement.focus();
+	}
+
 	let gameGridElement;
 
 	const dispatch = createEventDispatcher();

@@ -57,22 +57,24 @@
 			{#if currentMenu === "play"}
 				<div class="gameModeList">
 					{#each Object.keys(GameModes) as gameMode}
-						<button
-							class="gameMode"
-							class:selected={gameMode === currentGameMode}
-							on:click={() => {
-								currentGameMode = gameMode;
-								$inMenu = false;
-							}}
-						>
-							<div>
-								<h2>{GameModes[gameMode].title}</h2>
-								{#if gameMode === currentGameMode}
-									<p style="color: #0F0;">Press ESC to return to game</p>
-								{/if}
-							</div>
-							<p>{GameModes[gameMode].description}</p>
-						</button>
+						{#if !GameModes[gameMode].hidden}
+							<button
+								class="gameMode"
+								class:selected={gameMode === currentGameMode}
+								on:click={() => {
+									currentGameMode = gameMode;
+									$inMenu = false;
+								}}
+							>
+								<div>
+									<h2>{GameModes[gameMode].title}</h2>
+									{#if gameMode === currentGameMode}
+										<p style="color: #0F0;">Press ESC to return to game</p>
+									{/if}
+								</div>
+								<p>{GameModes[gameMode].description}</p>
+							</button>
+						{/if}
 					{/each}
 				</div>
 			{/if}
@@ -118,6 +120,12 @@
 						name="Grid Lines"
 						bind:value={$userConfig.showGridLines}
 						description="Show grid lines on the game board"
+						type="toggle"
+					/>
+					<Setting
+						name="Debug Enabled"
+						bind:value={$userConfig.debugEnabled}
+						description=""
 						type="toggle"
 					/>
 				</div>

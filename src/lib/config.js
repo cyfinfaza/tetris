@@ -5,4 +5,5 @@ export const defaultUserConfig = {
 	sfx: true,
 	consoleGame: false,
 	showGridLines: false,
+	debugEnabled: false,
 };

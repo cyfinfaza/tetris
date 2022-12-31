@@ -3,6 +3,8 @@ import sprint from "./sprint/sprint.svelte";
 import debugGamemode from "./Debug/DebugGamemode.svelte";
 import comboChallenge from "./ComboChallenge/ComboChallenge.svelte";
 import instaGravDeath from "./20GMode/20GDeath.svelte";
+import { userConfig } from "~/lib/stores";
+import { get } from "svelte/store";
 
 export default {
 	zen: {
@@ -42,5 +44,6 @@ export default {
 		title: "Debug",
 		description: "Testy Testy",
 		component: debugGamemode,
+		get hidden() { return !get(userConfig).debugEnabled },
 	},
 };

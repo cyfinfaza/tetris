@@ -191,6 +191,7 @@
 		gameOver = false;
 		updateVis();
 		vis.shake();
+		vis.focus();
 		sounds.restart.play();
 	}
 
@@ -320,6 +321,7 @@
 		updateVis();
 	});
 	onDestroy(() => {
+		game.triggerGameComplete();
 		window.removeEventListener("keyup", handleKeyUp);
 		window.removeEventListener("keydown", handleKeyDown);
 	});
