@@ -2,6 +2,7 @@ import ZenGamemode from "./zen/ZenGamemode.svelte";
 import sprint from "./sprint/sprint.svelte";
 import debugGamemode from "./Debug/DebugGamemode.svelte";
 import comboChallenge from "./ComboChallenge/ComboChallenge.svelte";
+import instaGravDeath from "./20GMode/20GDeath.svelte";
 
 export default {
 	zen: {
@@ -31,6 +32,11 @@ export default {
 		title: "Combo Challenge",
 		description: "Get the highest combo you can in 2 minutes",
 		component: comboChallenge,
+	},
+	instaGrav: {
+		title: "20G Death",
+		description: "The blocks fall instantly, but it doesn't stop there. Can you hold out for 1300 levels?",
+		component: instaGravDeath,
 	},
 	debug: {
 		title: "Debug",

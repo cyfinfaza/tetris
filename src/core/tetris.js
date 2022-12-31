@@ -32,6 +32,7 @@ export default class {
 		this.onGameComplete = () => {};
 		this.onRequestGravity = (dt) => {};
 		this.onCancelGravity = () => {};
+		this.onSpawnBlock = (e) => {};
 		this.onDrop = (e) => {};
 		this.onPause = () => {};
 		this.onResume = () => {};
@@ -61,7 +62,7 @@ export default class {
 		this.activePiece = null;
 		this.holdPiece = null;
 		this.holdAvailable = true;
-		this.gravityLevel = 20; // "G" Level, 1G = 1 cell / frame, or 1 cell / (1/60) seconds, or 60 cells/s
+		this.gravityLevel = 1/60; // "G" Level, 1G = 1 cell / frame, or 1 cell / (1/60) seconds, or 60 cells/s
 		this.lockDelay = 500;
 		this.lockTimeout = null;
 		this.gameOver = false;
@@ -288,6 +289,7 @@ export default class {
 			originalShape: deepCopy2d(chosenBlock.shape),
 			rotationState: 0,
 		};
+		this.onSpawnBlock(newPiece);
 		if (this.checkMiniMatrixCollision(newPiece)) {
 			this.triggerGameOver();
 			return true;

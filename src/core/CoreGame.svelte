@@ -98,18 +98,19 @@
 				"NaN",
 				"Kagaris",
 				"MONSTER-TRIS!!!",
-				"18",
-				"19",
-				"20",
+				"18tris",
+				"19tris",
+				"20tris",
 				"Kirbtris",
-				"22",
+				"22tris",
 			]?.[e.numLines - 1] || e.numLines + "tris";
-		let spinType = null;
+		let spinType = "";
 		if (e.isSpin) {
 			spinType = e.spinType + " Spin" + (e.isMini ? " Mini" : "");
 		}
-		achievementMessages[amIndex].text = `${spinType || ""} ${clearedWord}`.trim();
+		achievementMessages[amIndex].text = `${spinType} ${clearedWord}`.trim();
 		achievementMessages[amIndex].timestamp = Date.now();
+		achievementMessages[amIndex].id = Math.random();
 	}
 
 	function assignEventHandlersForGame(g) {
@@ -140,6 +141,9 @@
 			gameOver = true;
 			dispatch("gameComplete");
 		};
+		g.onSpawnBlock = (e) => {
+			dispatch("spawnBlock", e);
+		};
 		g.onDrop = (e) => {
 			if (!e.otherEventsFired) {
 				playDropSFX();
@@ -159,11 +163,11 @@
 			dispatch("resume");
 		};
 		g.onPerfectClear = () => {
-			console.log("perfect clear");
+			// console.log("perfect clear");
 			dispatch("perfectClear");
 		};
 		g.onSpin = (e) => {
-			console.log(e.type + " spin", e);
+			// console.log(e.type + " spin", e);
 			dispatch("spin", e);
 		};
 	}
