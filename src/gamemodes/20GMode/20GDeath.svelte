@@ -84,7 +84,7 @@
 	function updateLockDelay() {
 		let LD;
 		if (level < 200) LD = 18;
-		else if (level < 300) LD = 18;
+		else if (level < 300) LD = 17;
 		else if (level < 400) LD = 15;
 		else if (level < 500) LD = 13;
 		else if (level < 600) LD = 12;

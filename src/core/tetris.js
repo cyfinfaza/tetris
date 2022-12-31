@@ -287,6 +287,7 @@ export default class {
 
 	spawnBlock() {
 		const chosenBlock = this.genRandomPiece();
+		this.checkLockTimeout();
 		// console.error(chosenBlock);
 		let newPiece = {
 			...chosenBlock,
