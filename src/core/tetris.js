@@ -254,7 +254,7 @@ export default class {
 				if (piece) {
 					const { x, y, shape } = rotatedPiece;
 					if (shape[i - y] && shape[i - y][j - x]) {
-						renderedGrid[i][j] = { type: piece.type, ...options };
+						renderedGrid[i][j] = { type: piece.type, bracket: piece.bracket || false, ...options };
 						if (i > sy-ry-1) {
 							inBounds = true;
 						}
@@ -288,7 +288,7 @@ export default class {
 	spawnBlock() {
 		const chosenBlock = this.genRandomPiece();
 		this.checkLockTimeout();
-		// console.error(chosenBlock);
+		// console.log(chosenBlock.bracket);
 		let newPiece = {
 			...chosenBlock,
 			x: chosenBlock.spawnX,

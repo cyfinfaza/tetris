@@ -9,7 +9,7 @@
 				<div
 					class="piece"
 					class:piece-active={cell}
-					style:background={cell ? `var(--piece-${piece.type})` : `var(--piece-empty)`}
+					style:background={cell ? `var(--piece-${piece?.bracket ? 'bracket' : piece.type})` : `var(--piece-empty)`}
 				/>
 			{/each}
 		{/each}

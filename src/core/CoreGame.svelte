@@ -6,6 +6,7 @@
 	import { createEventDispatcher } from "svelte";
 	import { userConfig } from "~/lib/stores";
 	import { inMenu } from "~/lib/stores";
+	import { sx, sy } from "./tetris";
 
 	const dispatch = createEventDispatcher();
 
@@ -193,6 +194,29 @@
 		vis.shake();
 		vis.focus();
 		sounds.restart.play();
+	}
+
+	function spawnGarbage(rows=1, cheeseArray) {
+		for (let y = 0; y < sy; y++) {
+			if (y < sy-rows) {
+				game.staticMatrix[y] = game.staticMatrix[y+rows]
+			} else {
+				game.staticMatrix[y] = [ ...cheeseArray ];
+			}
+		}
+	}
+
+	export function cheeseGarbage(rows=1, cheeseColumn=(Math.random() * sx | 0)) {
+		const cheeseArray = new Array(sx).fill({ type: "clearable-garbage" })
+		cheeseArray[cheeseColumn] = null;
+
+		spawnGarbage(rows, cheeseArray);
+	}
+
+	export function cloneGarbage(rows=1) {
+		const cheeseArray = [ ...game.staticMatrix[sy-1] ].map(v => v === null? null : { type: "clearable-garbage" });
+		
+		spawnGarbage(rows, cheeseArray);
 	}
 
 	let dasTimeout = null;

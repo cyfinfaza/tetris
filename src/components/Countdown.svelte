@@ -17,7 +17,6 @@
 		showing = true;
 		currentCount = from;
 		interval = setInterval(() => {
-			console.log(currentCount);
 			currentCount--;
 			if (currentCount <= 0) {
 				clearInterval(interval);
