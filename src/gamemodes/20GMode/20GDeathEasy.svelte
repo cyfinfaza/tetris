@@ -7,7 +7,6 @@
 	import Timer from "~/components/Timer.svelte";
 	import PpsCounter from "~/components/PPSCounter.svelte";
 	import defaultBlocks from "~/constants/blocks/blocks";
-	// import monoBlocks from "~/constants/blocks/monoblocks";
 
 	let level;
 	let levelTarget;
@@ -18,8 +17,8 @@
 	let regrets;
 
 	const torikans = [
-		{ level: 500, time: 183000 }, // 500 @ 3:03.00
-		{ level: 1000, time: 366000} // 1000 @ 6:06.00
+		{ level: 500, time: 284000 }, // 500 @ 4:44.00
+		{ level: 1000, time: 568000} // 1000 @ 9:28.00
 	]
 	let torikanBreaks;
 
@@ -45,7 +44,7 @@
 	let cg;
 
 	function initialState() {
-		level = 0;
+		level = 700;
 
 		sectionStart = null;
 		section = 0;
@@ -128,9 +127,9 @@
 
 	$: {
 		if (level < 500)  garbageTarget = null;
-		else if (level < 600)  garbageTarget = 20;
+		else if (level < 600)  garbageTarget = 25;
 		else if (level < 700)  garbageTarget = 18;
-		else if (level < 800)  garbageTarget = 10;
+		else if (level < 800)  garbageTarget = 12;
 		else if (level < 900)  garbageTarget = 9;
 		else if (level < 1000) garbageTarget = 8;
 		else garbageTarget = null;
@@ -138,13 +137,13 @@
 
 	$: {
 		let LD;
-		if (level < 200) LD = 18;
-		else if (level < 300) LD = 17;
-		else if (level < 400) LD = 15;
-		else if (level < 500) LD = 13;
-		else if (level < 600) LD = 12;
-		else if (level < 1100) LD = 10;
-		else if (level < 1300) LD = 8;
+		if (level < 200) LD = 45;
+		else if (level < 300) LD = 40;
+		else if (level < 400) LD = 35;
+		else if (level < 500) LD = 30;
+		else if (level < 600) LD = 25;
+		else if (level < 1100) LD = 23;
+		else if (level < 1300) LD = 20;
 		game.lockDelay = LD * 1/60 * 1000; // ms = F * 1/60 F/s * 1000 ms/s
 	}
 

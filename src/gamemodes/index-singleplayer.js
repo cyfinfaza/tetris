@@ -3,6 +3,7 @@ import sprint from "./sprint/sprint.svelte";
 import debugGamemode from "./Debug/DebugGamemode.svelte";
 import comboChallenge from "./ComboChallenge/ComboChallenge.svelte";
 import instaGravDeath from "./20GMode/20GDeath.svelte";
+import instaGravDeathEasy from "./20GMode/20GDeathEasy.svelte";
 import { userConfig } from "~/lib/stores";
 import { get } from "svelte/store";
 
@@ -39,6 +40,11 @@ export default {
 		title: "20G Death",
 		description: "The blocks fall instantly, but it doesn't stop there. Can you hold out for 1300 levels?",
 		component: instaGravDeath,
+	},
+	instaGravEasy: {
+		title: "20G Death (Easy)",
+		description: "A slower and more forgiving variant of 20G Death.",
+		component: instaGravDeathEasy,
 	},
 	debug: {
 		title: "Debug",
