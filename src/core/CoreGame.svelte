@@ -79,7 +79,7 @@
 		if (e.isPerfectClear) {
 			achievementMessages[amIndex] = { text: "Perfect Clear", timestamp: Date.now(), id: Math.random() };
 		}
-		amIndex = (amIndex + 1) % 2;
+		amIndex = ++amIndex % 2;
 		const clearedWord =
 			[
 				"Single",
@@ -103,8 +103,7 @@
 				"19tris",
 				"20tris",
 				"Kirbtris",
-				"22tris",
-			]?.[e.numLines - 1] || e.numLines + "tris";
+			]?.[e.numLines-1] || e.numLines + "tris";
 		let spinType = "";
 		if (e.isSpin) {
 			spinType = e.spinType + " Spin" + (e.isMini ? " Mini" : "");
@@ -112,6 +111,11 @@
 		achievementMessages[amIndex].text = `${spinType} ${clearedWord}`.trim();
 		achievementMessages[amIndex].timestamp = Date.now();
 		achievementMessages[amIndex].id = Math.random();
+	}
+
+	export function displayAchievement(text) {
+		achievementMessages[amIndex] = { text, timestamp: Date.now(), id: Math.random() };
+		amIndex = ++amIndex % 2
 	}
 
 	function assignEventHandlersForGame(g) {

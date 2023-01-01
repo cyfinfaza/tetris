@@ -6,18 +6,16 @@
 	import Countdown from "~/components/Countdown.svelte";
 	import Timer from "~/components/Timer.svelte";
 	import PpsCounter from "~/components/PPSCounter.svelte";
-	import defaultBlocks from "~/constants/blocks/blocks";
-	// import monoBlocks from "~/constants/blocks/monoblocks";
 
 	let level;
 	let levelTarget;
 
-	const sectionTargetTime = 60 * 1000; // 1:00.00
+	export let sectionTargetTime = 60 * 1000; // 1:00.00
 	let sectionStart;
 	let section;
 	let regrets;
 
-	const torikans = [
+	export let torikans = [
 		{ level: 500, time: 183000 }, // 500 @ 3:03.00
 		{ level: 1000, time: 366000} // 1000 @ 6:06.00
 	]
@@ -28,6 +26,7 @@
 
 	let garbagePoints;
 	let garbageTarget;
+	export let gradePrefix = "S";
 
 	let game = new TetrisGame();
 
@@ -87,7 +86,7 @@
 	}
 
 	function handleDrop() {
-		if (garbagePoints > garbageTarget) {
+		if (garbagePoints > garbageTarget && garbageTarget !== null) {
 			garbagePoints = 0;
 			cg.cloneGarbage();
 		}
@@ -100,6 +99,9 @@
 	function updateSectionTime() {
 		if (Date.now() - sectionStart > sectionTargetTime && sectionStart !== null) {
 			regrets++;
+			cg?.displayAchievement("MISS");
+		} else {
+			cg?.displayAchievement("PASS");
 		}
 		sectionStart = Date.now();
 	}
@@ -126,27 +128,35 @@
 		checkTorikans();
 	}
 
-	$: {
-		if (level < 500)  garbageTarget = null;
-		else if (level < 600)  garbageTarget = 20;
-		else if (level < 700)  garbageTarget = 18;
-		else if (level < 800)  garbageTarget = 10;
-		else if (level < 900)  garbageTarget = 9;
-		else if (level < 1000) garbageTarget = 8;
-		else garbageTarget = null;
+	export let garbageTargetCurve = l => {
+		if (l < 500)  return null;
+		if (l < 600)  return 20;
+		if (l < 700)  return 18;
+		if (l < 800)  return 10;
+		if (l < 900)  return 9;
+		if (l < 1000) return 8;
+		return null;
 	}
+	function updateGarbageTarget() {
+		garbageTarget = garbageTargetCurve(level);
+	}
+	$: updateGarbageTarget(level);
 
-	$: {
+	export let lockDelayCurve = l => {
 		let LD;
-		if (level < 200) LD = 18;
-		else if (level < 300) LD = 17;
-		else if (level < 400) LD = 15;
-		else if (level < 500) LD = 13;
-		else if (level < 600) LD = 12;
-		else if (level < 1100) LD = 10;
-		else if (level < 1300) LD = 8;
-		game.lockDelay = LD * 1/60 * 1000; // ms = F * 1/60 F/s * 1000 ms/s
+		if (l < 200) return 18;
+		if (l < 300) return 17;
+		if (l < 400) return 15;
+		if (l < 500) return 13;
+		if (l < 600) return 12;
+		if (l < 1100) return 10;
+		if (l < 1300) return 8;
+		return 18;
 	}
+	function updateLockDelay() {
+		game.lockDelay = lockDelayCurve(level) * 1/60 * 1000
+	}
+	$: updateLockDelay(level);
 
 	function clearGame() {
 		initialState();
@@ -215,7 +225,7 @@
 
 <EndGameScreen {showingEndGame}>
 	<h1 style="{ isGameOver ? 'color: red;' : '' }">{gameOverMessage}</h1>
-	<p style="font-size: 6rem;">S{section-regrets}</p>
+	<p style="font-size: 6rem;">{gradePrefix}{section-regrets}</p>
 	<p style="font-size: 2rem;">Level {Math.min(level, 1300)}</p>
 	<p style="font-size: 2rem;">{finalTime}</p>
 	<button on:click={handleRestartRequested}>Restart (R)</button>
