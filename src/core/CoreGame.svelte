@@ -182,8 +182,11 @@
 	$: assignEventHandlersForGame(game);
 	$: if (pauseEnabled) game.running = !$inMenu;
 
-	window.game = game;
-	window.grid = grid;
+	function updateWindowContext(debug) {
+		window.game = debug ? game : undefined;
+		window.grid = debug ? grid : undefined;
+	}
+	$: updateWindowContext($userConfig.debugEnabled);
 
 	// $: console.table(grid);
 

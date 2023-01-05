@@ -29,18 +29,16 @@ const defaultConfig = {
 };
 
 const keyframeCommands = {
-		gravity: 'G',		// x
-		move: 'M',			// x
-		rotate: 'r',		// x
-		rotateMove: 'R',	// x
-		spawnPiece: 'S',	// x
-		queuePiece: 'Q',	// x
-		level: 'l',			// x
-		levelLimit: 'L',	// x
-		countdown: 'C',		// x
-		setBoard: 'B',		// x
-		pause: 'P',			// x
-		achievement: 'A',	// x
+		gravity: 'G',
+		move: 'M',
+		rotate: 'R',
+		spawnPiece: 'S',
+		queuePiece: 'Q',
+		level: 'l',
+		levelLimit: 'L',
+		setBoard: 'B',
+		setCell: 'C',
+		pause: 'P',
 	}
 
 export default class {
@@ -103,6 +101,7 @@ export default class {
 		}
 		this.resetBag();
 	}
+	
 
 	start() {
 		this.spawnBlock();
@@ -286,6 +285,12 @@ export default class {
 					case 'hold':
 						this.hold();
 						break;
+					case 'setCell':
+						this.staticMatrix[keyframe.y][keyframe.x] = keyframe.val;
+						break;
+					case 'setBoard':
+						this.staticMatrix = keyframe.board;
+						break;
 				}
 				idx++;
 				if (idx >= this.keyframes.length) {
@@ -315,10 +320,22 @@ export default class {
 
 		this.recording = false;
 		this.hardDrop();
+
+		this.replayKeyframes();
 	}
 
 	// END REPLAY FUNCTIONS
 	// BEGIN GEOMETRY UTILITY FUNCTIONS
+
+	setCell(x, y, val) {
+		this.recordKeyframe({ event: "setCell", x, y, val });
+		this.staticMatrix[y][x] = val;
+	}
+
+	setBoard(board) {
+		this.recordKeyframe({ event: "setBoard", board: deepCopy2d(board) });
+		this.staticMatrix = deepCopy2d(board);
+	}
 
 	checkMiniMatrixCollision(piece) {
 		const { x, y, shape } = this.calculateRotatedPiece(piece);

@@ -32,8 +32,7 @@
 				if (2 < x && x < 7) {
 					continue;
 				}
-				console.log(x, y);
-				game.staticMatrix[y][x] = { type: "clearable-garbage" };
+				game.setCell(x, y, { type: "clearable-garbage" });
 			}
 		}
 		cg.updateVis();
@@ -79,7 +78,7 @@
 
 	function handleRestartRequested() {
 		clearGame();
-		game.staticMatrix = comboMap;
+		game.setBoard(comboMap);
 		cg.updateVis();
 
 		countdown.start(() => {
@@ -88,7 +87,7 @@
 	}
 
 	onMount(() => {
-		game.staticMatrix = comboMap;
+		game.setBoard(comboMap);
 		cg.updateVis();
 		countdown.start(() => {
 			startGame();
