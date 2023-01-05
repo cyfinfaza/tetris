@@ -22,7 +22,26 @@ const defaultConfig = {
 	queueLength: 5,
 	blockSet: tetrisBlocks,
 	kickSet: srsPlus,
+
+	replay: false,
+	gravity: 1/60,
+	lockDelay: 500,
 };
+
+const keyframeCommands = {
+		gravity: 'G',		// x
+		move: 'M',			// x
+		rotate: 'r',		// x
+		rotateMove: 'R',	// x
+		spawnPiece: 'S',	// x
+		queuePiece: 'Q',	// x
+		level: 'l',			// x
+		levelLimit: 'L',	// x
+		countdown: 'C',		// x
+		setBoard: 'B',		// x
+		pause: 'P',			// x
+		achievement: 'A',	// x
+	}
 
 export default class {
 	constructor(config = defaultConfig) {
@@ -53,6 +72,9 @@ export default class {
 		this.config = { ...this.config, ...newConfig };
 		const { randomSeed } = this.config;
 		this.staticMatrix = [];
+		if (!this.config.replay) this.keyframes = [];
+		this.recording = !this.config.replay;
+
 		for (let i = 0; i < sy; i++) {
 			this.staticMatrix[i] = [];
 			for (let j = 0; j < sx; j++) {
@@ -62,8 +84,8 @@ export default class {
 		this.activePiece = null;
 		this.holdPiece = null;
 		this.holdAvailable = true;
-		this.gravityLevel = 1/60; // "G" Level, 1G = 1 cell / frame, or 1 cell / (1/60) seconds, or 60 cells/s
-		this.lockDelay = 500;
+		this.gravityLevel = this.config.gravity; // "G" Level, 1G = 1 cell / frame, or 1 cell / (1/60) seconds, or 60 cells/s
+		this.lockDelay = this.config.lockDelay;
 		this.lockTimeout = null;
 		this.gameOver = false;
 		this.numLinesCleared = 0;
@@ -141,6 +163,161 @@ export default class {
 	}
 
 	// END RANDOMIZATION FUNCTIONS
+	// BEGIN REPLAY FUNCTIONS
+
+	recordKeyframe(event) {
+		if (this.recording) this.keyframes.push({timestamp: Date.now(), ...event});
+		console.log(this.keyframes.length);
+	}
+
+	serializeKeyframes() {
+		const initialTimestamp = this.keyframes[0].timestamp;
+		let chunk = [];
+		let lastTimestamp = 0;
+		let output = '';
+
+		this.keyframes.forEach(keyframe => {
+			const timestamp = keyframe.timestamp - initialTimestamp;
+			let serialized = ''
+			switch (keyframe.event) {
+				case 'spawn':
+					serialized = `S${keyframe.newPiece.type}`;
+					break;
+				case 'gravity':
+					serialized = `G`;
+					break;
+				case 'move':
+					serialized = `M${keyframe.x},${keyframe.y}`;
+					break;
+				case 'rotate':
+					serialized = `R${keyframe.n}`;
+					break;
+				case 'pieceLock':
+					serialized = "L";
+					break;
+				case 'hold':
+					serialized = "H";
+					break;
+			}
+
+			if (timestamp !== lastTimestamp) {
+				output += `${timestamp}:` + chunk.join(':') + ' ';
+				chunk.length = 0;
+				lastTimestamp = timestamp;
+			}
+			chunk.push(serialized);
+		});
+		return output;
+	}
+
+	serializeReplay() {
+		this.recording = false;
+		const head = {
+			config: this.config,
+			keyframes: this.serializeKeyframes(),
+		}
+		console.log(JSON.stringify(head));
+		return JSON.stringify(head);
+	}
+
+	deserializeKeyframes(str) {
+		const segments = str.split(" ");
+		this.keyframes.length = 0;
+		segments.forEach(segment => {
+			const data = segment.split(":");
+			const timestamp = data.shift();
+			data.forEach(event => {
+				const args = event.slice(1).split(',');
+				switch (event[0]) {
+					case 'S':
+						this.keyframes.push({event: 'spawn', type: args[0]})
+						break;
+					case 'G':
+						this.keyframes.push({event: 'gravity'})
+						break;
+					case 'M':
+						this.keyframes.push({event: 'move', x: args[0], y: args[1]})
+						break;
+					case 'R':
+						this.keyframes.push({event: 'rotate', n: args[0]})
+						break;
+					case 'L':
+						this.keyframes.push({event: 'pieceLock'})
+						break;
+					case 'H':
+						this.keyframes.push({event: 'hold'})
+						break;
+				}
+			});
+		});
+	}
+
+	deserializeReplay(replay) {
+		const head = JSON.parse(head);
+		this.deserializeKeyframes()
+	}
+
+	replayKeyframes() {
+		const replayStart = Date.now();
+		const initialTimestamp = this.keyframes[0].timestamp;
+		let idx = 0;
+
+		const nextFrame = () => {
+			const currentTimestamp = Date.now() - replayStart;
+			while (currentTimestamp > this.keyframes[idx].timestamp - initialTimestamp) {
+				const keyframe = this.keyframes[idx];
+				console.log(keyframe.event);
+				switch (keyframe.event) {
+					case 'spawn':
+						// serialized = `S${keyframe.newPiece.type}`;
+						break;
+					case 'gravity':
+						this.move(0, 1);
+						break;
+					case 'move':
+						this.move(keyframe.x, keyframe.y);
+						break;
+					case 'rotate':
+						this.rotate(keyframe.n);
+						break;
+					case 'pieceLock':
+						this.runPieceLockSequence();
+						break;
+					case 'hold':
+						this.hold();
+						break;
+				}
+				idx++;
+				if (idx >= this.keyframes.length) {
+					console.log('DONE');
+					this.replay = false;
+					this.running = false;
+					this.resetGame();
+					return;
+				}
+			}
+			requestAnimationFrame(nextFrame);
+		}
+
+		requestAnimationFrame(nextFrame);
+	}
+
+	replayReplay(replay) {
+		this.recording = false;
+
+		this.resetGame({
+			...this.config,
+			replay: true,
+			gravityLevel: 0,
+			randomSeed: this.initialSeed,
+			lockDelay: 10000,
+		});
+
+		this.recording = false;
+		this.hardDrop();
+	}
+
+	// END REPLAY FUNCTIONS
 	// BEGIN GEOMETRY UTILITY FUNCTIONS
 
 	checkMiniMatrixCollision(piece) {
@@ -286,6 +463,7 @@ export default class {
 	// BEGIN GAME LOGIC FUNCTIONS
 
 	spawnBlock() {
+
 		const chosenBlock = this.genRandomPiece();
 		this.checkLockTimeout();
 		// console.log(chosenBlock.bracket);
@@ -297,6 +475,7 @@ export default class {
 			originalShape: deepCopy2d(chosenBlock.shape),
 			rotationState: 0,
 		};
+		this.recordKeyframe({event: "spawn", newPiece});
 		this.onSpawnBlock(newPiece);
 		if (this.checkMiniMatrixCollision(newPiece)) {
 			this.triggerGameOver();
@@ -338,6 +517,7 @@ export default class {
 	}
 
 	runPieceLockSequence() {
+		this.recordKeyframe({event: "pieceLock"});
 		const events = [];
 		this.staticMatrix = this.flatten();
 		clearInterval(this.lockTimeout);
@@ -383,6 +563,7 @@ export default class {
 		if (this.activePiece) {
 			const collision = this.translateActivePiece(x, y);
 			if (!collision) {
+				this.recordKeyframe({event: "move", x, y});
 				this.lastSpin = null;
 				this.resetGravityIfAboutToLock();
 			}
@@ -407,6 +588,7 @@ export default class {
 	}
 
 	rotate(n) {
+		this.recordKeyframe({event: "rotate", n});
 		if (this.activePiece) {
 			let newPiece = { ...this.activePiece, rotationState: (this.activePiece.rotationState + n) % 4 };
 			let kickset = this.config.kickSet.find((kickset) => kickset.appliesTo.includes(this.activePiece.type))?.kicks?.[
@@ -457,6 +639,7 @@ export default class {
 		if (this.translateActivePiece(0, 1)) {
 			// this.runPieceLockSequence();
 		} else {
+			this.recordKeyframe({ event: "gravity" });
 			this.checkLockTimeout();
 			this.lastSpin = null;
 		}
@@ -489,12 +672,13 @@ export default class {
 
 	hardDrop() {
 		if (!this.gameOver) {
-			while (this.activePiece && !this.translateActivePiece(0, 1)) {}
+			while (this.activePiece && !this.move(0, 1)) {}
 			this.runPieceLockSequence();
 		}
 	}
 
 	hold() {
+		this.recordKeyframe({event: "hold"});
 		if (this.holdAvailable && !this.gameOver) {
 			if (this.holdPiece) {
 				[this.activePiece, this.holdPiece] = [

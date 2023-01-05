@@ -6,6 +6,7 @@
 	import Countdown from "~/components/Countdown.svelte";
 	import Timer from "~/components/Timer.svelte";
 	import PpsCounter from "~/components/PPSCounter.svelte";
+	import blocksbracket from "~/constants/blocks/blocksbracket";
 
 	let level;
 	let levelTarget;
@@ -81,6 +82,7 @@
 			garbagePoints++;
 		}
 		if (level >= 1000) {
+			game.blockSet = blocksbracket
 			game.queue[4] = { ...game.queue[4], bracket: true }
 		}
 	}

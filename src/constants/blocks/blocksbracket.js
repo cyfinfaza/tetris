@@ -1,0 +1,86 @@
+export default [
+	{
+		type: "I",
+		bracket: true,
+		color: "#31C7EF",
+		spawnX: 3,
+		spawnY: 19,
+		shape: [
+			[0, 0, 0, 0],
+			[1, 1, 1, 1],
+			[0, 0, 0, 0],
+			[0, 0, 0, 0],
+		],
+	},
+	{
+		type: "O",
+		bracket: true,
+		color: "#F7D308",
+		spawnX: 4,
+		spawnY: 19,
+		shape: [
+			[1, 1],
+			[1, 1],
+		],
+	},
+	{
+		type: "T",
+		bracket: true,
+		color: "#AD4D9C",
+		spawnX: 3,
+		spawnY: 19,
+		shape: [
+			[0, 1, 0],
+			[1, 1, 1],
+			[0, 0, 0],
+		],
+	},
+	{
+		type: "S",
+		bracket: true,
+		color: "#42B642",
+		spawnX: 3,
+		spawnY: 19,
+		shape: [
+			[0, 1, 1],
+			[1, 1, 0],
+			[0, 0, 0],
+		],
+	},
+	{
+		type: "Z",
+		bracket: true,
+		color: "#EF2029",
+		spawnX: 3,
+		spawnY: 19,
+		shape: [
+			[1, 1, 0],
+			[0, 1, 1],
+			[0, 0, 0],
+		],
+	},
+	{
+		type: "J",
+		bracket: true,
+		color: "#5A65AD",
+		spawnX: 3,
+		spawnY: 19,
+		shape: [
+			[1, 0, 0],
+			[1, 1, 1],
+			[0, 0, 0],
+		],
+	},
+	{
+		type: "L",
+		bracket: true,
+		color: "#EF7921",
+		spawnX: 3,
+		spawnY: 19,
+		shape: [
+			[0, 0, 1],
+			[1, 1, 1],
+			[0, 0, 0],
+		],
+	},
+];

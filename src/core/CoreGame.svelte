@@ -7,6 +7,7 @@
 	import { userConfig } from "~/lib/stores";
 	import { inMenu } from "~/lib/stores";
 	import { sx, sy } from "./tetris";
+	import Replay from "./replay";
 
 	const dispatch = createEventDispatcher();
 
@@ -15,6 +16,7 @@
 	export let pieceElements;
 
 	export let game;
+	let replay = new Replay();
 
 	export let blurGame;
 	export let inputDisabled = false;
@@ -259,7 +261,7 @@
 
 	let downInterval = null;
 	function setDownTimeout(callback) {
-		const dt = 1000 / 60 / game.gravityLevel / 20 / $userConfig.sdf; // G_down = G * 20 * SDF, as per Tetris Guideline
+		const dt = 1000 / 60 / Math.max(game.gravityLevel, 1) / 20 / $userConfig.sdf; // G_down = G * 20 * SDF, as per Tetris Guideline
 		clearMeasuredInterval(downInterval);
 		downInterval = measuredInterval(callback, dt);
 	}
