@@ -7,7 +7,6 @@ Howler.volume(0.5);
 export const sounds = {
 	move: new Howl({
 		src: ["/sfx/set1/move2.wav"],
-		volume: 0.1,
 	}),
 	movefail: new Howl({
 		src: ["/sfx/set1/movefail.wav"],
@@ -38,41 +37,55 @@ export const sounds = {
 	}),
 };
 
+function playSFX(sound, vol=1.0) {
+	sound.volume(vol * get(userConfig).sfxVol / 200);
+	sound.play();
+}
+
 export function playMoveSFX(fail) {
 	if (fail) {
-		// sounds.movefail.play();
+		// playSFX(sounds.movefail);
 	} else {
-		sounds.move.play();
+		playSFX(sounds.move, 0.1);
 	}
 }
 
 export function playDropSFX() {
-	sounds.drop.play();
+	playSFX(sounds.drop);
 }
 
 export function playClearSFX(lines) {
 	if (lines === 4) {
-		sounds.clearTetris.play();
+		playSFX(sounds.clearTetris);
 	} else if (lines === 3) {
-		sounds.clear3.play();
+		playSFX(sounds.clear3);
 	} else if (lines === 2) {
-		sounds.clear2.play();
+		playSFX(sounds.clear2);
 	} else {
-		sounds.clear.play();
+		playSFX(sounds.clear);
 	}
 }
 
 export function playHoldSFX(fail) {
 	if (fail) {
-		sounds.movefail.play();
+		playSFX(sounds.movefail);
 	} else {
-		sounds.hold.play();
+		playSFX(sounds.hold);
 	}
 }
 
-function recheckMute() {
-	Howler.mute(!get(userConfig).sfx || !get(windowInFocus));
+export function playRestartSFX() {
+	playSFX(sounds.restart);
 }
 
-userConfig.subscribe(recheckMute);
-windowInFocus.subscribe(recheckMute);
+export function playGameoverSFX() {
+	playSFX(sounds.gameover);
+}
+
+function recheckVolume() {
+	Howler.volume(get(userConfig).masterVol / 100);
+	// Howler.mute(!get(userConfig).sfx || !get(windowInFocus));
+}
+
+userConfig.subscribe(recheckVolume);
+windowInFocus.subscribe(recheckVolume);

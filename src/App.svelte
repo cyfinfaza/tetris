@@ -104,10 +104,18 @@
 					/>
 					<Heading name="Audio" />
 					<Setting
+						name="Master"
+						bind:value={$userConfig.masterVol}
+						description="Adjust the volume of the entire game"
+						unit="%"
+						type="number"
+					/>
+					<Setting
 						name="SFX"
-						bind:value={$userConfig.sfx}
-						description="Enable or disable sound effects"
-						type="toggle"
+						bind:value={$userConfig.sfxVol}
+						description="Adjust the volume of SFX"
+						unit="%"
+						type="number"
 					/>
 					<Heading name="Extra" />
 					<Setting

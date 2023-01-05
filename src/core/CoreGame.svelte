@@ -1,7 +1,7 @@
 <script>
 	import { onMount, onDestroy } from "svelte";
 	import blocks from "~/constants/blocks/blocks";
-	import { sounds, playClearSFX, playMoveSFX, playDropSFX, playHoldSFX } from "~/lib/sounds";
+	import { sounds, playClearSFX, playMoveSFX, playDropSFX, playHoldSFX, playGameoverSFX, playRestartSFX } from "~/lib/sounds";
 	import Vis from "./Vis.svelte";
 	import { createEventDispatcher } from "svelte";
 	import { userConfig } from "~/lib/stores";
@@ -139,7 +139,7 @@
 		};
 		g.onGameOver = () => {
 			gameOver = true;
-			sounds.gameover.play();
+			playGameoverSFX();
 			dispatch("gameOver");
 		};
 		g.onGameComplete = () => {
@@ -197,7 +197,7 @@
 		updateVis();
 		vis.shake();
 		vis.focus();
-		sounds.restart.play();
+		playRestartSFX();
 	}
 
 	function spawnGarbage(rows=1, cheeseArray) {
