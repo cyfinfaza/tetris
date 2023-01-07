@@ -39,7 +39,7 @@
 	}
 
 	function draw(x, y, piece) {
-		game.staticMatrix[y+ry][x] = piece;
+		game.staticMatrix[y + ry][x] = piece;
 		cg.updateVis();
 	}
 
@@ -54,7 +54,9 @@
 						draw(x, y, null);
 					}
 				}
-				if (element === null) { return; }
+				if (element === null) {
+					return;
+				}
 				element.addEventListener("contextmenu", (e) => {
 					e.preventDefault();
 				});
@@ -81,6 +83,7 @@
 	on:restartRequested={handleRestartRequested}
 	on:drop={handleDrop}
 	on:linesCleared={handleLinesCleared}
+	sidePane="settings"
 	blurGame={showingEndGame}
 	{gravityEnabled}
 >
@@ -93,10 +96,3 @@
 		<Setting name="Gravity" bind:value={gravityEnabled} type="toggle" />
 	</div>
 </CoreGame>
-
-<style>
-	.sideSettings {
-		/* flex: 1; */
-		width: 400px;
-	}
-</style>

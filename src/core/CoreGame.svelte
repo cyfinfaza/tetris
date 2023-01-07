@@ -29,6 +29,8 @@
 
 	export let gravityEnabled = true;
 
+	export let sidePane = null;
+
 	let grid = game.grid;
 	let queue = game.queue;
 	let holdPiece = null;
@@ -367,6 +369,7 @@
 	{queue}
 	{holdPiece}
 	{gameOver}
+	{sidePane}
 	bind:this={vis}
 	on:restartRequested
 	bind:pieceElements

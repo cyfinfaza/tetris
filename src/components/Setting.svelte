@@ -42,7 +42,7 @@
 			font-size: 2em;
 		}
 		.input {
-			font-size: 1.2em;
+			// font-size: 1.2em;
 			font-weight: 700;
 			flex-shrink: 0;
 			input[type="number"] {
