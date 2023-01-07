@@ -64,7 +64,9 @@
 					class="piece"
 					bind:this={pieceElements[i][j]}
 					class:piece-active={cell && !cell?.ghost}
-					style:background={cell?.type ? `var(--piece-${cell?.ghost ? "ghost" : cell?.bracket ? "bracket" : cell.type })` : null}
+					style:background={cell?.type
+						? `var(--piece-${cell?.ghost ? "ghost" : cell?.bracket ? "bracket" : cell.type})`
+						: null}
 				>
 					<!-- {i}<br />{j} -->
 				</div>
@@ -88,7 +90,7 @@
 	.vis {
 		display: flex;
 		align-items: flex-end;
-		gap: 12px;
+		gap: var(--pad);
 		transition: 0.2s;
 		// width: 100%;
 		// height: 100%;
@@ -134,6 +136,7 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
+		z-index: 5;
 	}
 
 	.queue {
@@ -141,7 +144,7 @@
 		flex-direction: column;
 		align-items: flex-start;
 		align-self: flex-start;
-		gap: 12px;
+		gap: var(--pad);
 		width: 100%;
 	}
 
@@ -150,14 +153,14 @@
 		text-align: right;
 		display: flex;
 		flex-direction: column;
-		gap: 12px;
+		gap: var(--pad);
 		align-items: flex-end;
 		justify-content: space-between;
 		width: calc(var(--block-size) * 4);
 		> * {
 			display: flex;
 			flex-direction: column;
-			gap: 12px;
+			gap: var(--pad);
 		}
 		:nth-child(2) {
 			align-self: stretch;
@@ -165,6 +168,7 @@
 				text-align: right;
 			}
 		}
+		z-index: 5;
 	}
 
 	.sidePane {

@@ -17,7 +17,7 @@
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-		gap: 12px;
+		gap: var(--pad);
 		transition: var(--menu-transition);
 		&:not(.showingEndGame) {
 			opacity: 0;

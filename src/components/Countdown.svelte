@@ -33,7 +33,7 @@
 </script>
 
 <div class="countdown" class:showing>
-	<p style="font-size: 4rem;">{currentCount}</p>
+	<p style="font-size: 4em;">{currentCount}</p>
 </div>
 
 <style lang="scss">
@@ -47,7 +47,7 @@
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-		gap: 12px;
+		gap: var(--pad);
 		transition: var(--menu-transition);
 		&:not(.showing) {
 			opacity: 0;

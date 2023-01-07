@@ -1,7 +1,15 @@
 <script>
 	import { onMount, onDestroy } from "svelte";
 	import blocks from "~/constants/blocks/blocks";
-	import { sounds, playClearSFX, playMoveSFX, playDropSFX, playHoldSFX, playGameoverSFX, playRestartSFX } from "~/lib/sounds";
+	import {
+		sounds,
+		playClearSFX,
+		playMoveSFX,
+		playDropSFX,
+		playHoldSFX,
+		playGameoverSFX,
+		playRestartSFX,
+	} from "~/lib/sounds";
 	import Vis from "./Vis.svelte";
 	import { createEventDispatcher } from "svelte";
 	import { userConfig } from "~/lib/stores";
@@ -27,7 +35,6 @@
 	export let gameOver = false;
 
 	let achievementMessages = [
-		{ text: "", id: Math.random() },
 		{ text: "", id: Math.random() },
 		{ text: "", id: Math.random() },
 	];
@@ -71,7 +78,6 @@
 		}
 		info.running = false;
 		clearTimeout(info.timeout);
-
 	}
 
 	let amIndex = 0;
@@ -79,7 +85,7 @@
 		if (e.isPerfectClear) {
 			achievementMessages[amIndex] = { text: "Perfect Clear", timestamp: Date.now(), id: Math.random() };
 		}
-		amIndex = ++amIndex % 2;
+		amIndex = (++amIndex % achievementMessages.length) - 1;
 		const clearedWord =
 			[
 				"Single",
@@ -103,7 +109,7 @@
 				"19tris",
 				"20tris",
 				"Kirbtris",
-			]?.[e.numLines-1] || e.numLines + "tris";
+			]?.[e.numLines - 1] || e.numLines + "tris";
 		let spinType = "";
 		if (e.isSpin) {
 			spinType = e.spinType + " Spin" + (e.isMini ? " Mini" : "");
@@ -115,7 +121,7 @@
 
 	export function displayAchievement(text) {
 		achievementMessages[amIndex] = { text, timestamp: Date.now(), id: Math.random() };
-		amIndex = ++amIndex % 2
+		amIndex = ++amIndex % 2;
 	}
 
 	function assignEventHandlersForGame(g) {
@@ -200,26 +206,26 @@
 		playRestartSFX();
 	}
 
-	function spawnGarbage(rows=1, cheeseArray) {
+	function spawnGarbage(rows = 1, cheeseArray) {
 		for (let y = 0; y < sy; y++) {
-			if (y < sy-rows) {
-				game.staticMatrix[y] = game.staticMatrix[y+rows]
+			if (y < sy - rows) {
+				game.staticMatrix[y] = game.staticMatrix[y + rows];
 			} else {
-				game.staticMatrix[y] = [ ...cheeseArray ];
+				game.staticMatrix[y] = [...cheeseArray];
 			}
 		}
 	}
 
-	export function cheeseGarbage(rows=1, cheeseColumn=(Math.random() * sx | 0)) {
-		const cheeseArray = new Array(sx).fill({ type: "clearable-garbage" })
+	export function cheeseGarbage(rows = 1, cheeseColumn = (Math.random() * sx) | 0) {
+		const cheeseArray = new Array(sx).fill({ type: "clearable-garbage" });
 		cheeseArray[cheeseColumn] = null;
 
 		spawnGarbage(rows, cheeseArray);
 	}
 
-	export function cloneGarbage(rows=1) {
-		const cheeseArray = [ ...game.staticMatrix[sy-1] ].map(v => v === null? null : { type: "clearable-garbage" });
-		
+	export function cloneGarbage(rows = 1) {
+		const cheeseArray = [...game.staticMatrix[sy - 1]].map((v) => (v === null ? null : { type: "clearable-garbage" }));
+
 		spawnGarbage(rows, cheeseArray);
 	}
 
@@ -321,6 +327,7 @@
 					playMoveSFX(game.rotateCW());
 					break;
 				case " ":
+					e.preventDefault();
 					game.hardDrop();
 					break;
 				case "Enter":
@@ -375,7 +382,7 @@
 	</svelte:fragment>
 	<svelte:fragment slot="belowHold">
 		{#each achievementMessages as achievementMessage (achievementMessage.id)}
-			<p class="bounceIn" style="font-size: 3rem" style:transform={`rotate(${Math.random() * 20 - 10 + "deg"})`}>
+			<p class="bounceIn" style="font-size: 3em" style:transform={`rotate(${Math.random() * 20 - 10 + "deg"})`}>
 				{achievementMessage.text || ""}
 			</p>
 		{/each}
@@ -390,7 +397,7 @@
 		display: flex;
 		flex-direction: column;
 		align-self: stretch;
-		gap: 6px;
+		gap: calc(var(--pad) / 2);
 	}
 	button {
 		text-align: start;

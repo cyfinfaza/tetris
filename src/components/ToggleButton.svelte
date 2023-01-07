@@ -10,8 +10,8 @@
 
 <style lang="scss">
 	button {
-		font-size: 1.2rem;
-		width: 10rem;
+		font-size: 1.2em;
+		width: 10em;
 		text-transform: uppercase;
 		font-weight: 700;
 		&.enabled {

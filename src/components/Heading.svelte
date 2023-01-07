@@ -21,7 +21,7 @@
 		padding: 8px;
 		color: #fffd;
 		h1 {
-			font-size: 2rem;
+			font-size: 2em;
 		}
 		background: repeating-linear-gradient(45deg, #fff1, #fff1 1px, transparent 2px, transparent 10px);
 	}
