@@ -6,16 +6,15 @@
 	import Setting from "~/components/Setting.svelte";
 	import { numStates, goToIndex, recordEvent, registerStateholder, recordState } from "~/lib/replayHolder";
 
-	registerStateholder("/gamemodes/DebugGamemode", { stateFire: (s) => (state = { ...s, _disableRecord: true }) });
-
 	let state = {
 		linesCleared: 0,
 		gravityEnabled: true,
 		inputEnabled: true,
 	};
+	registerStateholder("/gamemodes/DebugGamemode", { stateFire: (s) => (state = { ...s, _disableRecord: true }) });
 
 	$: {
-		if (!state._disableRecord) recordState("/components/DebugGamemode", state);
+		if (!state._disableRecord) recordState("/gamemodes/DebugGamemode", state);
 		delete state._disableRecord;
 	}
 
@@ -26,8 +25,8 @@
 		},
 	};
 
-	function fireEvent(name, ...args) {
-		recordEvent("/gamemodes/DebugGamemode", name, args);
+	function fireEvent(name, records = true, ...args) {
+		if (records) recordEvent("/gamemodes/DebugGamemode", name, args);
 		events[name](...args);
 	}
 
@@ -62,10 +61,10 @@
 			elements.forEach((element, x) => {
 				function handleMouse(e) {
 					if (e.buttons & 1) {
-						fireEvent("drawPiece", x, y, { type: "clearable-garbage" });
+						fireEvent("drawPiece", true, x, y, { type: "clearable-garbage" });
 					}
 					if (e.buttons & 2) {
-						fireEvent("drawPiece", x, y, null);
+						fireEvent("drawPiece", true, x, y, null);
 					}
 				}
 				if (element === null) {

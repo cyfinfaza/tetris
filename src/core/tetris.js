@@ -32,6 +32,7 @@ export default class {
 		this.onGameComplete = () => {};
 		this.onRequestGravity = (dt) => {};
 		this.onCancelGravity = () => {};
+		this.onTouchGround = () => {};
 		this.onSpawnBlock = (e) => {};
 		this.onDrop = (e) => {};
 		this.onPause = () => {};
@@ -63,7 +64,7 @@ export default class {
 		this.holdPiece = null;
 		this.holdAvailable = true;
 		this.gravityLevel = 1 / 60; // "G" Level, 1G = 1 cell / frame, or 1 cell / (1/60) seconds, or 60 cells/s
-		this.lockDelay = 500;
+		this.lockDelay = 30;
 		this.lockTimeout = null;
 		this.gameOver = false;
 		this.numLinesCleared = 0;
@@ -304,8 +305,6 @@ export default class {
 
 	spawnBlock() {
 		const chosenBlock = this.genRandomPiece();
-		this.checkLockTimeout();
-		// console.log(chosenBlock.bracket);
 		let newPiece = {
 			...chosenBlock,
 			x: chosenBlock.spawnX,
@@ -357,8 +356,6 @@ export default class {
 	runPieceLockSequence() {
 		const events = [];
 		this.staticMatrix = this.flatten();
-		clearInterval(this.lockTimeout);
-		this.lockTimeout = null;
 		const { clearedLines, isPerfectClear } = this.clearFilledLines();
 		if (clearedLines > 0) {
 			this.currentCombo += 1;
@@ -375,19 +372,23 @@ export default class {
 		events.push(this.spawnBlock());
 		this.holdAvailable = true;
 		this.onDrop({ otherEventsFired: events.some((x) => x) });
+		this.onCancelGravity();
+		this.onRequestGravity(this.gravityLevel);
 	}
 
-	resetGravityIfAboutToLock() {
+	resetGravityIfAboutToLock(editFloorMoves = true) {
 		if (this.activePiece) {
 			if (this.translateActivePiece(0, 1, true)) {
 				if (this.activePiece.floorMoves < this.config.floorMoveLimit) {
-					this.checkLockTimeout();
 					this.onCancelGravity();
-					this.onRequestGravity(this.gravityLevel);
-					this.activePiece.floorMoves++;
+					this.onRequestGravity(1 / this.lockDelay); // 1000 / 60 / game.gravityLevel / 20
+					if (editFloorMoves) this.activePiece.floorMoves++;
 				} else {
 					this.runPieceLockSequence();
 				}
+			} else {
+				this.onCancelGravity();
+				this.onRequestGravity(this.gravityLevel);
 			}
 		}
 		// console.log(this.activePiece.floorMoves);
@@ -450,24 +451,9 @@ export default class {
 		return true;
 	}
 
-	checkLockTimeout() {
-		if (this.lockDelay == Infinity || this.lockDelay == null) {
-			return;
-		}
-		const attemptLockDelay = () => {
-			if (this.translateActivePiece(0, 1, true)) {
-				this.runPieceLockSequence();
-			}
-		};
-
-		if (this.activePiece === null) {
-			return;
-		}
+	lockOnGround() {
 		if (this.translateActivePiece(0, 1, true)) {
-			clearTimeout(this.lockTimeout);
-			this.lockTimeout = setTimeout(() => {
-				attemptLockDelay();
-			}, this.lockDelay);
+			this.runPieceLockSequence();
 		}
 	}
 
@@ -478,11 +464,11 @@ export default class {
 		let ret = false;
 		if (this.translateActivePiece(0, 1)) {
 			ret = true;
+			this.onTouchGround();
 		} else {
-			this.checkLockTimeout();
+			this.resetGravityIfAboutToLock(false);
 			this.lastSpin = null;
 		}
-		this.onRequestGravity(this.gravityLevel);
 		return ret;
 	}
 

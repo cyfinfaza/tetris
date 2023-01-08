@@ -155,7 +155,7 @@
 		return 18;
 	};
 	function updateLockDelay() {
-		game.lockDelay = ((lockDelayCurve(level) * 1) / 60) * 1000;
+		game.lockDelay = lockDelayCurve(level);
 	}
 	$: updateLockDelay(level);
 

@@ -4,12 +4,17 @@
 	import Setting from "./components/Setting.svelte";
 	import KeybindSetting from "./components/KeybindSetting.svelte";
 	import Heading from "./components/Heading.svelte";
-	import { userConfig } from "./lib/stores";
+	import { userConfig, inReplay } from "./lib/stores";
 
 	import { inMenu } from "./lib/stores";
+	import Replay from "./components/Replay.svelte";
+
+	let gameView = "game";
+	$: $inReplay = gameView === "replay";
 
 	const menus = [
 		{ id: "play", name: "Play" },
+		{ id: "replays", name: "Replays" },
 		{ id: "settings", name: "Settings" },
 	];
 	let currentMenu = "play";
@@ -22,6 +27,8 @@
 		gameComponent = GameModes[currentGameMode].component;
 	}
 
+	let replayFile = null;
+
 	onMount(() => {
 		// gameComponent = GameModes["basic"].component;
 		window.addEventListener("keydown", (e) => {
@@ -33,13 +40,19 @@
 	});
 </script>
 
-<div class="game" class:inMenu={$inMenu}>
-	{#if gameComponent}
-		{#key currentGameMode}
-			<svelte:component this={gameComponent} {...GameModes[currentGameMode].props} />
-		{/key}
-	{/if}
-</div>
+{#if gameView === "game"}
+	<div class="game" class:inMenu={$inMenu}>
+		{#if gameComponent}
+			{#key currentGameMode}
+				<svelte:component this={gameComponent} {...GameModes[currentGameMode].props} />
+			{/key}
+		{/if}
+	</div>
+{:else if gameView === "replay"}
+	<div class="game" class:inMenu={$inMenu}>
+		<Replay {replayFile} />
+	</div>
+{/if}
 
 <div class="menu" class:inMenu={$inMenu}>
 	<div class="menuContainer">
@@ -63,6 +76,7 @@
 								class="gameMode"
 								class:selected={gameMode === currentGameMode}
 								on:click={() => {
+									gameView = "game";
 									currentGameMode = gameMode;
 									$inMenu = false;
 								}}
@@ -77,6 +91,22 @@
 							</button>
 						{/if}
 					{/each}
+				</div>
+			{/if}
+			{#if currentMenu === "replays"}
+				<div class="gameModeList">
+					<textarea bind:value={replayFile} />
+					<button
+						class="gameMode"
+						on:click={() => {
+							gameView = "replay";
+							$inMenu = false;
+						}}
+					>
+						<div>
+							<h1>go</h1>
+						</div>
+					</button>
 				</div>
 			{/if}
 			{#if currentMenu === "settings"}
@@ -103,51 +133,18 @@
 						unit="X"
 						type="number"
 					/>
-					<Heading name="Controls"/>
-					<KeybindSetting
-						name="Left"
-						command="gameLeft"
-					/>
-					<KeybindSetting
-						name="Right"
-						command="gameRight"
-					/>
-					<KeybindSetting
-						name="Soft Drop"
-						command="gameDown"
-					/>
-					<KeybindSetting
-						name="Hard Drop"
-						command="gameDrop"
-					/>
-					<KeybindSetting
-						name="Sonic Drop"
-						command="gameSonic"
-					/>
-					<KeybindSetting
-						name="Dip"
-						command="gameDip"
-					/>
-					<KeybindSetting
-						name="Rotate CW"
-						command="gameCW"
-					/>
-					<KeybindSetting
-						name="Rotate CCW"
-						command="gameCCW"
-					/>
-					<KeybindSetting
-						name="Rotate 180"
-						command="gameFlip"
-					/>
-					<KeybindSetting
-						name="Hold"
-						command="gameHold"
-					/>
-					<KeybindSetting
-						name="Restart"
-						command="gameRestart"
-					/>
+					<Heading name="Controls" />
+					<KeybindSetting name="Left" command="gameLeft" />
+					<KeybindSetting name="Right" command="gameRight" />
+					<KeybindSetting name="Soft Drop" command="gameDown" />
+					<KeybindSetting name="Hard Drop" command="gameDrop" />
+					<KeybindSetting name="Sonic Drop" command="gameSonic" />
+					<KeybindSetting name="Dip" command="gameDip" />
+					<KeybindSetting name="Rotate CW" command="gameCW" />
+					<KeybindSetting name="Rotate CCW" command="gameCCW" />
+					<KeybindSetting name="Rotate 180" command="gameFlip" />
+					<KeybindSetting name="Hold" command="gameHold" />
+					<KeybindSetting name="Restart" command="gameRestart" />
 					<Heading name="Audio" />
 					<Setting
 						name="Master"

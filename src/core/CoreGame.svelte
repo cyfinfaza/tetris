@@ -241,6 +241,7 @@
 	}
 
 	function assignEventHandlersForGame(g) {
+		let lockTimeout;
 		g.onRequestGravity = (dt) => {
 			if (gravityTimeout?.running || false) {
 				dispatch("gravityRequested");
@@ -253,7 +254,18 @@
 		};
 		g.onCancelGravity = () => {
 			clearMeasuredInterval(gravityTimeout);
+			clearTimeout(lockTimeout);
+			if (g.translateActivePiece(0, 1, true)) {
+				g.onTouchGround();
+			}
 			dispatch("gravityCancelled");
+		};
+		g.onTouchGround = () => {
+			clearTimeout(lockTimeout);
+			lockTimeout = setTimeout(() => {
+				g.lockOnGround();
+			}, (g.lockDelay * 1000) / 60);
+			dispatch("touchGround");
 		};
 		g.onGameOver = () => {
 			fireEvent("gameOver");
