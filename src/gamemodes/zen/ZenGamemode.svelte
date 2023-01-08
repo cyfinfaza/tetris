@@ -29,7 +29,7 @@
 	}
 
 	onMount(() => {
-		game.start();
+		cg.start();
 		ppscounter.start();
 	});
 </script>

@@ -62,7 +62,7 @@ export default class {
 		this.activePiece = null;
 		this.holdPiece = null;
 		this.holdAvailable = true;
-		this.gravityLevel = 1/60; // "G" Level, 1G = 1 cell / frame, or 1 cell / (1/60) seconds, or 60 cells/s
+		this.gravityLevel = 1 / 60; // "G" Level, 1G = 1 cell / frame, or 1 cell / (1/60) seconds, or 60 cells/s
 		this.lockDelay = 500;
 		this.lockTimeout = null;
 		this.gameOver = false;
@@ -80,6 +80,23 @@ export default class {
 			this.queue.push(this.genRandomPiece());
 		}
 		this.resetBag();
+	}
+
+	get jsonState() {
+		return JSON.stringify(this);
+	}
+
+	set jsonState(newState) {
+		const newStateObj = JSON.parse(newState);
+		Object.keys(newStateObj).forEach((key) => {
+			this[key] = newStateObj[key];
+		});
+	}
+
+	setStateFromObj(newStateObj) {
+		Object.keys(newStateObj).forEach((key) => {
+			this[key] = newStateObj[key];
+		});
 	}
 
 	start() {
@@ -255,7 +272,7 @@ export default class {
 					const { x, y, shape } = rotatedPiece;
 					if (shape[i - y] && shape[i - y][j - x]) {
 						renderedGrid[i][j] = { type: piece.type, bracket: piece.bracket || false, ...options };
-						if (i > sy-ry-1) {
+						if (i > sy - ry - 1) {
 							inBounds = true;
 						}
 					}
@@ -441,12 +458,16 @@ export default class {
 			if (this.translateActivePiece(0, 1, true)) {
 				this.runPieceLockSequence();
 			}
-		}
+		};
 
-		if (this.activePiece === null) { return; }
+		if (this.activePiece === null) {
+			return;
+		}
 		if (this.translateActivePiece(0, 1, true)) {
 			clearTimeout(this.lockTimeout);
-			this.lockTimeout = setTimeout(() => { attemptLockDelay(); }, this.lockDelay);
+			this.lockTimeout = setTimeout(() => {
+				attemptLockDelay();
+			}, this.lockDelay);
 		}
 	}
 
@@ -504,7 +525,9 @@ export default class {
 	sonicDrop() {
 		if (!this.gameOver) {
 			let ret = true;
-			while (this.activePiece && !this.move(0, 1)) { ret = false; }
+			while (this.activePiece && !this.move(0, 1)) {
+				ret = false;
+			}
 			return ret;
 		}
 	}
@@ -550,7 +573,10 @@ export default class {
 
 	renderWithGhost() {
 		if (!this.activePiece) return this.flatten().slice(ry, sy);
-		return this.overlay(this.overlay(this.staticMatrix, this.ghostPiece, { ghost: true }), this.activePiece).slice(ry, sy);
+		return this.overlay(this.overlay(this.staticMatrix, this.ghostPiece, { ghost: true }), this.activePiece).slice(
+			ry,
+			sy
+		);
 	}
 
 	get grid() {

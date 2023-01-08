@@ -102,7 +102,7 @@
 		</div>
 	</div>
 	{#if sidePane !== null}
-		<div class="sidePane">
+		<div class="sidePane" on:focusin={() => (settingsOpen = true)}>
 			<!-- <div> -->
 			<button on:click={() => (settingsOpen = !settingsOpen)}
 				><span>{(settingsOpen ? "Collapse " : "") + sidePane}</span></button
@@ -134,7 +134,7 @@
 			pointer-events: none;
 		}
 		&.hasSidePane {
-			grid-template-columns: 1fr var(--settings-button-width);
+			grid-template-columns: 1fr 0;
 			&.settingsOpen {
 				grid-template-columns: 1fr var(--settings-combined-width);
 			}

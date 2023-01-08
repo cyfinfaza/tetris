@@ -1,23 +1,34 @@
 <script>
-	let dropTimestamps = [];
-	let gameStartTimestamp = Infinity;
+	import { recordState, registerStateholder } from "~/lib/replayHolder";
 
-	let pps = 0;
-	$: pps = dropTimestamps.length / ((Date.now() - gameStartTimestamp) / 1000) || 0;
+	registerStateholder("/components/PPSCounter", { stateFire: (s) => (state = { ...s, _disableRecord: true }) });
+
+	let state = {
+		dropTimestamps: [],
+		gameStartTimestamp: Infinity,
+		pps: 0,
+	};
+
+	$: {
+		if (!state._disableRecord) recordState("/components/PPSCounter", state);
+		delete state._disableRecord;
+	}
+
+	$: state.pps = state.dropTimestamps.length / ((Date.now() - state.gameStartTimestamp) / 1000) || 0;
 
 	export function reset() {
-		dropTimestamps = [];
-		pps = 0;
-		gameStartTimestamp = Infinity;
+		state.dropTimestamps = [];
+		state.pps = 0;
+		state.gameStartTimestamp = Infinity;
 	}
 
 	export function start() {
-		gameStartTimestamp = Date.now();
+		state.gameStartTimestamp = Date.now();
 	}
 
 	export function handleDrop() {
-		dropTimestamps = [...dropTimestamps, Date.now()];
+		state.dropTimestamps = [...state.dropTimestamps, Date.now()];
 	}
 </script>
 
-{Math.round(pps * 100) / 100}
+{Math.round(state.pps * 100) / 100}

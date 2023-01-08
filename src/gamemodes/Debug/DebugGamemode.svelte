@@ -4,15 +4,34 @@
 	import CoreGame from "~/core/CoreGame.svelte";
 	import PpsCounter from "~/components/PPSCounter.svelte";
 	import Setting from "~/components/Setting.svelte";
+	import { numStates, goToIndex, recordEvent, registerStateholder, recordState } from "~/lib/replayHolder";
 
-	let linesCleared = 0;
-	let dropTimestamps = [];
-	let gameStartTimestamp = Infinity;
+	registerStateholder("/gamemodes/DebugGamemode", { stateFire: (s) => (state = { ...s, _disableRecord: true }) });
+
+	let state = {
+		linesCleared: 0,
+		gravityEnabled: true,
+		inputEnabled: true,
+	};
+
+	$: {
+		if (!state._disableRecord) recordState("/components/DebugGamemode", state);
+		delete state._disableRecord;
+	}
+
+	const events = {
+		drawPiece: (x, y, piece) => {
+			game.staticMatrix[y + ry][x] = piece;
+			cg.updateVis();
+		},
+	};
+
+	function fireEvent(name, ...args) {
+		recordEvent("/gamemodes/DebugGamemode", name, args);
+		events[name](...args);
+	}
+
 	let ppscounter;
-
-	let gravityEnabled = true;
-
-	let showingEndGame = false;
 
 	let pieceElements;
 	window.pieceElements = pieceElements;
@@ -22,7 +41,7 @@
 	let cg;
 
 	function handleLinesCleared(e) {
-		linesCleared += e.detail.numLines;
+		state.linesCleared += e.detail.numLines;
 	}
 
 	function handleDrop() {
@@ -31,16 +50,11 @@
 
 	function handleRestartRequested() {
 		game.resetGame();
-		linesCleared = 0;
+		state.linesCleared = 0;
 		cg.restartGame();
 		ppscounter.reset();
 		game.start();
 		ppscounter.start();
-	}
-
-	function draw(x, y, piece) {
-		game.staticMatrix[y + ry][x] = piece;
-		cg.updateVis();
 	}
 
 	function addDebugListeners() {
@@ -48,10 +62,10 @@
 			elements.forEach((element, x) => {
 				function handleMouse(e) {
 					if (e.buttons & 1) {
-						draw(x, y, { type: "clearable-garbage" });
+						fireEvent("drawPiece", x, y, { type: "clearable-garbage" });
 					}
 					if (e.buttons & 2) {
-						draw(x, y, null);
+						fireEvent("drawPiece", x, y, null);
 					}
 				}
 				if (element === null) {
@@ -66,14 +80,15 @@
 		});
 	}
 
-	$: game.lockDelay = gravityEnabled ? 500 : Infinity;
+	$: game.lockDelay = state.gravityEnabled ? 500 : Infinity;
 
 	onMount(() => {
 		game.start();
 		ppscounter.start();
 		addDebugListeners();
-		gameStartTimestamp = Date.now();
 	});
+
+	$: console.log($numStates);
 </script>
 
 <CoreGame
@@ -83,16 +98,26 @@
 	on:restartRequested={handleRestartRequested}
 	on:drop={handleDrop}
 	on:linesCleared={handleLinesCleared}
+	inputDisabled={!state.inputEnabled}
 	sidePane="settings"
-	blurGame={showingEndGame}
-	{gravityEnabled}
+	blurGame={state.showingEndGame}
+	gravityEnabled={state.gravityEnabled}
 >
 	<svelte:fragment slot="stats">
 		<h2><PpsCounter bind:this={ppscounter} /> PPS</h2>
-		<h1>{linesCleared} {linesCleared == 1 ? "line" : "lines"}</h1>
+		<h1>{state.linesCleared} {state.linesCleared == 1 ? "line" : "lines"}</h1>
 	</svelte:fragment>
 	<h1 slot="gameName">Debug Mode</h1>
-	<div class="sideSettings" slot="sidePane">
-		<Setting name="Gravity" bind:value={gravityEnabled} type="toggle" />
-	</div>
+	<svelte:fragment slot="sidePane">
+		<Setting name="Input" bind:value={state.inputEnabled} type="toggle" />
+		<Setting name="Gravity" bind:value={state.gravityEnabled} type="toggle" />
+		<input
+			type="range"
+			style="width: 100%"
+			min="0"
+			max={$numStates - 1}
+			value={$numStates}
+			on:input={(e) => goToIndex(e.target.value)}
+		/>
+	</svelte:fragment>
 </CoreGame>
