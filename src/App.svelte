@@ -2,6 +2,7 @@
 	import GameModes from "~/gamemodes/index-singleplayer";
 	import { onMount } from "svelte";
 	import Setting from "./components/Setting.svelte";
+	import KeybindSetting from "./components/KeybindSetting.svelte";
 	import Heading from "./components/Heading.svelte";
 	import { userConfig } from "./lib/stores";
 
@@ -102,12 +103,65 @@
 						unit="X"
 						type="number"
 					/>
+					<Heading name="Controls"/>
+					<KeybindSetting
+						name="Left"
+						command="gameLeft"
+					/>
+					<KeybindSetting
+						name="Right"
+						command="gameRight"
+					/>
+					<KeybindSetting
+						name="Soft Drop"
+						command="gameDown"
+					/>
+					<KeybindSetting
+						name="Hard Drop"
+						command="gameDrop"
+					/>
+					<KeybindSetting
+						name="Sonic Drop"
+						command="gameSonic"
+					/>
+					<KeybindSetting
+						name="Dip"
+						command="gameDip"
+					/>
+					<KeybindSetting
+						name="Rotate CW"
+						command="gameCW"
+					/>
+					<KeybindSetting
+						name="Rotate CCW"
+						command="gameCCW"
+					/>
+					<KeybindSetting
+						name="Rotate 180"
+						command="gameFlip"
+					/>
+					<KeybindSetting
+						name="Hold"
+						command="gameHold"
+					/>
+					<KeybindSetting
+						name="Restart"
+						command="gameRestart"
+					/>
 					<Heading name="Audio" />
 					<Setting
+						name="Master"
+						bind:value={$userConfig.masterVol}
+						description="Adjust the volume of the entire game"
+						unit="%"
+						type="number"
+					/>
+					<Setting
 						name="SFX"
-						bind:value={$userConfig.sfx}
-						description="Enable or disable sound effects"
-						type="toggle"
+						bind:value={$userConfig.sfxVol}
+						description="Adjust the volume of SFX"
+						unit="%"
+						type="number"
 					/>
 					<Heading name="Extra" />
 					<Setting
@@ -122,12 +176,7 @@
 						description="Show grid lines on the game board"
 						type="toggle"
 					/>
-					<Setting
-						name="Debug Enabled"
-						bind:value={$userConfig.debugEnabled}
-						description=""
-						type="toggle"
-					/>
+					<Setting name="Debug Enabled" bind:value={$userConfig.debugEnabled} description="" type="toggle" />
 				</div>
 			{/if}
 		</div>
@@ -137,41 +186,42 @@
 <style lang="scss">
 	.game {
 		transition: var(--menu-transition);
-		// width: 100%;
-		// height: 100%;
 		&.inMenu {
 			filter: blur(24px) grayscale(0.4);
 			transform: scale(0.8);
 			opacity: 0.5;
 			pointer-events: none;
 		}
-		// > :global(*) {
-		// 	position: absolute;
-		// }
+		width: 100%;
+		height: 100%;
+		font-size: min(1em, 2vh);
+		--pad: min(12px, 1.3vh);
 	}
 	.menu {
 		inset: 0;
 		background: #8882;
-		border-bottom: 4px solid #fff8;
+		border-bottom: 0.4em solid #fff8;
 		transition: var(--menu-transition);
 		&:not(.inMenu) {
 			pointer-events: none;
 			transform: translateY(-100%);
 			// opacity: 0;
 		}
-		padding: 5vh;
+		padding: calc(var(--pad) * 3);
+		padding-bottom: 0;
 		display: flex;
 		justify-content: center;
+		overflow: auto;
 		.menuContainer {
 			display: grid;
 			grid-template-columns: 1fr;
-			grid-template-rows: 10vh 10vh 1fr;
+			grid-template-rows: 5em 5em 1fr;
 			justify-items: center;
 			align-items: center;
 			width: 100%;
 			max-width: 1400px;
 			h1 {
-				font-size: 5vh;
+				font-size: 3em;
 				margin: 0;
 			}
 			.tabs {
@@ -182,13 +232,13 @@
 				button {
 					flex: 1;
 					background-color: transparent;
-					border-bottom: 4px solid #fff2;
+					border-bottom: 0.125em solid #fff2;
 					color: #fff4;
 					box-sizing: border-box;
-					font-size: 3vh;
+					font-size: 2em;
 					cursor: pointer;
 					&.selected {
-						border-bottom: 8px solid #fff;
+						border-bottom: 0.25em solid #fff;
 						color: #fff;
 						font-weight: 700;
 					}
@@ -197,16 +247,24 @@
 			.content {
 				width: 100%;
 				height: 100%;
-				padding-top: 3vh;
+				min-height: 10em;
+				padding-top: calc(var(--pad) * 3);
+				padding-bottom: calc(var(--pad) * 3);
 				overflow: auto;
 				&::-webkit-scrollbar {
-					width: 16px;
+					width: calc(var(--pad) * 2 + 0.5em);
 				}
 				&::-webkit-scrollbar-track {
-					border-right: 4px solid #8884;
+					border-right: 0.5em solid #8884;
 				}
 				&::-webkit-scrollbar-thumb {
-					border-right: 4px solid #fff4;
+					border-right: 0.5em solid #fff4;
+				}
+				&::-webkit-scrollbar-button:start:increment,
+				&::-webkit-scrollbar-button:end:increment {
+					height: calc(var(--pad) * 3);
+					display: block;
+					background: transparent;
 				}
 			}
 			.gameModeList {
@@ -214,17 +272,17 @@
 				width: 100%;
 				box-sizing: border-box;
 				grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-				gap: 3vh;
+				gap: calc(var(--pad) * 3);
 				.gameMode {
-					height: 160px;
+					height: 11em;
 					text-align: start;
-					padding: 3vh;
+					padding: calc(var(--pad) * 1.5);
 					display: flex;
 					flex-direction: column;
 					justify-content: space-between;
 					h2 {
 						margin: 0;
-						font-size: 3vh;
+						font-size: 1.5em;
 					}
 					&.selected {
 						background-color: #4f42;
@@ -235,7 +293,7 @@
 				display: flex;
 				flex-direction: column;
 				width: 100%;
-				gap: 3vh;
+				gap: calc(var(--pad) * 3);
 				scrollbar-width: thin;
 			}
 		}

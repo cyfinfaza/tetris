@@ -18,8 +18,8 @@
 
 	export let torikans = [
 		{ level: 500, time: 183000 }, // 500 @ 3:03.00
-		{ level: 1000, time: 366000} // 1000 @ 6:06.00
-	]
+		{ level: 1000, time: 366000 }, // 1000 @ 6:06.00
+	];
 	let torikanBreaks;
 
 	let gameOverMessage;
@@ -68,10 +68,10 @@
 	}
 
 	function endGameSequence() {
-			game.triggerGameComplete();
-			showingEndGame = true;
-			finalTime = timer.pause().timerString;
-			gameRunning = false;
+		game.triggerGameComplete();
+		showingEndGame = true;
+		finalTime = timer.pause().timerString;
+		gameRunning = false;
 	}
 
 	function handleSpawn(e) {
@@ -95,8 +95,8 @@
 		ppscounter.handleDrop();
 	}
 
-	$: levelTarget = (level / 100 | 0) * 100 + 99;
-	$: section = level / 100 | 0;
+	$: levelTarget = ((level / 100) | 0) * 100 + 99;
+	$: section = (level / 100) | 0;
 
 	function updateSectionTime() {
 		if (Date.now() - sectionStart > sectionTargetTime && sectionStart !== null) {
@@ -107,7 +107,8 @@
 		}
 		sectionStart = Date.now();
 	}
-	$: { // Update every section change
+	$: {
+		// Update every section change
 		section;
 		updateSectionTime();
 	}
@@ -130,21 +131,21 @@
 		checkTorikans();
 	}
 
-	export let garbageTargetCurve = l => {
-		if (l < 500)  return null;
-		if (l < 600)  return 20;
-		if (l < 700)  return 18;
-		if (l < 800)  return 10;
-		if (l < 900)  return 9;
+	export let garbageTargetCurve = (l) => {
+		if (l < 500) return null;
+		if (l < 600) return 20;
+		if (l < 700) return 18;
+		if (l < 800) return 10;
+		if (l < 900) return 9;
 		if (l < 1000) return 8;
 		return null;
-	}
+	};
 	function updateGarbageTarget() {
 		garbageTarget = garbageTargetCurve(level);
 	}
 	$: updateGarbageTarget(level);
 
-	export let lockDelayCurve = l => {
+	export let lockDelayCurve = (l) => {
 		let LD;
 		if (l < 200) return 18;
 		if (l < 300) return 17;
@@ -154,9 +155,9 @@
 		if (l < 1100) return 10;
 		if (l < 1300) return 8;
 		return 18;
-	}
+	};
 	function updateLockDelay() {
-		game.lockDelay = lockDelayCurve(level) * 1/60 * 1000
+		game.lockDelay = ((lockDelayCurve(level) * 1) / 60) * 1000;
 	}
 	$: updateLockDelay(level);
 
@@ -225,17 +226,17 @@
 >
 	<svelte:fragment slot="stats">
 		<h2><PpsCounter bind:this={ppscounter} /> PPS</h2>
-		<h2><Timer bind:this={timer} bind:timerValue={timerValue}/></h2>
+		<h2><Timer bind:this={timer} bind:timerValue /></h2>
 		<h1>{level}/{levelTarget}</h1>
 	</svelte:fragment>
 	<h1 slot="gameName">20G Death</h1>
 </CoreGame>
 
 <EndGameScreen {showingEndGame}>
-	<h1 style="{ isGameOver ? 'color: red;' : '' }">{gameOverMessage}</h1>
-	<p style="font-size: 6rem;">{gradePrefix}{section-regrets}</p>
-	<p style="font-size: 2rem;">Level {Math.min(level, 1300)}</p>
-	<p style="font-size: 2rem;">{finalTime}</p>
+	<h1 style={isGameOver ? "color: red;" : ""}>{gameOverMessage}</h1>
+	<p style="font-size: 6em;">{gradePrefix}{section - regrets}</p>
+	<p style="font-size: 2em;">Level {Math.min(level, 1300)}</p>
+	<p style="font-size: 2em;">{finalTime}</p>
 	<button on:click={handleRestartRequested}>Restart (R)</button>
 	<button on:click={handleReplay}>View Replay</button>
 </EndGameScreen>

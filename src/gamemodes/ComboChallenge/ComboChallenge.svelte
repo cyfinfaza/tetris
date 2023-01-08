@@ -121,7 +121,7 @@
 
 <EndGameScreen {showingEndGame}>
 	<h1>GAME COMPLETE!</h1>
-	<p style="font-size: 4rem;">{maxCombo}</p>
+	<p style="font-size: 4em;">{maxCombo}</p>
 	<button on:click={handleRestartRequested}>Restart (R)</button>
 	<button on:click={handleReplay}>View Replay</button>
 </EndGameScreen>

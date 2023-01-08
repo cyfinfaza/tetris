@@ -1,5 +1,6 @@
 <script>
 	import ToggleButton from "./ToggleButton.svelte";
+	import CaptureKey from "./CaptureKey.svelte";
 
 	export let name;
 	export let description;
@@ -39,14 +40,14 @@
 		padding-bottom: 8px;
 		gap: 12px;
 		h2 {
-			font-size: 2rem;
+			font-size: 2em;
 		}
 		.input {
-			font-size: 1.2rem;
+			// font-size: 1.2em;
 			font-weight: 700;
 			flex-shrink: 0;
 			input[type="number"] {
-				width: 10rem;
+				width: 10em;
 				text-align: end;
 				font: inherit;
 			}

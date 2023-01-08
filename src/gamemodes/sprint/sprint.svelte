@@ -94,7 +94,7 @@
 
 <EndGameScreen {showingEndGame}>
 	<h1>GAME COMPLETE!</h1>
-	<p style="font-size: 4rem;">{finalTime}</p>
+	<p style="font-size: 4em;">{finalTime}</p>
 	<button on:click={handleRestartRequested}>Restart (R)</button>
 </EndGameScreen>
 

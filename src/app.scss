@@ -14,6 +14,7 @@ body {
 	font-family: "Chivo Mono", monospace;
 	background-color: black;
 	overflow: hidden;
+	--pad: 12px;
 	> * {
 		position: absolute;
 	}
@@ -29,9 +30,10 @@ input,
 select,
 textarea {
 	font-family: inherit;
-	padding: 8px;
+	padding: 0.5em;
 	border: 1px solid var(--border);
 	color: inherit;
+	font-size: inherit;
 	background-color: var(--board-bg);
 	transition: 120ms;
 	&:hover {

@@ -1,7 +1,15 @@
 <script>
 	import { onMount, onDestroy } from "svelte";
 	import blocks from "~/constants/blocks/blocks";
-	import { sounds, playClearSFX, playMoveSFX, playDropSFX, playHoldSFX } from "~/lib/sounds";
+	import {
+		sounds,
+		playClearSFX,
+		playMoveSFX,
+		playDropSFX,
+		playHoldSFX,
+		playGameoverSFX,
+		playRestartSFX,
+	} from "~/lib/sounds";
 	import Vis from "./Vis.svelte";
 	import { createEventDispatcher } from "svelte";
 	import { userConfig } from "~/lib/stores";
@@ -23,13 +31,14 @@
 
 	export let gravityEnabled = true;
 
+	export let sidePane = null;
+
 	let grid = game.grid;
 	let queue = game.queue;
 	let holdPiece = null;
 	export let gameOver = false;
 
 	let achievementMessages = [
-		{ text: "", id: Math.random() },
 		{ text: "", id: Math.random() },
 		{ text: "", id: Math.random() },
 	];
@@ -73,7 +82,6 @@
 		}
 		info.running = false;
 		clearTimeout(info.timeout);
-
 	}
 
 	let amIndex = 0;
@@ -81,7 +89,7 @@
 		if (e.isPerfectClear) {
 			achievementMessages[amIndex] = { text: "Perfect Clear", timestamp: Date.now(), id: Math.random() };
 		}
-		amIndex = ++amIndex % 2;
+		amIndex = (++amIndex % achievementMessages.length) - 1;
 		const clearedWord =
 			[
 				"Single",
@@ -105,7 +113,7 @@
 				"19tris",
 				"20tris",
 				"Kirbtris",
-			]?.[e.numLines-1] || e.numLines + "tris";
+			]?.[e.numLines - 1] || e.numLines + "tris";
 		let spinType = "";
 		if (e.isSpin) {
 			spinType = e.spinType + " Spin" + (e.isMini ? " Mini" : "");
@@ -117,7 +125,7 @@
 
 	export function displayAchievement(text) {
 		achievementMessages[amIndex] = { text, timestamp: Date.now(), id: Math.random() };
-		amIndex = ++amIndex % 2
+		amIndex = ++amIndex % 2;
 	}
 
 	function assignEventHandlersForGame(g) {
@@ -141,7 +149,7 @@
 		};
 		g.onGameOver = () => {
 			gameOver = true;
-			sounds.gameover.play();
+			playGameoverSFX();
 			dispatch("gameOver");
 		};
 		g.onGameComplete = () => {
@@ -202,29 +210,29 @@
 		updateVis();
 		vis.shake();
 		vis.focus();
-		sounds.restart.play();
+		playRestartSFX();
 	}
 
-	function spawnGarbage(rows=1, cheeseArray) {
+	function spawnGarbage(rows = 1, cheeseArray) {
 		for (let y = 0; y < sy; y++) {
-			if (y < sy-rows) {
-				game.staticMatrix[y] = game.staticMatrix[y+rows]
+			if (y < sy - rows) {
+				game.staticMatrix[y] = game.staticMatrix[y + rows];
 			} else {
-				game.staticMatrix[y] = [ ...cheeseArray ];
+				game.staticMatrix[y] = [...cheeseArray];
 			}
 		}
 	}
 
-	export function cheeseGarbage(rows=1, cheeseColumn=(Math.random() * sx | 0)) {
-		const cheeseArray = new Array(sx).fill({ type: "clearable-garbage" })
+	export function cheeseGarbage(rows = 1, cheeseColumn = (Math.random() * sx) | 0) {
+		const cheeseArray = new Array(sx).fill({ type: "clearable-garbage" });
 		cheeseArray[cheeseColumn] = null;
 
 		spawnGarbage(rows, cheeseArray);
 	}
 
-	export function cloneGarbage(rows=1) {
-		const cheeseArray = [ ...game.staticMatrix[sy-1] ].map(v => v === null? null : { type: "clearable-garbage" });
-		
+	export function cloneGarbage(rows = 1) {
+		const cheeseArray = [...game.staticMatrix[sy - 1]].map((v) => (v === null ? null : { type: "clearable-garbage" }));
+
 		spawnGarbage(rows, cheeseArray);
 	}
 
@@ -286,64 +294,99 @@
 			)
 		);
 
-	function handleKeyUp(e) {
-		switch (e.key) {
-			case "ArrowLeft":
-			case "ArrowRight":
-				clearMeasuredInterval(arrInterval);
-				if (dasDirection === e.key) {
-					clearMeasuredInterval(arrInterval);
-					clearTimeout(dasTimeout);
-					dasDirection = null;
+	let controlMapDown = {};
+	let controlMapUp = {};
+
+	function updateControls(controls) {
+		console.log(controls);
+		controlMapDown = {};
+		controlMapUp = {};
+
+		Object.keys(controls).forEach(key => {
+			const commands = controls[key];
+			controlMapDown[key] = [];
+			controlMapUp[key] = [];
+
+			commands.forEach(command => {
+				controlMapDown[key].push(command);
+				if (["gameLeft", "gameRight", "gameDown"].indexOf(command) >= 0) {
+					controlMapUp[key].push(command);
 				}
-				break;
-			case "ArrowDown":
-				clearMeasuredInterval(downInterval);
-				break;
-		}
+			});
+		});
+	}
+
+	$: updateControls($userConfig.controls);
+
+	function handleKeyUp(e) {
+		if (!controlMapUp[e.code]) return;
+		controlMapUp[e.code].forEach(command => {
+			switch (command) {
+				case "gameLeft":
+				case "gameRight":
+					clearMeasuredInterval(arrInterval);
+					if (dasDirection === e.key) {
+						clearMeasuredInterval(arrInterval);
+						clearTimeout(dasTimeout);
+						dasDirection = null;
+					}
+					break;
+				case "gameDown":
+					clearMeasuredInterval(downInterval);
+					break;
+			}
+		});
 	}
 
 	function handleKeyDown(e) {
-		// console.log(e);
 		if (e.repeat) {
 			return;
 		}
 		if (!$inMenu) {
-			if (inputDisabled && e.key !== "r") return;
-			switch (e.key) {
-				case "ArrowRight":
-					setDasTimeout(() => playMoveSFX(game.right()));
-					dasDirection = e.key;
-					break;
-				case "ArrowLeft":
-					setDasTimeout(() => playMoveSFX(game.left()));
-					dasDirection = e.key;
-					break;
-				case "ArrowDown":
-					setDownTimeout(() => playMoveSFX(game.down()));
-					break;
-				case "ArrowUp":
-					playMoveSFX(game.rotateCW());
-					break;
-				case " ":
-					game.hardDrop();
-					break;
-				case "Enter":
-					game.applyGravity();
-					break;
-				case "a":
-					playMoveSFX(game.rotateFlip());
-					break;
-				case "z":
-					playMoveSFX(game.rotateCCW());
-					break;
-				case "r":
-					dispatch("restartRequested");
-					break;
-				case "c":
-					playHoldSFX(game.hold());
-					break;
-			}
+			if (!controlMapDown[e.code]) return; 
+			if (inputDisabled && controlMapDown[e.code].indexOf("gameRestart") < 0) return;
+
+			controlMapDown[e.code].forEach(command => {
+				switch (command) {
+					case "gameLeft":
+						setDasTimeout(() => playMoveSFX(game.left()));
+						dasDirection = e.key;
+						break;
+					case "gameRight":
+						setDasTimeout(() => playMoveSFX(game.right()));
+						dasDirection = e.key;
+						break;
+					case "gameDown":
+						setDownTimeout(() => playMoveSFX(game.down()));
+						break;
+					case "gameDrop":
+						playMoveSFX(game.hardDrop());
+						break;
+					case "gameSonic":
+						playMoveSFX(game.sonicDrop());
+						break;
+					case "gameDip":
+						playMoveSFX(game.dip());
+						break;
+					case "gameCW":
+						playMoveSFX(game.rotateCW());
+						break;
+					case "gameCCW":
+						playMoveSFX(game.rotateCCW());
+						break;
+					case "gameFlip":
+						playMoveSFX(game.rotateFlip());
+						break;
+					case "gameRestart":
+						dispatch("restartRequested");
+						break;
+					case "gameHold":
+						playHoldSFX(game.hold());
+						break;
+					case "gamePause":
+						break;
+				}
+			});
 			updateVis();
 		}
 	}
@@ -365,6 +408,7 @@
 	{queue}
 	{holdPiece}
 	{gameOver}
+	{sidePane}
 	bind:this={vis}
 	on:restartRequested
 	bind:pieceElements
@@ -380,7 +424,7 @@
 	</svelte:fragment>
 	<svelte:fragment slot="belowHold">
 		{#each achievementMessages as achievementMessage (achievementMessage.id)}
-			<p class="bounceIn" style="font-size: 3rem" style:transform={`rotate(${Math.random() * 20 - 10 + "deg"})`}>
+			<p class="bounceIn" style="font-size: 3em" style:transform={`rotate(${Math.random() * 20 - 10 + "deg"})`}>
 				{achievementMessage.text || ""}
 			</p>
 		{/each}
@@ -395,7 +439,7 @@
 		display: flex;
 		flex-direction: column;
 		align-self: stretch;
-		gap: 6px;
+		gap: calc(var(--pad) / 2);
 	}
 	button {
 		text-align: start;
