@@ -192,6 +192,8 @@
 			opacity: 0.5;
 			pointer-events: none;
 		}
+		width: 100%;
+		height: 100%;
 		font-size: min(1em, 2vh);
 		--pad: min(12px, 1.3vh);
 	}
@@ -209,6 +211,7 @@
 		padding-bottom: 0;
 		display: flex;
 		justify-content: center;
+		overflow: auto;
 		.menuContainer {
 			display: grid;
 			grid-template-columns: 1fr;
@@ -244,6 +247,7 @@
 			.content {
 				width: 100%;
 				height: 100%;
+				min-height: 10em;
 				padding-top: calc(var(--pad) * 3);
 				padding-bottom: calc(var(--pad) * 3);
 				overflow: auto;
