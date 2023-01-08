@@ -454,13 +454,15 @@ export default class {
 	// BEGIN GAME INPUT HANDLERS
 
 	applyGravity() {
+		let ret = false;
 		if (this.translateActivePiece(0, 1)) {
-			// this.runPieceLockSequence();
+			ret = true;
 		} else {
 			this.checkLockTimeout();
 			this.lastSpin = null;
 		}
 		this.onRequestGravity(this.gravityLevel);
+		return ret;
 	}
 
 	right() {
@@ -473,6 +475,11 @@ export default class {
 
 	down() {
 		return this.move(0, 1);
+	}
+
+	dip() {
+		this.onCancelGravity();
+		return this.applyGravity();
 	}
 
 	rotateCCW() {
@@ -491,6 +498,14 @@ export default class {
 		if (!this.gameOver) {
 			while (this.activePiece && !this.translateActivePiece(0, 1)) {}
 			this.runPieceLockSequence();
+		}
+	}
+
+	sonicDrop() {
+		if (!this.gameOver) {
+			let ret = true;
+			while (this.activePiece && !this.move(0, 1)) { ret = false; }
+			return ret;
 		}
 	}
 

@@ -287,65 +287,99 @@
 			)
 		);
 
-	function handleKeyUp(e) {
-		switch (e.key) {
-			case "ArrowLeft":
-			case "ArrowRight":
-				clearMeasuredInterval(arrInterval);
-				if (dasDirection === e.key) {
-					clearMeasuredInterval(arrInterval);
-					clearTimeout(dasTimeout);
-					dasDirection = null;
+	let controlMapDown = {};
+	let controlMapUp = {};
+
+	function updateControls(controls) {
+		console.log(controls);
+		controlMapDown = {};
+		controlMapUp = {};
+
+		Object.keys(controls).forEach(key => {
+			const commands = controls[key];
+			controlMapDown[key] = [];
+			controlMapUp[key] = [];
+
+			commands.forEach(command => {
+				controlMapDown[key].push(command);
+				if (["gameLeft", "gameRight", "gameDown"].indexOf(command) >= 0) {
+					controlMapUp[key].push(command);
 				}
-				break;
-			case "ArrowDown":
-				clearMeasuredInterval(downInterval);
-				break;
-		}
+			});
+		});
+	}
+
+	$: updateControls($userConfig.controls);
+
+	function handleKeyUp(e) {
+		if (!controlMapUp[e.code]) return;
+		controlMapUp[e.code].forEach(command => {
+			switch (command) {
+				case "gameLeft":
+				case "gameRight":
+					clearMeasuredInterval(arrInterval);
+					if (dasDirection === e.key) {
+						clearMeasuredInterval(arrInterval);
+						clearTimeout(dasTimeout);
+						dasDirection = null;
+					}
+					break;
+				case "gameDown":
+					clearMeasuredInterval(downInterval);
+					break;
+			}
+		});
 	}
 
 	function handleKeyDown(e) {
-		// console.log(e);
 		if (e.repeat) {
 			return;
 		}
 		if (!$inMenu) {
-			if (inputDisabled && e.key !== "r") return;
-			switch (e.key) {
-				case "ArrowRight":
-					setDasTimeout(() => playMoveSFX(game.right()));
-					dasDirection = e.key;
-					break;
-				case "ArrowLeft":
-					setDasTimeout(() => playMoveSFX(game.left()));
-					dasDirection = e.key;
-					break;
-				case "ArrowDown":
-					setDownTimeout(() => playMoveSFX(game.down()));
-					break;
-				case "ArrowUp":
-					playMoveSFX(game.rotateCW());
-					break;
-				case " ":
-					e.preventDefault();
-					game.hardDrop();
-					break;
-				case "Enter":
-					game.applyGravity();
-					break;
-				case "a":
-					playMoveSFX(game.rotateFlip());
-					break;
-				case "z":
-					playMoveSFX(game.rotateCCW());
-					break;
-				case "r":
-					dispatch("restartRequested");
-					break;
-				case "c":
-					playHoldSFX(game.hold());
-					break;
-			}
+			if (!controlMapDown[e.code]) return; 
+			if (inputDisabled && controlMapDown[e.code].indexOf("gameRestart") < 0) return;
+
+			controlMapDown[e.code].forEach(command => {
+				switch (command) {
+					case "gameLeft":
+						setDasTimeout(() => playMoveSFX(game.left()));
+						dasDirection = e.key;
+						break;
+					case "gameRight":
+						setDasTimeout(() => playMoveSFX(game.right()));
+						dasDirection = e.key;
+						break;
+					case "gameDown":
+						setDownTimeout(() => playMoveSFX(game.down()));
+						break;
+					case "gameDrop":
+						playMoveSFX(game.hardDrop());
+						break;
+					case "gameSonic":
+						playMoveSFX(game.sonicDrop());
+						break;
+					case "gameDip":
+						playMoveSFX(game.dip());
+						break;
+					case "gameCW":
+						playMoveSFX(game.rotateCW());
+						break;
+					case "gameCCW":
+						playMoveSFX(game.rotateCCW());
+						break;
+					case "gameFlip":
+						playMoveSFX(game.rotateFlip());
+						break;
+					case "gameRestart":
+						dispatch("restartRequested");
+						break;
+					case "gameHold":
+						playHoldSFX(game.hold());
+						break;
+					case "gamePause":
+						break;
+				}
+			});
 			updateVis();
 		}
 	}

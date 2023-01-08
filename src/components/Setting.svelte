@@ -1,5 +1,6 @@
 <script>
 	import ToggleButton from "./ToggleButton.svelte";
+	import CaptureKey from "./CaptureKey.svelte";
 
 	export let name;
 	export let description;

@@ -1,6 +1,6 @@
 <script>
 	export let name;
-	export let description;
+	export let description = "";
 </script>
 
 <div class="heading">

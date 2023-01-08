@@ -7,4 +7,23 @@ export const defaultUserConfig = {
 	consoleGame: false,
 	showGridLines: false,
 	debugEnabled: false,
+
+	// Controls are based off the QWERTY layout. All keys are physical
+	controls: {
+		ArrowRight: ["gameRight",   "menuRight"],
+		ArrowLeft:  ["gameLeft",    "menuLeft"],
+		ArrowDown:  ["gameDown",    "menuDown"],
+		ArrowUp:    ["gameCW",      "menuUp"],
+		Space:      ["gameDrop",    "menuSelect"],
+		KeyA:       ["gameFlip",    ""],
+		KeyZ:       ["gameCCW",     ""],
+		ControlLeft:["gameCCW",     ""],
+		KeyX:       ["gameCW",      ""],
+		KeyR:       ["gameRestart", ""],
+		KeyC:       ["gameHold",    ""],
+		ShiftLeft:  ["gameHold",    ""],
+		Enter:      ["menuSelect",  ""],
+		Escape:     ["gamePause",   "menuBack"],
+		Backspace:  ["menuBack",    ""],
+	}
 };

@@ -2,6 +2,7 @@
 	import GameModes from "~/gamemodes/index-singleplayer";
 	import { onMount } from "svelte";
 	import Setting from "./components/Setting.svelte";
+	import KeybindSetting from "./components/KeybindSetting.svelte";
 	import Heading from "./components/Heading.svelte";
 	import { userConfig } from "./lib/stores";
 
@@ -101,6 +102,51 @@
 						description="Soft Drop Factor: Multiplies how quickly a piece drops when down is pressed"
 						unit="X"
 						type="number"
+					/>
+					<Heading name="Controls"/>
+					<KeybindSetting
+						name="Left"
+						command="gameLeft"
+					/>
+					<KeybindSetting
+						name="Right"
+						command="gameRight"
+					/>
+					<KeybindSetting
+						name="Soft Drop"
+						command="gameDown"
+					/>
+					<KeybindSetting
+						name="Hard Drop"
+						command="gameDrop"
+					/>
+					<KeybindSetting
+						name="Sonic Drop"
+						command="gameSonic"
+					/>
+					<KeybindSetting
+						name="Dip"
+						command="gameDip"
+					/>
+					<KeybindSetting
+						name="Rotate CW"
+						command="gameCW"
+					/>
+					<KeybindSetting
+						name="Rotate CCW"
+						command="gameCCW"
+					/>
+					<KeybindSetting
+						name="Rotate 180"
+						command="gameFlip"
+					/>
+					<KeybindSetting
+						name="Hold"
+						command="gameHold"
+					/>
+					<KeybindSetting
+						name="Restart"
+						command="gameRestart"
 					/>
 					<Heading name="Audio" />
 					<Setting
