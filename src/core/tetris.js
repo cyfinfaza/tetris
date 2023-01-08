@@ -166,10 +166,9 @@ export default class {
 
 	recordKeyframe(event) {
 		if (this.recording) this.keyframes.push({timestamp: Date.now(), ...event});
-		console.log(this.keyframes.length);
 	}
 
-	serializeKeyframes() {
+	serializeKeyframes(blockTypes) {
 		const initialTimestamp = this.keyframes[0].timestamp;
 		let chunk = [];
 		let lastTimestamp = 0;
@@ -178,9 +177,15 @@ export default class {
 		this.keyframes.forEach(keyframe => {
 			const timestamp = keyframe.timestamp - initialTimestamp;
 			let serialized = ''
+			let forceBreak = 0;
 			switch (keyframe.event) {
 				case 'spawn':
-					serialized = `S${keyframe.newPiece.type}`;
+					const pieceStr = JSON.stringify(keyframe.newPiece);
+					let idx = blockTypes.indexOf(pieceStr);
+					if (idx < 0) {
+						idx = blockTypes.push(pieceStr) - 1;
+					}
+					serialized = `S${idx}`;
 					break;
 				case 'gravity':
 					serialized = `G`;
@@ -193,16 +198,24 @@ export default class {
 					break;
 				case 'pieceLock':
 					serialized = "L";
+					forceBreak = 2;
 					break;
 				case 'hold':
 					serialized = "H";
 					break;
+				case 'setCell':
+					serialized = `C${keyframe.x},${keyframe.x},${keyframe.val}`;
+					break;
+				case 'setBoard':
+					serialized = `B`;
+					break;
 			}
 
-			if (timestamp !== lastTimestamp) {
+			if (timestamp !== lastTimestamp || forceBreak) {
 				output += `${timestamp}:` + chunk.join(':') + ' ';
 				chunk.length = 0;
 				lastTimestamp = timestamp;
+				forceBreak--;
 			}
 			chunk.push(serialized);
 		});
@@ -211,9 +224,11 @@ export default class {
 
 	serializeReplay() {
 		this.recording = false;
+		const blockTypes = [];
 		const head = {
 			config: this.config,
-			keyframes: this.serializeKeyframes(),
+			keyframes: this.serializeKeyframes(blockTypes),
+			blockTypes
 		}
 		console.log(JSON.stringify(head));
 		return JSON.stringify(head);
@@ -226,25 +241,31 @@ export default class {
 			const data = segment.split(":");
 			const timestamp = data.shift();
 			data.forEach(event => {
-				const args = event.slice(1).split(',');
+				const args = event.slice(1).split(',').map(x => Number(x));
 				switch (event[0]) {
 					case 'S':
-						this.keyframes.push({event: 'spawn', type: args[0]})
+						this.keyframes.push({event: 'spawn', timestamp, type: args[0]});
 						break;
 					case 'G':
-						this.keyframes.push({event: 'gravity'})
+						this.keyframes.push({event: 'gravity', timestamp});
 						break;
 					case 'M':
-						this.keyframes.push({event: 'move', x: args[0], y: args[1]})
+						this.keyframes.push({event: 'move', timestamp, x: args[0], y: args[1]});
 						break;
 					case 'R':
-						this.keyframes.push({event: 'rotate', n: args[0]})
+						this.keyframes.push({event: 'rotate', timestamp, n: args[0]});
 						break;
 					case 'L':
-						this.keyframes.push({event: 'pieceLock'})
+						this.keyframes.push({event: 'pieceLock', timestamp});
 						break;
 					case 'H':
-						this.keyframes.push({event: 'hold'})
+						this.keyframes.push({event: 'hold', timestamp});
+						break;
+					case 'C':
+						this.keyframes.push({event: 'setCell', timestamp, x: args[0], y: args[1], val: args[2]});
+						break;
+					case 'B':
+						this.keyframes.push({event: 'board', timestamp}); // TODO
 						break;
 				}
 			});
@@ -252,8 +273,8 @@ export default class {
 	}
 
 	deserializeReplay(replay) {
-		const head = JSON.parse(head);
-		this.deserializeKeyframes()
+		const head = JSON.parse(replay);
+		this.deserializeKeyframes(head.keyframes);
 	}
 
 	replayKeyframes() {
@@ -263,9 +284,8 @@ export default class {
 
 		const nextFrame = () => {
 			const currentTimestamp = Date.now() - replayStart;
-			while (currentTimestamp > this.keyframes[idx].timestamp - initialTimestamp) {
+			while (currentTimestamp > (this.keyframes[idx].timestamp - initialTimestamp)) {
 				const keyframe = this.keyframes[idx];
-				console.log(keyframe.event);
 				switch (keyframe.event) {
 					case 'spawn':
 						// serialized = `S${keyframe.newPiece.type}`;
@@ -280,7 +300,8 @@ export default class {
 						this.rotate(keyframe.n);
 						break;
 					case 'pieceLock':
-						this.runPieceLockSequence();
+						// this.runPieceLockSequence();
+						this.hardDrop();
 						break;
 					case 'hold':
 						this.hold();
@@ -308,8 +329,6 @@ export default class {
 	}
 
 	replayReplay(replay) {
-		this.recording = false;
-
 		this.resetGame({
 			...this.config,
 			replay: true,
@@ -317,9 +336,12 @@ export default class {
 			randomSeed: this.initialSeed,
 			lockDelay: 10000,
 		});
+		this.hardDrop();
+
+		this.deserializeReplay(replay);
 
 		this.recording = false;
-		this.hardDrop();
+		console.log(this.keyframes);
 
 		this.replayKeyframes();
 	}

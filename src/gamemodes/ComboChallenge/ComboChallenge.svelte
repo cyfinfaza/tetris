@@ -26,7 +26,6 @@
 
 	function handleLinesCleared(e) {
 		const clearedLines = e.detail.numLines;
-		console.log(clearedLines);
 		for (let y = 0; y < clearedLines; y++) {
 			for (let x = 0; x < sx; x++) {
 				if (2 < x && x < 7) {
@@ -86,6 +85,12 @@
 		});
 	}
 
+	function handleReplay() {
+		showingEndGame = false;
+		const replay = game.serializeReplay();
+		game.replayReplay(replay);
+	}
+
 	onMount(() => {
 		game.setBoard(comboMap);
 		cg.updateVis();
@@ -118,6 +123,7 @@
 	<h1>GAME COMPLETE!</h1>
 	<p style="font-size: 4rem;">{maxCombo}</p>
 	<button on:click={handleRestartRequested}>Restart (R)</button>
+	<button on:click={handleReplay}>View Replay</button>
 </EndGameScreen>
 
 <Countdown from={3} tickTime={500} bind:this={countdown} />

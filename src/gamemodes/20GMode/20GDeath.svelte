@@ -45,7 +45,7 @@
 	let cg;
 
 	function initialState() {
-		level = 0;
+		level = 999;
 
 		sectionStart = null;
 		section = 0;
@@ -181,6 +181,12 @@
 		game.start();
 	}
 
+	function handleReplay() {
+		showingEndGame = false;
+		const replay = game.serializeReplay();
+		game.replayReplay(replay);
+	}
+
 	function handleRestartRequested() {
 		clearGame();
 
@@ -231,6 +237,7 @@
 	<p style="font-size: 2rem;">Level {Math.min(level, 1300)}</p>
 	<p style="font-size: 2rem;">{finalTime}</p>
 	<button on:click={handleRestartRequested}>Restart (R)</button>
+	<button on:click={handleReplay}>View Replay</button>
 </EndGameScreen>
 
 <Countdown from={3} tickTime={500} bind:this={countdown} />
