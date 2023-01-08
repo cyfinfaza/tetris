@@ -34,21 +34,30 @@ export function registerStateholder(stateholder, { eventFire, stateFire }) {
 
 export function goToIndex(index) {
 	let stateAtIndex = timeline[index].state;
-	if (stateAtIndex) {
-		Object.keys(stateHolders).forEach((key) => {
-			const stateholder = stateHolders[key];
-			// console.log(stateholder);
-			for (let i = index; i >= 0; i--) {
-				stateAtIndex = timeline[i].state;
-				console.log(key, stateAtIndex, i, typeof stateholder.stateFire, stateAtIndex[key]);
-				if (typeof stateholder.stateFire === "function" && stateAtIndex[key]) {
-					console.log(key, JSON.parse(stateAtIndex[key]));
-					stateholder.stateFire(JSON.parse(stateAtIndex[key]));
-					break;
-				}
+	if (!stateAtIndex) return;
+	Object.keys(stateHolders).forEach((key) => {
+		const stateholder = stateHolders[key];
+		// console.log(stateholder);
+		for (let i = index; i >= 0; i--) {
+			stateAtIndex = timeline[i].state;
+			console.log(key, stateAtIndex, i, typeof stateholder.stateFire, stateAtIndex[key]);
+			if (typeof stateholder.stateFire === "function" && stateAtIndex[key]) {
+				console.log(key, JSON.parse(stateAtIndex[key]));
+				stateholder.stateFire(JSON.parse(stateAtIndex[key]));
+				break;
 			}
-		});
-	}
+		}
+	});
+}
+
+export function fireEventAtIndex(index) {
+	let eventAtIndex = timeline[index].event;
+	if (!eventAtIndex) return;
+	console.log(eventAtIndex);
+	const stateholder = stateHolders[eventAtIndex.stateholder];
+	console.log(stateholder);
+	stateholder?.eventFire(eventAtIndex.event);
+
 }
 
 window.timeline = timeline;
@@ -63,4 +72,8 @@ function exportReplayTimeline(meta) {
 		event: t.event ? { stateholder: t.event.stateholder, event: t.event.event, args: t.event.args } : null,
 	}));
 	return replay;
+}
+
+export function importReplayTimeline(replay) {
+	timeline = [{state: replay.initialState}, ...replay.timeline];
 }

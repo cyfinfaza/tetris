@@ -79,7 +79,7 @@
 		});
 	}
 
-	$: game.lockDelay = state.gravityEnabled ? 500 : Infinity;
+	$: game.lockDelay = state.gravityEnabled ? 30 : Infinity;
 
 	onMount(() => {
 		game.start();

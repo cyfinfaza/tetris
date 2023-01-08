@@ -12,7 +12,7 @@
 	} from "~/lib/sounds";
 	import Vis from "./Vis.svelte";
 	import { createEventDispatcher } from "svelte";
-	import { userConfig } from "~/lib/stores";
+	import { inReplay, userConfig } from "~/lib/stores";
 	import { inMenu } from "~/lib/stores";
 	import { sx, sy } from "./tetris";
 	import { recordEvent, recordState, registerStateholder } from "~/lib/replayHolder";
@@ -140,10 +140,11 @@
 	function fireEvent(eventName, records = true) {
 		if (events[eventName]) {
 			if (events[eventName]()) {
+				console.log(events[eventName]);
 				return;
 			}
 			if (records) recordEvent("/core/CoreGame", eventName);
-			// updateVis();
+			updateVis();
 		}
 	}
 
@@ -243,7 +244,7 @@
 	function assignEventHandlersForGame(g) {
 		let lockTimeout;
 		g.onRequestGravity = (dt) => {
-			if (gravityTimeout?.running || false) {
+			if (!!gravityTimeout?.running || $inReplay) {
 				dispatch("gravityRequested");
 				return;
 			}
@@ -262,6 +263,7 @@
 		};
 		g.onTouchGround = () => {
 			clearTimeout(lockTimeout);
+			if ($inReplay || g.lockDelay === Infinity) return dispatch("touchGround");
 			lockTimeout = setTimeout(() => {
 				g.lockOnGround();
 			}, (g.lockDelay * 1000) / 60);
@@ -359,6 +361,7 @@
 		updateVis();
 
 		clearMeasuredInterval(arrInterval);
+		if ($inReplay) return;
 		dasTimeout = setTimeout(() => {
 			clearMeasuredInterval(arrInterval);
 			arrInterval = measuredInterval(() => {
@@ -389,6 +392,7 @@
 	function setDownTimeout(callback) {
 		const dt = 1000 / 60 / game.gravityLevel / 20 / $userConfig.sdf; // G_down = G * 20 * SDF, as per Tetris Guideline
 		clearMeasuredInterval(downInterval);
+		if ($inReplay) return;
 		downInterval = measuredInterval(() => {
 			callback();
 			updateVis();

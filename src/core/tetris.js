@@ -376,13 +376,14 @@ export default class {
 		this.onRequestGravity(this.gravityLevel);
 	}
 
-	resetGravityIfAboutToLock(editFloorMoves = true) {
+	resetGravityIfAboutToLock() {
 		if (this.activePiece) {
 			if (this.translateActivePiece(0, 1, true)) {
 				if (this.activePiece.floorMoves < this.config.floorMoveLimit) {
-					this.onCancelGravity();
-					this.onRequestGravity(1 / this.lockDelay); // 1000 / 60 / game.gravityLevel / 20
-					if (editFloorMoves) this.activePiece.floorMoves++;
+					// this.onCancelGravity();
+					// this.onRequestGravity(1 / this.lockDelay); // 1000 / 60 / game.gravityLevel / 20
+					this.onTouchGround();
+					this.activePiece.floorMoves++;
 				} else {
 					this.runPieceLockSequence();
 				}
@@ -466,7 +467,7 @@ export default class {
 			ret = true;
 			this.onTouchGround();
 		} else {
-			this.resetGravityIfAboutToLock(false);
+			// this.resetGravityIfAboutToLock(false);
 			this.lastSpin = null;
 		}
 		return ret;
