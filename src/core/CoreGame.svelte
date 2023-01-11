@@ -87,7 +87,7 @@
 		if (e.isPerfectClear) {
 			achievementMessages[amIndex] = { text: "Perfect Clear", timestamp: Date.now(), id: Math.random() };
 		}
-		amIndex = (++amIndex % achievementMessages.length) - 1;
+		amIndex = ++amIndex % (achievementMessages.length);
 		const clearedWord =
 			[
 				"Single",
@@ -123,7 +123,7 @@
 
 	export function displayAchievement(text) {
 		achievementMessages[amIndex] = { text, timestamp: Date.now(), id: Math.random() };
-		amIndex = ++amIndex % 2;
+		amIndex = ++amIndex % (achievementMessages.length);
 	}
 
 	function assignEventHandlersForGame(g) {
@@ -435,9 +435,6 @@
 		flex-direction: column;
 		align-self: stretch;
 		gap: calc(var(--pad) / 2);
-	}
-	button {
-		text-align: start;
 	}
 	@keyframes zoomIn {
 		0% {

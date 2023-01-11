@@ -70,7 +70,7 @@ export default class {
 		this.currentCombo = 0;
 		this.comboActive = false;
 		this.initialSeed = randomSeed || Math.floor(Math.random() * 1000000);
-		this.seed = this.initialSeed;
+		this.randomState = BigInt(this.initialSeed);
 		this.bag = [];
 		this.queue = [];
 		this._running = false;
@@ -123,7 +123,18 @@ export default class {
 	// BEGIN RANDOMIZATION FUNCTIONS
 
 	genRandomNumber() {
-		return (this.seed = (742938285 * this.seed) % (2 ** 31 - 1));
+		// PCG-XSH-RR Algorithm
+		// https://www.pcg-random.org/
+
+		const rotr32 = (x, r) => (x >> r) | BigInt.asUintN(32, x << (-r & 31n));
+
+		let oldState = this.randomState;
+		const count = (oldState >> 59n);
+		
+		this.randomState = BigInt.asUintN(64, this.randomState * 6364136223846793005n + 1442695040888963407n);
+		oldState = oldState ^ (oldState >> 18n);
+
+		return Number(rotr32(BigInt.asUintN(32, oldState >> 27n), count));
 	}
 
 	resetBag() {
