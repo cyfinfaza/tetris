@@ -404,7 +404,7 @@
 		}, dt);
 	}
 
-	$: if ($userConfig.consoleGame)
+	$: if ($userConfig.consoleGame && state.grid)
 		console.log(
 			state.grid.map((row) => row.map((cell) => "%c  ").join("")).join("\n"),
 			...state.grid.reduce(
