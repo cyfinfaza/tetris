@@ -1,5 +1,6 @@
 import ZenGamemode from "./zen/ZenGamemode.svelte";
 import sprint from "./sprint/sprint.svelte";
+import mapEditor from "./Debug/MapEditor.svelte";
 import debugGamemode from "./Debug/DebugGamemode.svelte";
 import comboChallenge from "./ComboChallenge/ComboChallenge.svelte";
 import instaGravDeath from "./20GMode/20GDeath.svelte";
@@ -45,6 +46,12 @@ export default {
 		title: "20G Death (Easy)",
 		description: "A slower and more forgiving variant of 20G Death.",
 		component: instaGravDeathEasy,
+	},
+	mapEditor: {
+		title: "Map Editor",
+		description: "",
+		component: mapEditor,
+		get hidden() { return !get(userConfig).debugEnabled },
 	},
 	debug: {
 		title: "Debug",

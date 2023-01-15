@@ -1,12 +1,14 @@
 <script>
 	import ToggleButton from "./ToggleButton.svelte";
 	import CaptureKey from "./CaptureKey.svelte";
+	import Select from "./Select.svelte";
 
 	export let name;
-	export let description;
+	export let description = null;
 	export let value = null;
 	export let type;
 	export let unit = null;
+	export let options = [];
 </script>
 
 <div class="setting">
@@ -26,6 +28,10 @@
 			<input type="text" bind:value />
 		{:else if type === "toggle"}
 			<ToggleButton bind:enabled={value} />
+		{:else if type === "dropdown"}
+			<Select bind:options/>
+		{:else if type === "custom"}
+			<slot/>
 		{/if}
 	</div>
 </div>
