@@ -1,7 +1,7 @@
 <script>
 	import { onMount, onDestroy } from "svelte";
 	import GameModes from "~/gamemodes/index-singleplayer";
-	import { fireEventAtIndex, goToIndex, importReplayTimeline } from "~/lib/replayHolder";
+	import { goToIndex, importReplayTimeline, step } from "~/lib/replayHolder";
 	export let replayFile;
 	let replayData = null;
 	let gameComponent;
@@ -28,7 +28,8 @@
 		
 		while (replayData.timeline[idx].timestamp - refTimestamp < relativeTime) {
 			idx++;
-			fireEventAtIndex(idx);
+			step();
+			// fireEventAtIndex(idx);
 		}
 		
 		if (running) requestAnimationFrame(tick);

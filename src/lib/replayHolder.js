@@ -1,5 +1,7 @@
 import { writable } from "svelte/store";
 
+let atIndex = 0;
+
 let timeline = [];
 let stateHolders = {};
 
@@ -50,14 +52,24 @@ export function goToIndex(index) {
 	});
 }
 
-export function fireEventAtIndex(index) {
-	let eventAtIndex = timeline[index].event;
-	if (!eventAtIndex) return;
-	console.log(eventAtIndex);
-	const stateholder = stateHolders[eventAtIndex.stateholder];
-	console.log(stateholder);
-	stateholder?.eventFire(eventAtIndex.event);
+// export function fireEventAtIndex(index) {
+// 	let eventAtIndex = timeline[index].event;
+// 	if (!eventAtIndex) return;
+// 	console.log(eventAtIndex);
+// 	const stateholder = stateHolders[eventAtIndex.stateholder];
+// 	console.log(stateholder);
+// 	stateholder?.eventFire(eventAtIndex.event);
+// }
 
+export function step() {
+	let timelineAtIndex = timeline[atIndex];
+	if (!timelineAtIndex) return false;
+	let eventAtIndex = timelineAtIndex.event;
+	atIndex++;
+	if (!eventAtIndex) return true;
+	const stateholder = stateHolders[eventAtIndex.stateholder];
+	stateholder?.eventFire(eventAtIndex.event);
+	return true;
 }
 
 window.timeline = timeline;
