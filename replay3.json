@@ -1,0 +1,2768 @@
+{
+    "meta": {
+        "gamemode": "debug"
+    },
+    "initialState": {
+        "/gamemodes/DebugGamemode": "{\"linesCleared\":0,\"gravityEnabled\":true,\"inputEnabled\":true}",
+        "/core/CoreGame": "{\"grid\":[[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null]],\"queue\":[{\"type\":\"J\",\"color\":\"#5A65AD\",\"spawnX\":3,\"spawnY\":19,\"shape\":[[1,0,0],[1,1,1],[0,0,0]]},{\"type\":\"T\",\"color\":\"#AD4D9C\",\"spawnX\":3,\"spawnY\":19,\"shape\":[[0,1,0],[1,1,1],[0,0,0]]},{\"type\":\"L\",\"color\":\"#EF7921\",\"spawnX\":3,\"spawnY\":19,\"shape\":[[0,0,1],[1,1,1],[0,0,0]]},{\"type\":\"Z\",\"color\":\"#EF2029\",\"spawnX\":3,\"spawnY\":19,\"shape\":[[1,1,0],[0,1,1],[0,0,0]]},{\"type\":\"S\",\"color\":\"#42B642\",\"spawnX\":3,\"spawnY\":19,\"shape\":[[0,1,1],[1,1,0],[0,0,0]]}],\"holdPiece\":null,\"gameOver\":false,\"achievementMessages\":[{\"text\":\"\",\"id\":0.7815359047607815},{\"text\":\"\",\"id\":0.9208903770612071}],\"amIndex\":0}",
+        "/core/tetris": "{\"config\":{\"randomSeed\":null,\"floorMoveLimit\":15,\"queueLength\":5,\"blockSet\":[{\"type\":\"I\",\"color\":\"#31C7EF\",\"spawnX\":3,\"spawnY\":19,\"shape\":[[0,0,0,0],[1,1,1,1],[0,0,0,0],[0,0,0,0]]},{\"type\":\"O\",\"color\":\"#F7D308\",\"spawnX\":4,\"spawnY\":19,\"shape\":[[1,1],[1,1]]},{\"type\":\"T\",\"color\":\"#AD4D9C\",\"spawnX\":3,\"spawnY\":19,\"shape\":[[0,1,0],[1,1,1],[0,0,0]]},{\"type\":\"S\",\"color\":\"#42B642\",\"spawnX\":3,\"spawnY\":19,\"shape\":[[0,1,1],[1,1,0],[0,0,0]]},{\"type\":\"Z\",\"color\":\"#EF2029\",\"spawnX\":3,\"spawnY\":19,\"shape\":[[1,1,0],[0,1,1],[0,0,0]]},{\"type\":\"J\",\"color\":\"#5A65AD\",\"spawnX\":3,\"spawnY\":19,\"shape\":[[1,0,0],[1,1,1],[0,0,0]]},{\"type\":\"L\",\"color\":\"#EF7921\",\"spawnX\":3,\"spawnY\":19,\"shape\":[[0,0,1],[1,1,1],[0,0,0]]}],\"kickSet\":[{\"appliesTo\":[\"I\",\"O\"],\"kicks\":[[[],[[0,0],[1,0],[-2,0],[-2,1],[1,-2]],[[0,0],[0,-1],[1,-1],[-1,-1],[1,0],[-1,0]],[[0,0],[-1,0],[2,0],[2,1],[-1,-2]]],[[[0,0],[-1,0],[2,0],[-1,2],[2,-1]],[],[[0,0],[-1,0],[2,0],[-1,-2],[2,1]],[[0,0],[1,0],[1,-2],[1,-1],[0,-2],[0,-1]]],[[[0,0],[0,1],[-1,1],[1,1],[-1,0],[1,0]],[[0,0],[-2,0],[1,0],[-2,-1],[1,2]],[],[[0,0],[2,0],[-1,0],[2,-1],[-1,2]]],[[[0,0],[1,0],[-2,0],[1,2],[-2,-1]],[[0,0],[-1,0],[-1,-2],[-1,-1],[0,-2],[0,-1]],[[0,0],[1,0],[-2,0],[1,-2],[-2,1]],[]]]},{\"appliesTo\":[\"J\",\"L\",\"S\",\"T\",\"Z\"],\"kicks\":[[[],[[0,0],[-1,0],[-1,-1],[0,2],[-1,2]],[[0,0],[0,-1],[1,-1],[-1,-1],[1,0],[-1,0]],[[0,0],[1,0],[1,-1],[0,2],[1,2]]],[[[0,0],[1,0],[1,1],[0,-2],[1,-2]],[],[[0,0],[1,0],[1,1],[0,-2],[1,-2]],[[0,0],[1,0],[1,-2],[1,-1],[0,-2],[0,-1]]],[[[0,0],[0,1],[-1,1],[1,1],[-1,0],[1,0]],[[0,0],[-1,0],[-1,-1],[0,2],[-1,2]],[],[[0,0],[1,0],[1,-1],[0,2],[1,2]]],[[[0,0],[-1,0],[-1,1],[0,-2],[-1,-2]],[[0,0],[-1,0],[-1,-2],[-1,-1],[0,-2],[0,-1]],[[0,0],[-1,0],[-1,1],[0,-2],[-1,-2]],[]]]}]},\"staticMatrix\":[[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null]],\"activePiece\":{\"type\":\"I\",\"color\":\"#31C7EF\",\"spawnX\":3,\"spawnY\":19,\"shape\":[[0,0,0,0],[1,1,1,1],[0,0,0,0],[0,0,0,0]],\"x\":3,\"y\":19,\"floorMoves\":0,\"originalShape\":[[0,0,0,0],[1,1,1,1],[0,0,0,0],[0,0,0,0]],\"rotationState\":0},\"holdPiece\":null,\"holdAvailable\":true,\"gravityLevel\":0.016666666666666666,\"lockDelay\":30,\"lockTimeout\":null,\"gameOver\":false,\"numLinesCleared\":0,\"currentCombo\":0,\"comboActive\":false,\"initialSeed\":257742,\"seed\":521523565,\"bag\":[{\"type\":\"O\",\"color\":\"#F7D308\",\"spawnX\":4,\"spawnY\":19,\"shape\":[[1,1],[1,1]]}],\"queue\":[{\"type\":\"J\",\"color\":\"#5A65AD\",\"spawnX\":3,\"spawnY\":19,\"shape\":[[1,0,0],[1,1,1],[0,0,0]]},{\"type\":\"T\",\"color\":\"#AD4D9C\",\"spawnX\":3,\"spawnY\":19,\"shape\":[[0,1,0],[1,1,1],[0,0,0]]},{\"type\":\"L\",\"color\":\"#EF7921\",\"spawnX\":3,\"spawnY\":19,\"shape\":[[0,0,1],[1,1,1],[0,0,0]]},{\"type\":\"Z\",\"color\":\"#EF2029\",\"spawnX\":3,\"spawnY\":19,\"shape\":[[1,1,0],[0,1,1],[0,0,0]]},{\"type\":\"S\",\"color\":\"#42B642\",\"spawnX\":3,\"spawnY\":19,\"shape\":[[0,1,1],[1,1,0],[0,0,0]]}],\"_running\":true,\"lastSpin\":null}",
+        "/components/PPSCounter": "{\"dropTimestamps\":[],\"gameStartTimestamp\":1673760001251,\"pps\":0}"
+    },
+    "timeline": [
+        {
+            "timestamp": 1673760001231,
+            "event": null
+        },
+        {
+            "timestamp": 1673760002274,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameGravity"
+            }
+        },
+        {
+            "timestamp": 1673760002941,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameDrop"
+            }
+        },
+        {
+            "timestamp": 1673760003268,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760003416,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760003416,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760003499,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameDrop"
+            }
+        },
+        {
+            "timestamp": 1673760003627,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameDrop"
+            }
+        },
+        {
+            "timestamp": 1673760003672,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameHold"
+            }
+        },
+        {
+            "timestamp": 1673760003763,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760003909,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760003910,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760003911,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760003991,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameDrop"
+            }
+        },
+        {
+            "timestamp": 1673760004028,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760004074,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCW"
+            }
+        },
+        {
+            "timestamp": 1673760004173,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760004174,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760004175,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760004264,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameDrop"
+            }
+        },
+        {
+            "timestamp": 1673760004326,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760004477,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760004478,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760004478,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760004523,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760004615,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameDrop"
+            }
+        },
+        {
+            "timestamp": 1673760004652,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameHold"
+            }
+        },
+        {
+            "timestamp": 1673760004671,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760004702,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameFlip"
+            }
+        },
+        {
+            "timestamp": 1673760004818,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760004819,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760004911,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameDrop"
+            }
+        },
+        {
+            "timestamp": 1673760004948,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCW"
+            }
+        },
+        {
+            "timestamp": 1673760004968,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760005042,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameDrop"
+            }
+        },
+        {
+            "timestamp": 1673760005096,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760005246,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760005246,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760005247,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760005351,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameDrop"
+            }
+        },
+        {
+            "timestamp": 1673760005371,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCW"
+            }
+        },
+        {
+            "timestamp": 1673760005469,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameSonic"
+            }
+        },
+        {
+            "timestamp": 1673760005680,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCW"
+            }
+        },
+        {
+            "timestamp": 1673760005890,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameDrop"
+            }
+        },
+        {
+            "timestamp": 1673760006000,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760006120,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCCW"
+            }
+        },
+        {
+            "timestamp": 1673760006147,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760006148,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760006148,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760006148,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760006208,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760006353,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameDrop"
+            }
+        },
+        {
+            "timestamp": 1673760006450,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameHold"
+            }
+        },
+        {
+            "timestamp": 1673760006835,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760006898,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCW"
+            }
+        },
+        {
+            "timestamp": 1673760006981,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760006982,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760006982,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760007158,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameDrop"
+            }
+        },
+        {
+            "timestamp": 1673760007225,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameHold"
+            }
+        },
+        {
+            "timestamp": 1673760007283,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCW"
+            }
+        },
+        {
+            "timestamp": 1673760007307,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760007420,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760007719,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameDrop"
+            }
+        },
+        {
+            "timestamp": 1673760007773,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760007918,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760007918,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760008031,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameDrop"
+            }
+        },
+        {
+            "timestamp": 1673760008045,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760008046,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760008048,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760008166,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCW"
+            }
+        },
+        {
+            "timestamp": 1673760008179,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760008348,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameDrop"
+            }
+        },
+        {
+            "timestamp": 1673760008453,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCCW"
+            }
+        },
+        {
+            "timestamp": 1673760008598,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameDrop"
+            }
+        },
+        {
+            "timestamp": 1673760008660,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760008807,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760008939,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameDrop"
+            }
+        },
+        {
+            "timestamp": 1673760009146,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCW"
+            }
+        },
+        {
+            "timestamp": 1673760009151,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760009348,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameSonic"
+            }
+        },
+        {
+            "timestamp": 1673760009491,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCCW"
+            }
+        },
+        {
+            "timestamp": 1673760009782,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCCW"
+            }
+        },
+        {
+            "timestamp": 1673760010087,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCCW"
+            }
+        },
+        {
+            "timestamp": 1673760010248,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCW"
+            }
+        },
+        {
+            "timestamp": 1673760010371,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCCW"
+            }
+        },
+        {
+            "timestamp": 1673760010385,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameGravity"
+            }
+        },
+        {
+            "timestamp": 1673760010606,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCW"
+            }
+        },
+        {
+            "timestamp": 1673760010712,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCCW"
+            }
+        },
+        {
+            "timestamp": 1673760011214,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "lockOnGround"
+            }
+        },
+        {
+            "timestamp": 1673760011488,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameHold"
+            }
+        },
+        {
+            "timestamp": 1673760011548,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCW"
+            }
+        },
+        {
+            "timestamp": 1673760011582,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760011734,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameSonic"
+            }
+        },
+        {
+            "timestamp": 1673760011830,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCCW"
+            }
+        },
+        {
+            "timestamp": 1673760012116,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCCW"
+            }
+        },
+        {
+            "timestamp": 1673760012617,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "lockOnGround"
+            }
+        },
+        {
+            "timestamp": 1673760012896,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameHold"
+            }
+        },
+        {
+            "timestamp": 1673760012936,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760013085,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760013086,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760013086,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760013229,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameDrop"
+            }
+        },
+        {
+            "timestamp": 1673760013285,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameHold"
+            }
+        },
+        {
+            "timestamp": 1673760013357,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCW"
+            }
+        },
+        {
+            "timestamp": 1673760013377,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760013558,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameDrop"
+            }
+        },
+        {
+            "timestamp": 1673760013669,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameHold"
+            }
+        },
+        {
+            "timestamp": 1673760013710,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760013861,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760013862,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760014646,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760014805,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760015415,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCCW"
+            }
+        },
+        {
+            "timestamp": 1673760015445,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760015754,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameDrop"
+            }
+        },
+        {
+            "timestamp": 1673760015801,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760015866,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCW"
+            }
+        },
+        {
+            "timestamp": 1673760015950,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760015950,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760015950,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760016143,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameDrop"
+            }
+        },
+        {
+            "timestamp": 1673760016178,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCW"
+            }
+        },
+        {
+            "timestamp": 1673760016228,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760016381,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760016382,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760016382,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760016396,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameSonic"
+            }
+        },
+        {
+            "timestamp": 1673760016501,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760016654,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760016781,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameDrop"
+            }
+        },
+        {
+            "timestamp": 1673760016820,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameHold"
+            }
+        },
+        {
+            "timestamp": 1673760016869,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCW"
+            }
+        },
+        {
+            "timestamp": 1673760016872,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760017022,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760017022,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760017022,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760017129,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameSonic"
+            }
+        },
+        {
+            "timestamp": 1673760017250,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCW"
+            }
+        },
+        {
+            "timestamp": 1673760017518,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameDrop"
+            }
+        },
+        {
+            "timestamp": 1673760017612,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCW"
+            }
+        },
+        {
+            "timestamp": 1673760017643,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760017800,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameDrop"
+            }
+        },
+        {
+            "timestamp": 1673760017855,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameHold"
+            }
+        },
+        {
+            "timestamp": 1673760017908,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760018054,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760018054,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760018054,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760018179,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameDrop"
+            }
+        },
+        {
+            "timestamp": 1673760018255,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760018357,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameDrop"
+            }
+        },
+        {
+            "timestamp": 1673760018420,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameFlip"
+            }
+        },
+        {
+            "timestamp": 1673760018428,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760018581,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760018583,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760018713,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameDrop"
+            }
+        },
+        {
+            "timestamp": 1673760018776,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760018811,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameHold"
+            }
+        },
+        {
+            "timestamp": 1673760018895,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCCW"
+            }
+        },
+        {
+            "timestamp": 1673760018926,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760018927,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760018927,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760018928,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760018929,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760019000,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760019052,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameSonic"
+            }
+        },
+        {
+            "timestamp": 1673760019236,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCW"
+            }
+        },
+        {
+            "timestamp": 1673760019385,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCW"
+            }
+        },
+        {
+            "timestamp": 1673760019532,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameDrop"
+            }
+        },
+        {
+            "timestamp": 1673760019706,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameDrop"
+            }
+        },
+        {
+            "timestamp": 1673760019801,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760019950,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760019950,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760019950,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760020015,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameSonic"
+            }
+        },
+        {
+            "timestamp": 1673760020075,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760020230,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760020311,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameSonic"
+            }
+        },
+        {
+            "timestamp": 1673760020550,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCW"
+            }
+        },
+        {
+            "timestamp": 1673760020782,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameDrop"
+            }
+        },
+        {
+            "timestamp": 1673760020853,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760020975,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameHold"
+            }
+        },
+        {
+            "timestamp": 1673760020996,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760020997,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760020997,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760020998,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760021155,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameSonic"
+            }
+        },
+        {
+            "timestamp": 1673760021258,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760021274,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameDown"
+            }
+        },
+        {
+            "timestamp": 1673760021468,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameDrop"
+            }
+        },
+        {
+            "timestamp": 1673760021527,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760021590,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCW"
+            }
+        },
+        {
+            "timestamp": 1673760021677,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760021677,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760021678,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760021771,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760021795,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameSonic"
+            }
+        },
+        {
+            "timestamp": 1673760021867,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCW"
+            }
+        },
+        {
+            "timestamp": 1673760022063,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameDrop"
+            }
+        },
+        {
+            "timestamp": 1673760022207,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760022229,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameHold"
+            }
+        },
+        {
+            "timestamp": 1673760022266,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCW"
+            }
+        },
+        {
+            "timestamp": 1673760022357,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760022358,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760022358,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760022359,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760022446,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760022508,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameSonic"
+            }
+        },
+        {
+            "timestamp": 1673760022622,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCW"
+            }
+        },
+        {
+            "timestamp": 1673760022842,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameDrop"
+            }
+        },
+        {
+            "timestamp": 1673760023881,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameGravity"
+            }
+        },
+        {
+            "timestamp": 1673760024760,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760024909,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760024910,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760024933,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameSonic"
+            }
+        },
+        {
+            "timestamp": 1673760024997,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760025068,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameDrop"
+            }
+        },
+        {
+            "timestamp": 1673760025156,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameHold"
+            }
+        },
+        {
+            "timestamp": 1673760025174,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760025204,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCW"
+            }
+        },
+        {
+            "timestamp": 1673760025329,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760025329,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760025329,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760025468,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameDrop"
+            }
+        },
+        {
+            "timestamp": 1673760025765,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameHold"
+            }
+        },
+        {
+            "timestamp": 1673760025810,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameSonic"
+            }
+        },
+        {
+            "timestamp": 1673760025845,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760025855,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameDown"
+            }
+        },
+        {
+            "timestamp": 1673760026003,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameDrop"
+            }
+        },
+        {
+            "timestamp": 1673760026136,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760026287,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760026287,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760026383,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameSonic"
+            }
+        },
+        {
+            "timestamp": 1673760026507,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760026623,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760026672,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCCW"
+            }
+        },
+        {
+            "timestamp": 1673760026750,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameSonic"
+            }
+        },
+        {
+            "timestamp": 1673760026784,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760026785,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760026972,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCCW"
+            }
+        },
+        {
+            "timestamp": 1673760027351,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameDrop"
+            }
+        },
+        {
+            "timestamp": 1673760027702,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760027828,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameSonic"
+            }
+        },
+        {
+            "timestamp": 1673760028082,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameDrop"
+            }
+        },
+        {
+            "timestamp": 1673760028342,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCW"
+            }
+        },
+        {
+            "timestamp": 1673760028504,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760028666,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCW"
+            }
+        },
+        {
+            "timestamp": 1673760029284,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameDrop"
+            }
+        },
+        {
+            "timestamp": 1673760029323,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCW"
+            }
+        },
+        {
+            "timestamp": 1673760029374,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760029521,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameSonic"
+            }
+        },
+        {
+            "timestamp": 1673760029608,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCW"
+            }
+        },
+        {
+            "timestamp": 1673760029774,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCW"
+            }
+        },
+        {
+            "timestamp": 1673760029932,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCCW"
+            }
+        },
+        {
+            "timestamp": 1673760030156,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCW"
+            }
+        },
+        {
+            "timestamp": 1673760030317,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCCW"
+            }
+        },
+        {
+            "timestamp": 1673760030406,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCW"
+            }
+        },
+        {
+            "timestamp": 1673760030514,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCW"
+            }
+        },
+        {
+            "timestamp": 1673760030561,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameGravity"
+            }
+        },
+        {
+            "timestamp": 1673760030635,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCW"
+            }
+        },
+        {
+            "timestamp": 1673760030757,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCW"
+            }
+        },
+        {
+            "timestamp": 1673760030863,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCW"
+            }
+        },
+        {
+            "timestamp": 1673760030985,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCW"
+            }
+        },
+        {
+            "timestamp": 1673760031107,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCW"
+            }
+        },
+        {
+            "timestamp": 1673760031232,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCW"
+            }
+        },
+        {
+            "timestamp": 1673760031597,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameDrop"
+            }
+        },
+        {
+            "timestamp": 1673760031685,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760031784,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCW"
+            }
+        },
+        {
+            "timestamp": 1673760031830,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760031831,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760031832,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760031966,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameDrop"
+            }
+        },
+        {
+            "timestamp": 1673760032499,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760032646,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760032646,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760032647,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760032949,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameHold"
+            }
+        },
+        {
+            "timestamp": 1673760033011,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760033157,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760033158,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760033158,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760033186,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameSonic"
+            }
+        },
+        {
+            "timestamp": 1673760033249,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760033397,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameDrop"
+            }
+        },
+        {
+            "timestamp": 1673760033461,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760033614,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760033614,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760033614,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760033642,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameSonic"
+            }
+        },
+        {
+            "timestamp": 1673760033696,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760033853,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameDrop"
+            }
+        },
+        {
+            "timestamp": 1673760033938,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760034088,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760034088,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760034088,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760034156,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameSonic"
+            }
+        },
+        {
+            "timestamp": 1673760034180,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760034298,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameDrop"
+            }
+        },
+        {
+            "timestamp": 1673760034337,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760034466,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCW"
+            }
+        },
+        {
+            "timestamp": 1673760034486,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760034486,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760034487,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760034695,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameDrop"
+            }
+        },
+        {
+            "timestamp": 1673760035274,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCW"
+            }
+        },
+        {
+            "timestamp": 1673760035537,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760036577,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameGravity"
+            }
+        },
+        {
+            "timestamp": 1673760036857,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCW"
+            }
+        },
+        {
+            "timestamp": 1673760036993,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760037313,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameDrop"
+            }
+        },
+        {
+            "timestamp": 1673760037349,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760037502,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760037502,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760037588,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameSonic"
+            }
+        },
+        {
+            "timestamp": 1673760037651,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760037741,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameDrop"
+            }
+        },
+        {
+            "timestamp": 1673760037866,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760038013,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760038014,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760038014,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760038086,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCCW"
+            }
+        },
+        {
+            "timestamp": 1673760038100,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760038244,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameDrop"
+            }
+        },
+        {
+            "timestamp": 1673760038437,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760038579,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameHold"
+            }
+        },
+        {
+            "timestamp": 1673760038619,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCW"
+            }
+        },
+        {
+            "timestamp": 1673760038902,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760039023,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameDrop"
+            }
+        },
+        {
+            "timestamp": 1673760039085,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760039238,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760039238,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760039239,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760039336,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameDrop"
+            }
+        },
+        {
+            "timestamp": 1673760039379,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760039382,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCCW"
+            }
+        },
+        {
+            "timestamp": 1673760039526,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760039526,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760039527,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760039672,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameDrop"
+            }
+        },
+        {
+            "timestamp": 1673760039740,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameFlip"
+            }
+        },
+        {
+            "timestamp": 1673760039802,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760040139,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameDrop"
+            }
+        },
+        {
+            "timestamp": 1673760040369,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760040600,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameDrop"
+            }
+        },
+        {
+            "timestamp": 1673760040673,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCCW"
+            }
+        },
+        {
+            "timestamp": 1673760040677,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760040820,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760040952,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760041173,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameDrop"
+            }
+        },
+        {
+            "timestamp": 1673760041257,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760041440,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameDrop"
+            }
+        },
+        {
+            "timestamp": 1673760041569,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760041667,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCW"
+            }
+        },
+        {
+            "timestamp": 1673760041717,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760041718,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760041718,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760041866,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameDrop"
+            }
+        },
+        {
+            "timestamp": 1673760041913,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760041978,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCCW"
+            }
+        },
+        {
+            "timestamp": 1673760042061,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760042062,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760042132,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameSonic"
+            }
+        },
+        {
+            "timestamp": 1673760042294,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCCW"
+            }
+        },
+        {
+            "timestamp": 1673760042380,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameDrop"
+            }
+        },
+        {
+            "timestamp": 1673760042511,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameHold"
+            }
+        },
+        {
+            "timestamp": 1673760042548,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760042554,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameSonic"
+            }
+        },
+        {
+            "timestamp": 1673760042583,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCCW"
+            }
+        },
+        {
+            "timestamp": 1673760042701,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760042719,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameDown"
+            }
+        },
+        {
+            "timestamp": 1673760042867,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCCW"
+            }
+        },
+        {
+            "timestamp": 1673760042999,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameDrop"
+            }
+        },
+        {
+            "timestamp": 1673760043135,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760043282,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760043282,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760043283,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760043399,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameHold"
+            }
+        },
+        {
+            "timestamp": 1673760043410,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760043412,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760043412,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760043448,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameCCW"
+            }
+        },
+        {
+            "timestamp": 1673760043453,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameLeft"
+            }
+        },
+        {
+            "timestamp": 1673760043517,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameSonic"
+            }
+        },
+        {
+            "timestamp": 1673760043593,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760043613,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameDown"
+            }
+        },
+        {
+            "timestamp": 1673760043764,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameDrop"
+            }
+        },
+        {
+            "timestamp": 1673760043772,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760043773,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760043773,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760043774,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameRight"
+            }
+        },
+        {
+            "timestamp": 1673760044817,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameGravity"
+            }
+        },
+        {
+            "timestamp": 1673760045857,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameGravity"
+            }
+        },
+        {
+            "timestamp": 1673760046793,
+            "event": {
+                "stateholder": "/core/CoreGame",
+                "event": "gameGravity"
+            }
+        }
+    ]
+}

@@ -1,5 +1,5 @@
 <script>
-	import { recordState, registerStateholder } from "~/lib/replayHolder";
+	import { now, recordState, registerStateholder } from "~/lib/replayHolder";
 
 	registerStateholder("/components/PPSCounter", { stateFire: (s) => (state = { ...s, _disableRecord: true }) });
 
@@ -14,7 +14,7 @@
 		delete state._disableRecord;
 	}
 
-	$: state.pps = state.dropTimestamps.length / ((Date.now() - state.gameStartTimestamp) / 1000) || 0;
+	$: state.pps = state.dropTimestamps.length / ((now() - state.gameStartTimestamp) / 1000) || 0;
 
 	export function reset() {
 		state.dropTimestamps = [];
@@ -23,11 +23,11 @@
 	}
 
 	export function start() {
-		state.gameStartTimestamp = Date.now();
+		state.gameStartTimestamp = now();
 	}
 
 	export function handleDrop() {
-		state.dropTimestamps = [...state.dropTimestamps, Date.now()];
+		state.dropTimestamps = [...state.dropTimestamps, now()];
 	}
 </script>
 

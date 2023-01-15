@@ -34,7 +34,7 @@
 		window.addEventListener("keydown", (e) => {
 			if (e.key === "Escape") {
 				// console.log(!currentGameMode || !$inMenu);
-				$inMenu = !currentGameMode || !$inMenu;
+				if (currentGameMode || gameView == "replay") $inMenu = !$inMenu;
 			}
 		});
 	});

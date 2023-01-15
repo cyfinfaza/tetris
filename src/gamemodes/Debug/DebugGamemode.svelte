@@ -87,7 +87,7 @@
 		addDebugListeners();
 	});
 
-	$: console.log($numStates);
+	// $: console.log($numStates);
 </script>
 
 <CoreGame

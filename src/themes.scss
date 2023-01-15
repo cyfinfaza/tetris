@@ -1,6 +1,6 @@
 body,
 body.theme-default {
-	--block-size: calc(90vh / 20);
+	--game-height: 90vh;
 
 	--window-bg: #000;
 	--board-bg: #fff2;
@@ -14,7 +14,7 @@ body.theme-default {
 	--piece-Z: #ef2029;
 	--piece-J: #5a65ad;
 	--piece-L: #ef7921;
-	--piece-bracket: center / contain no-repeat url('/res/bracket-green.png');
+	--piece-bracket: center / contain no-repeat url("/res/bracket-green.png");
 	--piece-clearable-garbage: #888;
 	.piece {
 		// transition: 120ms;

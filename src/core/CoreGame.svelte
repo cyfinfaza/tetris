@@ -89,6 +89,9 @@
 			game.applyGravity();
 			updateVis();
 		},
+		lockOnGround: () => {
+			game.lockOnGround();
+		},
 		gameLeft: () => {
 			let ret;
 			playMoveSFX((ret = game.left()));
@@ -140,16 +143,17 @@
 	function fireEvent(eventName, records = true) {
 		if (events[eventName]) {
 			if (events[eventName]()) {
-				console.log(events[eventName]);
+				// console.log(events[eventName]);
 				return;
 			}
 			if (records) recordEvent("/core/CoreGame", eventName);
+			// console.log(eventName);
 			updateVis();
 		}
 	}
 
 	$: {
-		console.log("recording state", state);
+		// console.log("recording state", state);
 		if (!state._disableRecord) {
 			recordState("/core/CoreGame", state);
 			recordState("/core/tetris", game);
@@ -266,7 +270,7 @@
 			clearTimeout(lockTimeout);
 			if ($inReplay || g.lockDelay === Infinity) return dispatch("touchGround");
 			lockTimeout = setTimeout(() => {
-				g.lockOnGround();
+				fireEvent("lockOnGround");
 			}, (g.lockDelay * 1000) / 60);
 			dispatch("touchGround");
 		};
@@ -465,7 +469,7 @@
 		if (e.repeat) {
 			return;
 		}
-		if (!$inMenu) {
+		if (!$inMenu && !$inReplay) {
 			if (!controlMapDown[e.code]) return;
 			if (inputDisabled && controlMapDown[e.code].indexOf("gameRestart") < 0) return;
 
@@ -555,11 +559,11 @@
 		}
 	}
 
-	/* @keyframes fadeOut {
+	@keyframes fadeOut {
 		100% {
 			opacity: 0;
 		}
-	} */
+	}
 
 	.bounceIn {
 		animation: zoomIn 240ms cubic-bezier(0.175, 0.885, 0.32, 1.275) backwards, fadeOut 5s 240ms linear forwards;

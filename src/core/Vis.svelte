@@ -1,6 +1,6 @@
 <script>
 	import { createEventDispatcher } from "svelte";
-	import { inMenu } from "~/lib/stores";
+	import { inMenu, inReplay } from "~/lib/stores";
 	import PieceViewer from "./PieceViewer.svelte";
 	import { sx, sy, ry } from "./tetris";
 	import { userConfig } from "~/lib/stores";
@@ -15,6 +15,8 @@
 	export let disabled = false;
 
 	export let settingsOpen = true;
+
+	$: if ($inReplay) settingsOpen = false;
 
 	let _shake = false;
 
@@ -119,6 +121,7 @@
 	.vis {
 		width: 100%;
 		height: 100%;
+		--block-size: calc(var(--game-height) / 20);
 		align-items: center;
 		justify-items: center;
 		display: grid;
@@ -141,7 +144,7 @@
 		}
 	}
 	.board {
-		height: 90vh;
+		height: var(--game-height);
 		padding: 5vh;
 		box-sizing: content-box;
 		display: flex;

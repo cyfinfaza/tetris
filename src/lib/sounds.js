@@ -1,6 +1,6 @@
 import { Howl, Howler } from "howler";
 import { userConfig, windowInFocus } from "./stores";
-import { get } from "svelte/store";
+import { get, writable } from "svelte/store";
 
 Howler.volume(0.5);
 
@@ -37,8 +37,8 @@ export const sounds = {
 	}),
 };
 
-function playSFX(sound, vol=1.0) {
-	sound.volume(vol * get(userConfig).sfxVol / 200);
+function playSFX(sound, vol = 1.0) {
+	sound.volume((vol * get(userConfig).sfxVol) / 200);
 	sound.play();
 }
 
@@ -84,8 +84,11 @@ export function playGameoverSFX() {
 
 function recheckVolume() {
 	Howler.volume(get(userConfig).masterVol / 100);
-	// Howler.mute(!get(userConfig).sfx || !get(windowInFocus));
+	Howler.mute(!get(userConfig).sfx || !get(windowInFocus) || get(generalSoundDisable));
 }
+
+export const generalSoundDisable = writable(false);
 
 userConfig.subscribe(recheckVolume);
 windowInFocus.subscribe(recheckVolume);
+generalSoundDisable.subscribe(recheckVolume);

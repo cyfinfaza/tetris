@@ -26,13 +26,13 @@
 
 	function handleLinesCleared(e) {
 		const clearedLines = e.detail.numLines;
-		console.log(clearedLines);
+		// console.log(clearedLines);
 		for (let y = 0; y < clearedLines; y++) {
 			for (let x = 0; x < sx; x++) {
 				if (2 < x && x < 7) {
 					continue;
 				}
-				console.log(x, y);
+				// console.log(x, y);
 				game.staticMatrix[y][x] = { type: "clearable-garbage" };
 			}
 		}
