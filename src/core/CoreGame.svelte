@@ -149,6 +149,7 @@
 	}
 
 	$: {
+		console.log("recording state", state);
 		if (!state._disableRecord) {
 			recordState("/core/CoreGame", state);
 			recordState("/core/tetris", game);

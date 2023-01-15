@@ -10,8 +10,9 @@ export const numStates = writable(0);
 export function recordEvent(stateholder, event, args = []) {
 	// console.warn("recordEvent", stateholder);
 	timeline.push({ timestamp: Date.now() });
-	timeline[timeline.length - 1].event = { stateholder, event };
-	if (args.length) timeline[timeline.length - 1].args = args;
+	atIndex = timeline.length - 1;
+	timeline[atIndex].event = { stateholder, event };
+	if (args.length) timeline[atIndex].args = args;
 	numStates.set(timeline.length);
 }
 
@@ -19,9 +20,9 @@ export function recordState(stateholder, state) {
 	if (timeline.length === 0) timeline.push({ timestamp: Date.now(), state: {} });
 	console.warn("recordState", stateholder);
 	state = JSON.stringify(state);
-	if (!timeline[timeline.length - 1].state) timeline[timeline.length - 1].state = {};
-	console.log(timeline.length);
-	timeline[timeline.length - 1].state[stateholder] = state;
+	if (!timeline[atIndex].state) timeline[atIndex].state = {};
+	// console.log(timeline.length);
+	timeline[atIndex].state[stateholder] = state;
 	numStates.set(timeline.length);
 }
 
@@ -72,6 +73,20 @@ export function step() {
 	return true;
 }
 
+async function delay(ms) {
+	return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+export async function populateStates() {
+	goToIndex(0);
+	while (step()) {
+		console.log(atIndex);
+		// console.log(timeline);
+		await delay(10);
+	}
+	console.log(timeline);
+}
+
 window.timeline = timeline;
 window.goToIndex = goToIndex;
 window.exportReplayTimeline = exportReplayTimeline;
@@ -87,5 +102,5 @@ function exportReplayTimeline(meta) {
 }
 
 export function importReplayTimeline(replay) {
-	timeline = [{state: replay.initialState}, ...replay.timeline];
+	timeline = [{ state: replay.initialState }, ...replay.timeline];
 }

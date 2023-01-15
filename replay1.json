@@ -1,0 +1,414 @@
+{
+	"meta": { "gamemode": "debug" },
+	"initialState": {
+		"/gamemodes/DebugGamemode": "{\"linesCleared\":0,\"gravityEnabled\":true,\"inputEnabled\":true}",
+		"/core/CoreGame": "{\"grid\":[[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null]],\"queue\":[{\"type\":\"S\",\"color\":\"#42B642\",\"spawnX\":3,\"spawnY\":19,\"shape\":[[0,1,1],[1,1,0],[0,0,0]]},{\"type\":\"L\",\"color\":\"#EF7921\",\"spawnX\":3,\"spawnY\":19,\"shape\":[[0,0,1],[1,1,1],[0,0,0]]},{\"type\":\"I\",\"color\":\"#31C7EF\",\"spawnX\":3,\"spawnY\":19,\"shape\":[[0,0,0,0],[1,1,1,1],[0,0,0,0],[0,0,0,0]]},{\"type\":\"J\",\"color\":\"#5A65AD\",\"spawnX\":3,\"spawnY\":19,\"shape\":[[1,0,0],[1,1,1],[0,0,0]]},{\"type\":\"Z\",\"color\":\"#EF2029\",\"spawnX\":3,\"spawnY\":19,\"shape\":[[1,1,0],[0,1,1],[0,0,0]]}],\"holdPiece\":null,\"gameOver\":false,\"achievementMessages\":[{\"text\":\"\",\"id\":0.7009650073908504},{\"text\":\"\",\"id\":0.6606710565784593}],\"amIndex\":0}",
+		"/core/tetris": "{\"config\":{\"randomSeed\":null,\"floorMoveLimit\":15,\"queueLength\":5,\"blockSet\":[{\"type\":\"I\",\"color\":\"#31C7EF\",\"spawnX\":3,\"spawnY\":19,\"shape\":[[0,0,0,0],[1,1,1,1],[0,0,0,0],[0,0,0,0]]},{\"type\":\"O\",\"color\":\"#F7D308\",\"spawnX\":4,\"spawnY\":19,\"shape\":[[1,1],[1,1]]},{\"type\":\"T\",\"color\":\"#AD4D9C\",\"spawnX\":3,\"spawnY\":19,\"shape\":[[0,1,0],[1,1,1],[0,0,0]]},{\"type\":\"S\",\"color\":\"#42B642\",\"spawnX\":3,\"spawnY\":19,\"shape\":[[0,1,1],[1,1,0],[0,0,0]]},{\"type\":\"Z\",\"color\":\"#EF2029\",\"spawnX\":3,\"spawnY\":19,\"shape\":[[1,1,0],[0,1,1],[0,0,0]]},{\"type\":\"J\",\"color\":\"#5A65AD\",\"spawnX\":3,\"spawnY\":19,\"shape\":[[1,0,0],[1,1,1],[0,0,0]]},{\"type\":\"L\",\"color\":\"#EF7921\",\"spawnX\":3,\"spawnY\":19,\"shape\":[[0,0,1],[1,1,1],[0,0,0]]}],\"kickSet\":[{\"appliesTo\":[\"I\",\"O\"],\"kicks\":[[[],[[0,0],[1,0],[-2,0],[-2,1],[1,-2]],[[0,0],[0,-1],[1,-1],[-1,-1],[1,0],[-1,0]],[[0,0],[-1,0],[2,0],[2,1],[-1,-2]]],[[[0,0],[-1,0],[2,0],[-1,2],[2,-1]],[],[[0,0],[-1,0],[2,0],[-1,-2],[2,1]],[[0,0],[1,0],[1,-2],[1,-1],[0,-2],[0,-1]]],[[[0,0],[0,1],[-1,1],[1,1],[-1,0],[1,0]],[[0,0],[-2,0],[1,0],[-2,-1],[1,2]],[],[[0,0],[2,0],[-1,0],[2,-1],[-1,2]]],[[[0,0],[1,0],[-2,0],[1,2],[-2,-1]],[[0,0],[-1,0],[-1,-2],[-1,-1],[0,-2],[0,-1]],[[0,0],[1,0],[-2,0],[1,-2],[-2,1]],[]]]},{\"appliesTo\":[\"J\",\"L\",\"S\",\"T\",\"Z\"],\"kicks\":[[[],[[0,0],[-1,0],[-1,-1],[0,2],[-1,2]],[[0,0],[0,-1],[1,-1],[-1,-1],[1,0],[-1,0]],[[0,0],[1,0],[1,-1],[0,2],[1,2]]],[[[0,0],[1,0],[1,1],[0,-2],[1,-2]],[],[[0,0],[1,0],[1,1],[0,-2],[1,-2]],[[0,0],[1,0],[1,-2],[1,-1],[0,-2],[0,-1]]],[[[0,0],[0,1],[-1,1],[1,1],[-1,0],[1,0]],[[0,0],[-1,0],[-1,-1],[0,2],[-1,2]],[],[[0,0],[1,0],[1,-1],[0,2],[1,2]]],[[[0,0],[-1,0],[-1,1],[0,-2],[-1,-2]],[[0,0],[-1,0],[-1,-2],[-1,-1],[0,-2],[0,-1]],[[0,0],[-1,0],[-1,1],[0,-2],[-1,-2]],[]]]}]},\"staticMatrix\":[[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null]],\"activePiece\":{\"type\":\"T\",\"color\":\"#AD4D9C\",\"spawnX\":3,\"spawnY\":19,\"shape\":[[0,1,0],[1,1,1],[0,0,0]],\"x\":3,\"y\":19,\"floorMoves\":0,\"originalShape\":[[0,1,0],[1,1,1],[0,0,0]],\"rotationState\":0},\"holdPiece\":null,\"holdAvailable\":true,\"gravityLevel\":0.016666666666666666,\"lockDelay\":30,\"lockTimeout\":null,\"gameOver\":false,\"numLinesCleared\":0,\"currentCombo\":0,\"comboActive\":false,\"initialSeed\":597264,\"seed\":319394419,\"bag\":[{\"type\":\"O\",\"color\":\"#F7D308\",\"spawnX\":4,\"spawnY\":19,\"shape\":[[1,1],[1,1]]}],\"queue\":[{\"type\":\"S\",\"color\":\"#42B642\",\"spawnX\":3,\"spawnY\":19,\"shape\":[[0,1,1],[1,1,0],[0,0,0]]},{\"type\":\"L\",\"color\":\"#EF7921\",\"spawnX\":3,\"spawnY\":19,\"shape\":[[0,0,1],[1,1,1],[0,0,0]]},{\"type\":\"I\",\"color\":\"#31C7EF\",\"spawnX\":3,\"spawnY\":19,\"shape\":[[0,0,0,0],[1,1,1,1],[0,0,0,0],[0,0,0,0]]},{\"type\":\"J\",\"color\":\"#5A65AD\",\"spawnX\":3,\"spawnY\":19,\"shape\":[[1,0,0],[1,1,1],[0,0,0]]},{\"type\":\"Z\",\"color\":\"#EF2029\",\"spawnX\":3,\"spawnY\":19,\"shape\":[[1,1,0],[0,1,1],[0,0,0]]}],\"_running\":true,\"lastSpin\":null}",
+		"/components/PPSCounter": "{\"dropTimestamps\":[],\"gameStartTimestamp\":1673748746906,\"pps\":0}"
+	},
+	"timeline": [
+		{
+			"timestamp": 1673748746875,
+			"event": null
+		},
+		{
+			"timestamp": 1673748747938,
+			"event": {
+				"stateholder": "/core/CoreGame",
+				"event": "gameGravity"
+			}
+		},
+		{
+			"timestamp": 1673748748540,
+			"event": {
+				"stateholder": "/core/CoreGame",
+				"event": "gameLeft"
+			}
+		},
+		{
+			"timestamp": 1673748748551,
+			"event": {
+				"stateholder": "/core/CoreGame",
+				"event": "gameCW"
+			}
+		},
+		{
+			"timestamp": 1673748748686,
+			"event": {
+				"stateholder": "/core/CoreGame",
+				"event": "gameLeft"
+			}
+		},
+		{
+			"timestamp": 1673748748687,
+			"event": {
+				"stateholder": "/core/CoreGame",
+				"event": "gameLeft"
+			}
+		},
+		{
+			"timestamp": 1673748748687,
+			"event": {
+				"stateholder": "/core/CoreGame",
+				"event": "gameLeft"
+			}
+		},
+		{
+			"timestamp": 1673748748796,
+			"event": {
+				"stateholder": "/core/CoreGame",
+				"event": "gameDrop"
+			}
+		},
+		{
+			"timestamp": 1673748748912,
+			"event": {
+				"stateholder": "/core/CoreGame",
+				"event": "gameLeft"
+			}
+		},
+		{
+			"timestamp": 1673748749077,
+			"event": {
+				"stateholder": "/core/CoreGame",
+				"event": "gameSonic"
+			}
+		},
+		{
+			"timestamp": 1673748749145,
+			"event": {
+				"stateholder": "/core/CoreGame",
+				"event": "gameLeft"
+			}
+		},
+		{
+			"timestamp": 1673748749315,
+			"event": {
+				"stateholder": "/core/CoreGame",
+				"event": "gameDrop"
+			}
+		},
+		{
+			"timestamp": 1673748749391,
+			"event": {
+				"stateholder": "/core/CoreGame",
+				"event": "gameRight"
+			}
+		},
+		{
+			"timestamp": 1673748749541,
+			"event": {
+				"stateholder": "/core/CoreGame",
+				"event": "gameRight"
+			}
+		},
+		{
+			"timestamp": 1673748749542,
+			"event": {
+				"stateholder": "/core/CoreGame",
+				"event": "gameRight"
+			}
+		},
+		{
+			"timestamp": 1673748749542,
+			"event": {
+				"stateholder": "/core/CoreGame",
+				"event": "gameRight"
+			}
+		},
+		{
+			"timestamp": 1673748749631,
+			"event": {
+				"stateholder": "/core/CoreGame",
+				"event": "gameDrop"
+			}
+		},
+		{
+			"timestamp": 1673748749715,
+			"event": {
+				"stateholder": "/core/CoreGame",
+				"event": "gameCW"
+			}
+		},
+		{
+			"timestamp": 1673748749791,
+			"event": {
+				"stateholder": "/core/CoreGame",
+				"event": "gameRight"
+			}
+		},
+		{
+			"timestamp": 1673748750014,
+			"event": {
+				"stateholder": "/core/CoreGame",
+				"event": "gameDrop"
+			}
+		},
+		{
+			"timestamp": 1673748750129,
+			"event": {
+				"stateholder": "/core/CoreGame",
+				"event": "gameLeft"
+			}
+		},
+		{
+			"timestamp": 1673748750464,
+			"event": {
+				"stateholder": "/core/CoreGame",
+				"event": "gameHold"
+			}
+		},
+		{
+			"timestamp": 1673748750498,
+			"event": {
+				"stateholder": "/core/CoreGame",
+				"event": "gameLeft"
+			}
+		},
+		{
+			"timestamp": 1673748750645,
+			"event": {
+				"stateholder": "/core/CoreGame",
+				"event": "gameLeft"
+			}
+		},
+		{
+			"timestamp": 1673748750646,
+			"event": {
+				"stateholder": "/core/CoreGame",
+				"event": "gameLeft"
+			}
+		},
+		{
+			"timestamp": 1673748750730,
+			"event": {
+				"stateholder": "/core/CoreGame",
+				"event": "gameDrop"
+			}
+		},
+		{
+			"timestamp": 1673748750798,
+			"event": {
+				"stateholder": "/core/CoreGame",
+				"event": "gameRight"
+			}
+		},
+		{
+			"timestamp": 1673748750950,
+			"event": {
+				"stateholder": "/core/CoreGame",
+				"event": "gameRight"
+			}
+		},
+		{
+			"timestamp": 1673748750950,
+			"event": {
+				"stateholder": "/core/CoreGame",
+				"event": "gameRight"
+			}
+		},
+		{
+			"timestamp": 1673748750950,
+			"event": {
+				"stateholder": "/core/CoreGame",
+				"event": "gameRight"
+			}
+		},
+		{
+			"timestamp": 1673748751007,
+			"event": {
+				"stateholder": "/core/CoreGame",
+				"event": "gameLeft"
+			}
+		},
+		{
+			"timestamp": 1673748751111,
+			"event": {
+				"stateholder": "/core/CoreGame",
+				"event": "gameDrop"
+			}
+		},
+		{
+			"timestamp": 1673748751153,
+			"event": {
+				"stateholder": "/core/CoreGame",
+				"event": "gameRight"
+			}
+		},
+		{
+			"timestamp": 1673748751242,
+			"event": {
+				"stateholder": "/core/CoreGame",
+				"event": "gameFlip"
+			}
+		},
+		{
+			"timestamp": 1673748751301,
+			"event": {
+				"stateholder": "/core/CoreGame",
+				"event": "gameRight"
+			}
+		},
+		{
+			"timestamp": 1673748751302,
+			"event": {
+				"stateholder": "/core/CoreGame",
+				"event": "gameRight"
+			}
+		},
+		{
+			"timestamp": 1673748751302,
+			"event": {
+				"stateholder": "/core/CoreGame",
+				"event": "gameRight"
+			}
+		},
+		{
+			"timestamp": 1673748751472,
+			"event": {
+				"stateholder": "/core/CoreGame",
+				"event": "gameDrop"
+			}
+		},
+		{
+			"timestamp": 1673748752513,
+			"event": {
+				"stateholder": "/core/CoreGame",
+				"event": "gameGravity"
+			}
+		},
+		{
+			"timestamp": 1673748753157,
+			"event": {
+				"stateholder": "/core/CoreGame",
+				"event": "gameHold"
+			}
+		},
+		{
+			"timestamp": 1673748753198,
+			"event": {
+				"stateholder": "/core/CoreGame",
+				"event": "gameCCW"
+			}
+		},
+		{
+			"timestamp": 1673748753229,
+			"event": {
+				"stateholder": "/core/CoreGame",
+				"event": "gameRight"
+			}
+		},
+		{
+			"timestamp": 1673748753369,
+			"event": {
+				"stateholder": "/core/CoreGame",
+				"event": "gameSonic"
+			}
+		},
+		{
+			"timestamp": 1673748753434,
+			"event": {
+				"stateholder": "/core/CoreGame",
+				"event": "gameLeft"
+			}
+		},
+		{
+			"timestamp": 1673748753578,
+			"event": {
+				"stateholder": "/core/CoreGame",
+				"event": "gameDrop"
+			}
+		},
+		{
+			"timestamp": 1673748753596,
+			"event": {
+				"stateholder": "/core/CoreGame",
+				"event": "gameFlip"
+			}
+		},
+		{
+			"timestamp": 1673748753658,
+			"event": {
+				"stateholder": "/core/CoreGame",
+				"event": "gameSonic"
+			}
+		},
+		{
+			"timestamp": 1673748753684,
+			"event": {
+				"stateholder": "/core/CoreGame",
+				"event": "gameLeft"
+			}
+		},
+		{
+			"timestamp": 1673748753689,
+			"event": {
+				"stateholder": "/core/CoreGame",
+				"event": "gameDown"
+			}
+		},
+		{
+			"timestamp": 1673748753951,
+			"event": {
+				"stateholder": "/core/CoreGame",
+				"event": "gameDrop"
+			}
+		},
+		{
+			"timestamp": 1673748754157,
+			"event": {
+				"stateholder": "/core/CoreGame",
+				"event": "gameHold"
+			}
+		},
+		{
+			"timestamp": 1673748754225,
+			"event": {
+				"stateholder": "/core/CoreGame",
+				"event": "gameLeft"
+			}
+		},
+		{
+			"timestamp": 1673748754409,
+			"event": {
+				"stateholder": "/core/CoreGame",
+				"event": "gameDrop"
+			}
+		},
+		{
+			"timestamp": 1673748754458,
+			"event": {
+				"stateholder": "/core/CoreGame",
+				"event": "gameCW"
+			}
+		},
+		{
+			"timestamp": 1673748754718,
+			"event": {
+				"stateholder": "/core/CoreGame",
+				"event": "gameDrop"
+			}
+		},
+		{
+			"timestamp": 1673748755745,
+			"event": {
+				"stateholder": "/core/CoreGame",
+				"event": "gameGravity"
+			}
+		},
+		{
+			"timestamp": 1673748756785,
+			"event": {
+				"stateholder": "/core/CoreGame",
+				"event": "gameGravity"
+			}
+		},
+		{
+			"timestamp": 1673748757751,
+			"event": {
+				"stateholder": "/core/CoreGame",
+				"event": "gameGravity"
+			}
+		}
+	]
+}
