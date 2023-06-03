@@ -1,10 +1,11 @@
 <script>
-	import { onMount } from "svelte";
+	import { onMount, getContext } from "svelte";
 	import TetrisGame, { ry } from "~/core/tetris";
 	import CoreGame from "~/core/CoreGame.svelte";
 	import PpsCounter from "~/components/PPSCounter.svelte";
 	import Setting from "~/components/Setting.svelte";
-	import { numStates, goToIndex, recordEvent, registerStateholder, recordState } from "~/lib/replayHolder";
+	
+	const { numStates, goToIndex, recordEvent, registerStateholder, recordState } = getContext('replayHolder');
 
 	let state = {
 		linesCleared: 0,

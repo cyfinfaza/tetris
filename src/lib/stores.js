@@ -14,7 +14,6 @@ userConfig.subscribe((value) => {
 });
 
 export const inMenu = writable(true);
-export const inReplay = writable(false);
 
 export const windowInFocus = writable(true);
 document.addEventListener("visibilitychange", () => {

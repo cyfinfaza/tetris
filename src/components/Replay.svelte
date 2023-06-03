@@ -1,7 +1,13 @@
 <script>
-	import { onMount, onDestroy } from "svelte";
+	import { onMount, onDestroy, getContext } from "svelte";
 	import GameModes from "~/gamemodes/index-singleplayer";
-	import {
+	export let replayFile;
+	let replayData = null;
+	let gameComponent;
+	import { generalSoundDisable } from "~/lib/sounds";
+
+	// TODO: WORRY ABOUT THIS LATER
+	const {
 		goToIndex,
 		importReplayTimeline,
 		populateStatesGen,
@@ -9,12 +15,8 @@
 		atIndex,
 		getFrameTimestamp,
 		overrideNowOffset,
-	} from "~/lib/replayHolder";
-	export let replayFile;
-	let replayData = null;
-	let gameComponent;
-	import { numStates } from "~/lib/replayHolder";
-	import { generalSoundDisable } from "~/lib/sounds";
+		numStates
+	} = getContext('replayHolder');
 
 	let running = false;
 	let startTimestamp = null;

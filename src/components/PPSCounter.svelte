@@ -1,5 +1,6 @@
 <script>
-	import { now, recordState, registerStateholder } from "~/lib/replayHolder";
+	import { getContext } from "svelte";
+	const { now, recordState, registerStateholder } = getContext('replayHolder');
 
 	registerStateholder("/components/PPSCounter", { stateFire: (s) => (state = { ...s, _disableRecord: true }) });
 

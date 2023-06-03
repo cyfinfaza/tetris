@@ -1,6 +1,6 @@
 <script>
 	import GameModes from "~/gamemodes/index-singleplayer";
-	import { onMount } from "svelte";
+	import { onMount, setContext } from "svelte";
 	import Setting from "./components/Setting.svelte";
 	import KeybindSetting from "./components/KeybindSetting.svelte";
 	import Heading from "./components/Heading.svelte";
@@ -8,9 +8,13 @@
 
 	import { inMenu } from "./lib/stores";
 	import Replay from "./components/Replay.svelte";
+	import { ReplayHolder } from "./lib/replayHolder";
 
 	let gameView = "game";
 	$: $inReplay = gameView === "replay";
+
+	const replayHolder = new ReplayHolder();
+	setContext('replayHolder', replayHolder);
 
 	const menus = [
 		{ id: "play", name: "Play" },
