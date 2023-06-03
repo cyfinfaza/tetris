@@ -1,10 +1,12 @@
 <script>
 	import { createEventDispatcher } from "svelte";
-	import { inMenu, inReplay } from "~/lib/stores";
+	import { inMenu } from "~/lib/stores";
 	import PieceViewer from "./PieceViewer.svelte";
 	import { sx, sy, ry } from "./tetris";
 	import { userConfig } from "~/lib/stores";
-	import { onMount } from "svelte";
+	import { onMount, getContext } from "svelte";
+
+	const { inReplay } = getContext("replayHolder");
 
 	export let grid = game.grid;
 	export let queue = game.queue;

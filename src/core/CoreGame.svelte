@@ -1,5 +1,5 @@
 <script>
-	import { onMount, onDestroy } from "svelte";
+	import { onMount, onDestroy, getContext } from "svelte";
 	import blocks from "~/constants/blocks/blocks";
 	import {
 		sounds,
@@ -12,10 +12,10 @@
 	} from "~/lib/sounds";
 	import Vis from "./Vis.svelte";
 	import { createEventDispatcher } from "svelte";
-	import { inReplay, userConfig } from "~/lib/stores";
+	import { userConfig } from "~/lib/stores";
 	import { inMenu } from "~/lib/stores";
 	import { sx, sy } from "./tetris";
-	import { recordEvent, recordState, registerStateholder } from "~/lib/replayHolder";
+	const { recordEvent, recordState, registerStateholder, inReplay } = getContext("replayHolder");
 
 	const dispatch = createEventDispatcher();
 
