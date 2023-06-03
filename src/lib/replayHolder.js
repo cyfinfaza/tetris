@@ -15,14 +15,16 @@ export class ReplayHolder {
 		this.overrideNow = null;
 		this.nowOffset = null;
 
-		window.timeline = this.timeline;
+		// window.timeline = this.timeline;
 		window.goToIndex = this.goToIndex;
 		window.exportReplayTimeline = this.exportReplayTimeline;
+
+		this.populateStatesGen = this.populateStatesGen.bind(this);
 	}
 
 	overrideNowOffset = (startTs) => {
-		if (startTs == null) nowOffset = null;
-		else nowOffset = startTs - this.firstKnownTimestamp();
+		if (startTs == null) this.nowOffset = null;
+		else this.nowOffset = startTs - this.firstKnownTimestamp();
 	}
 
 	now = () => {
@@ -34,7 +36,7 @@ export class ReplayHolder {
 	recordEvent = (stateholder, event, args = []) => {
 		// console.warn("recordEvent", stateholder);
 		this.timeline.push({ timestamp: Date.now() });
-		this.atIndex = timeline.length - 1;
+		this.atIndex = this.timeline.length - 1;
 		this.timeline[this.atIndex].event = { stateholder, event };
 		if (args.length) this.timeline[this.atIndex].args = args;
 		this.numStates.set(this.timeline.length);
@@ -56,7 +58,6 @@ export class ReplayHolder {
 	}
 
 	registerStateholder = (stateholder, { eventFire, stateFire }) => {
-		console.log(this);
 		this.stateHolders[stateholder] = { eventFire, stateFire };
 	}
 
@@ -90,7 +91,7 @@ export class ReplayHolder {
 
 	step = (applyTime = false) => {
 		// console.log(atIndex);
-		let timelineAtIndex = timeline[atIndex + 1];
+		let timelineAtIndex = this.timeline[this.atIndex + 1];
 		// console.log(timelineAtIndex);
 		if (!timelineAtIndex) return false;
 		let eventAtIndex = timelineAtIndex.event;
@@ -130,11 +131,11 @@ export class ReplayHolder {
 			// console.log(timeline);
 			yield count++ / this.timeline.length;
 			// await delay(0);
-			await this.tick();
+			await tick();
 			if (count % 100 === 0) await this.delay(0);
 		}
-		overrideNow = null;
-		console.log(timeline);
+		this.overrideNow = null;
+		console.log(this.timeline);
 	}
 
 	populateStates = async () => {

@@ -37,6 +37,12 @@
 
 	const dispatch = createEventDispatcher();
 
+	const defaultGrid = Array(20).fill(Array(10).fill(null));
+	const sanitizeGrid = (g) => {
+		if (g && g.length && g[0].length) return g
+		return defaultGrid
+	}
+
 	export let pieceElements = new Array(sy).fill(null).map(() => new Array(sx).fill(null));
 
 	onMount(() => {
@@ -45,6 +51,7 @@
 			}
 		});
 	});
+
 </script>
 
 <div
@@ -81,7 +88,7 @@
 			</div>
 		</div>
 		<div class="grid" tabindex="-1" bind:this={gameGridElement}>
-			{#each grid as row, i}
+			{#each sanitizeGrid(grid) as row, i}
 				{#each row as cell, j}
 					<div
 						class="piece"
@@ -98,7 +105,7 @@
 		</div>
 		<div class="right">
 			<div class="queue">
-				{#each queue as piece}
+				{#each queue || [] as piece}
 					<PieceViewer {piece} />
 				{/each}
 			</div>

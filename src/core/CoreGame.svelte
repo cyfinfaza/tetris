@@ -133,11 +133,17 @@
 
 	registerStateholder("/core/CoreGame", {
 		eventFire: (e) => fireEvent(e, false),
-		stateFire: (s) => (state = { ...s, _disableRecord: true }),
+		stateFire: (s) => {
+			console.log('CG', s);
+			state = {...s, _disableRecord: true};
+		},
 	});
 
 	registerStateholder("/core/tetris", {
-		stateFire: (s) => game.setStateFromObj(s),
+		stateFire: (s) => {
+			console.log('T', s);
+			game.setStateFromObj(s);
+		},
 	});
 
 	function fireEvent(eventName, records = true) {

@@ -1,10 +1,17 @@
 <script>
-	import { onMount, onDestroy, getContext } from "svelte";
+	import { onMount, onDestroy, setContext } from "svelte";
 	import GameModes from "~/gamemodes/index-singleplayer";
 	export let replayFile;
 	let replayData = null;
 	let gameComponent;
 	import { generalSoundDisable } from "~/lib/sounds";
+	import { ReplayHolder } from "~/lib/replayHolder";
+
+	const replayHolder = new ReplayHolder();
+	setContext('replayHolder', replayHolder);
+
+    // $: replayHolder.$inReplay = gameView === "replay";
+    replayHolder.$inReplay = true;
 
 	// TODO: WORRY ABOUT THIS LATER
 	const {
@@ -16,7 +23,7 @@
 		getFrameTimestamp,
 		overrideNowOffset,
 		numStates
-	} = getContext('replayHolder');
+	} = replayHolder;
 
 	let running = false;
 	let startTimestamp = null;
@@ -95,6 +102,7 @@
 		}
 		$generalSoundDisable = true;
 		for await (const progress of populateStatesGen()) {
+			console.log('something');
 			populationProgress = progress;
 		}
 		$generalSoundDisable = false;

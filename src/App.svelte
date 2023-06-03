@@ -8,15 +8,10 @@
 
 	import { inMenu } from "./lib/stores";
 	import Replay from "./components/Replay.svelte";
-	import { ReplayHolder } from "./lib/replayHolder";
-
-	const replayHolder = new ReplayHolder();
+	import GameSession from "./core/GameSession.svelte";
 	
 	let gameView = "game";
-	$: replayHolder.$inReplay = gameView === "replay";
 	
-	setContext('replayHolder', replayHolder);
-
 	const menus = [
 		{ id: "play", name: "Play" },
 		{ id: "replays", name: "Replays" },
@@ -49,7 +44,7 @@
 	<div class="game" class:inMenu={$inMenu}>
 		{#if gameComponent}
 			{#key currentGameMode}
-				<svelte:component this={gameComponent} {...GameModes[currentGameMode].props} />
+				<GameSession {gameComponent} gameProps={GameModes[currentGameMode].props}/>
 			{/key}
 		{/if}
 	</div>
