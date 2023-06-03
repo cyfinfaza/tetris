@@ -13,7 +13,7 @@
 	const replayHolder = new ReplayHolder();
 	
 	let gameView = "game";
-	$: $replayHolder.inReplay = gameView === "replay";
+	$: replayHolder.$inReplay = gameView === "replay";
 	
 	setContext('replayHolder', replayHolder);
 
