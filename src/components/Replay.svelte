@@ -11,15 +11,13 @@
 	setContext('replayHolder', replayHolder);
 
     // $: replayHolder.$inReplay = gameView === "replay";
-    replayHolder.$inReplay = true;
+    replayHolder.inReplay.set(true);
 
-	// TODO: WORRY ABOUT THIS LATER
 	const {
 		goToIndex,
 		importReplayTimeline,
 		populateStatesGen,
 		step,
-		atIndex,
 		getFrameTimestamp,
 		overrideNowOffset,
 		numStates
@@ -62,7 +60,7 @@
 					running = false;
 					break;
 				}
-				slider.value = atIndex;
+				slider.value = replayHolder.atIndex;
 			}
 		}
 		requestAnimationFrame(tick);
@@ -72,11 +70,11 @@
 		switch (e.key) {
 			case "ArrowLeft":
 				e.preventDefault();
-				goToIndex(atIndex - 1);
+				goToIndex(replayHolder.atIndex - 1);
 				break;
 			case "ArrowRight":
 				e.preventDefault();
-				goToIndex(atIndex + 1);
+				goToIndex(replayHolder.atIndex + 1);
 				break;
 			case " ":
 				if (running) {
@@ -92,7 +90,7 @@
 				goToIndex($numStates - 1);
 				break;
 		}
-		slider.value = atIndex;
+		slider.value = replayHolder.atIndex;
 	}
 
 	onMount(async () => {
@@ -151,7 +149,7 @@
 			on:input={(e) => {
 				// running = false;
 				goToIndex(parseInt(e.target.value));
-				console.log(atIndex);
+				console.log(replayHolder.atIndex);
 				startTimestamp = Date.now() - getFrameTimestamp(0);
 			}}
 			bind:this={slider}

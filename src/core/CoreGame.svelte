@@ -71,6 +71,8 @@
 
 	let gravityTimeout = null;
 
+	$: console.log("coregame (global context) thinks we are in replay:", $inReplay);
+
 	const events = {
 		start: () => {
 			game.start();
