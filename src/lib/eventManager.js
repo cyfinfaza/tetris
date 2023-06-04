@@ -8,11 +8,14 @@ export default class EventManager {
         this.replayHolder = getContext("replayHolder");
         this.state = writable(initialState);
         this.stateRecordDisabled = true;
+        this.onPostEventFire = () => {};
+        this.onPostRecordState = () => {};
         this.state.subscribe((s) => {
-            console.log("state changed on", this.componentName, "and stateRecordDisabled is", this.stateRecordDisabled)
+            // console.log("state changed on", this.componentName, "and stateRecordDisabled is", this.stateRecordDisabled)
             if (!this.stateRecordDisabled)
             this.replayHolder.recordState(this.componentName, s);
             this.stateRecordDisabled = false;
+            this.onPostRecordState();
         });
 		this.replayHolder.registerStateholder(this.componentName, {
 			eventFire: (e, a) => {
@@ -21,7 +24,7 @@ export default class EventManager {
             },
 			stateFire: (s) => {
                 this.stateRecordDisabled = true;
-                console.log("statefire on", this.componentName, "with", s)
+                // console.log("statefire on", this.componentName, "with", s)
 				this.state.set(s);
 			},
 		});
@@ -31,7 +34,8 @@ export default class EventManager {
         if (records) this.replayHolder.recordEvent(this.componentName, eventName, args, recordsState);
         // console.log("trying to", eventName, "with", args, "on", this.componentName);
         if (this.events[eventName] && typeof this.events[eventName] === "function")
-		    this.events[eventName](...(args || []));
+		    {this.events[eventName](...(args || []));
+            this.onPostEventFire()}
         else console.warn("No event handler for", eventName, "on", this.componentName);
     }
 

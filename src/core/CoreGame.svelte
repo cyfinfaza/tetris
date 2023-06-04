@@ -17,32 +17,13 @@
 	import { sx, sy } from "./tetris";
 	import EventManager from "~/lib/eventManager";
 
-	const { recordEvent, recordState, registerStateholder, inReplay } = getContext("replayHolder");
+	const { inReplay } = getContext("replayHolder");
 
 	const dispatch = createEventDispatcher();
 
-	export let state = {
-		// pauseEnabled: true,
-		// pieceElements: undefined,
-		// game: undefined,
-		// blurGame: undefined,
-		// inputDisabled: false,
-		// gravityEnabled: true,
-		// sidePane: null,
-		grid: undefined,
-		queue: undefined,
-		holdPiece: null,
-		gameOver: false,
-		achievementMessages: [
-			{ text: "", id: Math.random() },
-			{ text: "", id: Math.random() },
-		],
-		// vis: undefined,
-		amIndex: 0,
-	};
 	window.setCgState = () => JSON.stringify(state);
 	window.setCgState = (s) => {
-		state = JSON.parse(s);
+		$state = JSON.parse(s);
 	};
 
 	export let pauseEnabled = true;
@@ -73,103 +54,103 @@
 
 	let gravityTimeout = null;
 
-	$: console.log("coregame (global context) thinks we are in replay:", $inReplay);
+	// $: console.log("coregame (global context) thinks we are in replay:", $inReplay);
 
-	const events = {
-		start: () => {
-			game.start();
-			updateVis();
+	const tetrisEventManager = new EventManager("/core/tetris");
+	tetrisEventManager.state.subscribe((s) => {
+		game.setStateFromObj(s);
+	});
+
+	const coreGameEventManager = new EventManager("/core/CoreGame", {
+		initialState: {
+			// pauseEnabled: true,
+			// pieceElements: undefined,
+			// game: undefined,
+			// blurGame: undefined,
+			// inputDisabled: false,
+			// gravityEnabled: true,
+			// sidePane: null,
+			grid: undefined,
+			queue: undefined,
+			holdPiece: null,
+			gameOver: false,
+			achievementMessages: [
+				{ text: "", id: Math.random() },
+				{ text: "", id: Math.random() },
+			],
+			// vis: undefined,
+			amIndex: 0,
 		},
-		restartGame,
-		gameOver: () => {
-			state.gameOver = true;
-			playGameoverSFX();
-			dispatch("gameOver");
+		events: {
+			start: () => {
+				game.start();
+				updateVis();
+			},
+			restartGame,
+			gameOver: () => {
+				state.gameOver = true;
+				playGameoverSFX();
+				dispatch("gameOver");
+			},
+			gameGravity: () => {
+				if (!gravityEnabled) {
+					return true;
+				}
+				game.applyGravity();
+				updateVis();
+			},
+			lockOnGround: () => {
+				game.lockOnGround();
+			},
+			gameLeft: () => {
+				let ret;
+				playMoveSFX((ret = game.left()));
+				return ret;
+			},
+			gameRight: () => {
+				let ret;
+				playMoveSFX((ret = game.right()));
+				return ret;
+			},
+			gameDown: () => {
+				let ret;
+				playMoveSFX((ret = game.down()));
+				return ret;
+			},
+			gameDrop: () => {
+				playMoveSFX(game.hardDrop());
+			},
+			gameSonic: () => {
+				playMoveSFX(game.sonicDrop());
+			},
+			gameDip: () => {
+				playMoveSFX(game.dip());
+			},
+			gameCW: () => {
+				playMoveSFX(game.rotateCW());
+			},
+			gameCCW: () => {
+				playMoveSFX(game.rotateCCW());
+			},
+			gameFlip: () => {
+				playMoveSFX(game.rotateFlip());
+			},
+			gameHold: () => {
+				playHoldSFX(game.hold());
+			},
+			gamePause: () => {},
 		},
-		gameGravity: () => {
-			if (!gravityEnabled) {
-				return true;
-			}
-			game.applyGravity();
-			updateVis();
-		},
-		lockOnGround: () => {
-			game.lockOnGround();
-		},
-		gameLeft: () => {
-			let ret;
-			playMoveSFX((ret = game.left()));
-			return ret;
-		},
-		gameRight: () => {
-			let ret;
-			playMoveSFX((ret = game.right()));
-			return ret;
-		},
-		gameDown: () => {
-			let ret;
-			playMoveSFX((ret = game.down()));
-			return ret;
-		},
-		gameDrop: () => {
-			playMoveSFX(game.hardDrop());
-		},
-		gameSonic: () => {
-			playMoveSFX(game.sonicDrop());
-		},
-		gameDip: () => {
-			playMoveSFX(game.dip());
-		},
-		gameCW: () => {
-			playMoveSFX(game.rotateCW());
-		},
-		gameCCW: () => {
-			playMoveSFX(game.rotateCCW());
-		},
-		gameFlip: () => {
-			playMoveSFX(game.rotateFlip());
-		},
-		gameHold: () => {
-			playHoldSFX(game.hold());
-		},
-		gamePause: () => {},
+	});
+
+	coreGameEventManager.onPostEventFire = () => {
+		updateVis();
+	};
+	coreGameEventManager.onPostRecordState = () => {
+		tetrisEventManager.state.set(game);
 	};
 
-	registerStateholder("/core/CoreGame", {
-		eventFire: (e) => fireEvent(e, false),
-		stateFire: (s) => {
-			console.log('CG', s);
-			state = {...s, _disableRecord: true};
-		},
-	});
-
-	registerStateholder("/core/tetris", {
-		stateFire: (s) => {
-			console.log('T', s);
-			game.setStateFromObj(s);
-		},
-	});
-
-	function fireEvent(eventName, records = true) {
-		if (events[eventName]) {
-			if (events[eventName]()) {
-				// console.log(events[eventName]);
-				return;
-			}
-			if (records) recordEvent("/core/CoreGame", eventName);
-			// console.log(eventName);
-			updateVis();
-		}
-	}
-
-	$: {
-		// console.log("recording state", state);
-		if (!state._disableRecord) {
-			recordState("/core/CoreGame", state);
-			recordState("/core/tetris", game);
-		}
-		delete state._disableRecord;
-	}
+	const state = coreGameEventManager.state;
+	const fireEvent = coreGameEventManager.fireEvent;
 
 	export function start() {
 		fireEvent("start");
@@ -212,12 +193,12 @@
 		clearTimeout(info.timeout);
 	}
 
-	// let state.amIndex = 0;
+	// let $state.amIndex = 0;
 	function updateAchievementMessage(e) {
 		if (e.isPerfectClear) {
-			state.achievementMessages[state.amIndex] = { text: "Perfect Clear", timestamp: Date.now(), id: Math.random() };
+			$state.achievementMessages[$state.amIndex] = { text: "Perfect Clear", timestamp: Date.now(), id: Math.random() };
 		}
-		state.amIndex = ++state.amIndex % state.achievementMessages.length;
+		$state.amIndex = ++$state.amIndex % $state.achievementMessages.length;
 		const clearedWord =
 			[
 				"Single",
@@ -246,14 +227,14 @@
 		if (e.isSpin) {
 			spinType = e.spinType + " Spin" + (e.isMini ? " Mini" : "");
 		}
-		state.achievementMessages[state.amIndex].text = `${spinType} ${clearedWord}`.trim();
-		state.achievementMessages[state.amIndex].timestamp = Date.now();
-		state.achievementMessages[state.amIndex].id = Math.random();
+		$state.achievementMessages[$state.amIndex].text = `${spinType} ${clearedWord}`.trim();
+		$state.achievementMessages[$state.amIndex].timestamp = Date.now();
+		$state.achievementMessages[$state.amIndex].id = Math.random();
 	}
 
 	export function displayAchievement(text) {
-		state.achievementMessages[state.amIndex] = { text, timestamp: Date.now(), id: Math.random() };
-		state.amIndex = ++state.amIndex % state.achievementMessages.length;
+		$state.achievementMessages[$state.amIndex] = { text, timestamp: Date.now(), id: Math.random() };
+		$state.amIndex = ++$state.amIndex % $state.achievementMessages.length;
 	}
 
 	function assignEventHandlersForGame(g) {
@@ -288,7 +269,7 @@
 			fireEvent("gameOver");
 		};
 		g.onGameComplete = () => {
-			state.gameOver = true;
+			$state.gameOver = true;
 			dispatch("gameComplete");
 		};
 		g.onSpawnBlock = (e) => {
@@ -326,19 +307,19 @@
 	$: if (pauseEnabled) game.running = !$inMenu;
 
 	window.game = game;
-	window.grid = state.grid;
+	window.grid = $state.grid;
 
 	// $: console.table(grid);
 
 	export function updateVis() {
-		state.grid = game.grid;
-		state.holdPiece = game.holdPiece;
-		state.queue = game.queue;
+		$state.grid = game.grid;
+		$state.holdPiece = game.holdPiece;
+		$state.queue = game.queue;
 	}
 
 	export function restartGame() {
 		clearTimeout(gravityTimeout);
-		state.gameOver = false;
+		$state.gameOver = false;
 		updateVis();
 		vis.shake();
 		vis.focus();
@@ -414,10 +395,10 @@
 		}, dt);
 	}
 
-	$: if ($userConfig.consoleGame && state.grid)
+	$: if ($userConfig.consoleGame && $state.grid)
 		console.log(
-			state.grid.map((row) => row.map((cell) => "%c  ").join("")).join("\n"),
-			...state.grid.reduce(
+			$state.grid.map((row) => row.map((cell) => "%c  ").join("")).join("\n"),
+			...$state.grid.reduce(
 				(prev, curr) => [
 					...prev,
 					...curr.map(
@@ -522,10 +503,10 @@
 </script>
 
 <Vis
-	grid={state.grid}
-	queue={state.queue}
-	holdPiece={state.holdPiece}
-	gameOver={state.gameOver}
+	grid={$state.grid}
+	queue={$state.queue}
+	holdPiece={$state.holdPiece}
+	gameOver={$state.gameOver}
 	{sidePane}
 	bind:this={vis}
 	on:restartRequested
@@ -541,7 +522,7 @@
 		</div>
 	</svelte:fragment>
 	<svelte:fragment slot="belowHold">
-		{#each state.achievementMessages as achievementMessage (achievementMessage.id)}
+		{#each $state.achievementMessages as achievementMessage (achievementMessage.id)}
 			<p class="bounceIn" style="font-size: 3em" style:transform={`rotate(${Math.random() * 20 - 10 + "deg"})`}>
 				{achievementMessage.text || ""}
 			</p>

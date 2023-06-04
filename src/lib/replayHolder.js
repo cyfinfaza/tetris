@@ -51,7 +51,7 @@ export class ReplayHolder {
 		// console.log(timeline.length);
 		this.timeline[this.atIndex].state[stateholder] = state;
 		this.numStates.set(this.timeline.length);
-		console.log("recording timeline", this.timeline[this.atIndex]);
+		// console.log("recording timeline", this.timeline[this.atIndex]);
 	}
 
 	reset = () => {
@@ -64,7 +64,7 @@ export class ReplayHolder {
 	}
 
 	goToIndex = (index) => {
-		console.warn("goToIndex", index, this.timeline[index]);
+		// console.warn("goToIndex", index, this.timeline[index]);
 		// console.log(this.timeline)
 		let stateAtIndex = this.timeline[index]?.state;
 		if (!stateAtIndex) return;
@@ -74,7 +74,6 @@ export class ReplayHolder {
 			for (let i = index; i >= 0; i--) {
 				stateAtIndex = this.timeline[i].state;
 				// console.log(key, stateAtIndex, i, typeof stateholder.stateFire, stateAtIndex[key]);
-				console.log(key, stateholder, stateAtIndex);
 				if (typeof stateholder.stateFire === "function" && stateAtIndex?.[key]) {
 					// console.log(key, JSON.parse(stateAtIndex[key]));
 					stateholder.stateFire(JSON.parse(JSON.stringify(stateAtIndex[key])));
@@ -146,10 +145,9 @@ export class ReplayHolder {
 			yield count++ / this.timeline.length;
 			// await delay(0);
 			await tick();
-			if (count % 1 === 0) await this.delay(5);
+			if (count % 100 === 0) await this.delay(0);
 		}
 		this.overrideNow = null;
-		console.log(this.timeline);
 	}
 
 	populateStates = async () => {
