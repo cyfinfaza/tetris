@@ -104,6 +104,7 @@ export class ReplayHolder {
 		if (timelineAtIndex.recordsState) {
 			var stateAtIndex = structuredClone(timelineAtIndex.state);
 			this.goToIndex(this.atIndex);
+			return true;
 		}
 		if (applyTime) this.overrideNow = timelineAtIndex.timestamp;
 		const stateholder = this.stateHolders[eventAtIndex.stateholder];

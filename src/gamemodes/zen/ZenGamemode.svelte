@@ -3,6 +3,7 @@
 	import TetrisGame from "~/core/tetris";
 	import CoreGame from "~/core/CoreGame.svelte";
 	import PpsCounter from "~/components/PPSCounter.svelte";
+	import EventManager from "~/lib/eventManager";
 
 	let linesCleared = 0;
 
@@ -18,6 +19,12 @@
 	function handleDrop() {
 		ppscounter.handleDrop();
 	}
+
+	const eventManager = new EventManager("/gamemodes/Zen", {
+		events: {
+			handleRestartRequested,
+		}
+	});
 
 	function handleRestartRequested() {
 		game.resetGame();
@@ -37,7 +44,7 @@
 <CoreGame
 	{game}
 	bind:this={cg}
-	on:restartRequested={handleRestartRequested}
+	on:restartRequested={()=>eventManager.fireStateRecordingEvent("handleRestartRequested")}
 	on:drop={handleDrop}
 	on:linesCleared={handleLinesCleared}
 >

@@ -1,5 +1,5 @@
-import ZenGamemode from "./zen/ZenGamemode.svelte";
-import sprint from "./sprint/sprint.svelte";
+import ZenGamemode from "./Zen/ZenGamemode.svelte";
+import sprint from "./Sprint/sprint.svelte";
 import debugGamemode from "./Debug/DebugGamemode.svelte";
 import comboChallenge from "./ComboChallenge/ComboChallenge.svelte";
 import instaGravDeath from "./20GMode/20GDeath.svelte";
