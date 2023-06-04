@@ -1,35 +1,35 @@
 <script>
 	import { getContext } from "svelte";
-	const { now, recordState, registerStateholder } = getContext('replayHolder');
+	import EventManager from "~/lib/eventManager";
 
-	registerStateholder("/components/PPSCounter", { stateFire: (s) => (state = { ...s, _disableRecord: true }) });
+	const eventManager = new EventManager("/components/PPSCounter", {
+		initialState: {
+			dropTimestamps: [],
+			gameStartTimestamp: Infinity,
+			pps: 0,
+		},
+		events: {}
+	});
 
-	let state = {
-		dropTimestamps: [],
-		gameStartTimestamp: Infinity,
-		pps: 0,
-	};
+	const state = eventManager.state;
 
-	$: {
-		if (!state._disableRecord) recordState("/components/PPSCounter", state);
-		delete state._disableRecord;
-	}
+	const { now } = getContext('replayHolder');
 
-	$: state.pps = state.dropTimestamps.length / ((now() - state.gameStartTimestamp) / 1000) || 0;
+	$: $state.pps = $state.dropTimestamps.length / ((now() - $state.gameStartTimestamp) / 1000) || 0;
 
 	export function reset() {
-		state.dropTimestamps = [];
-		state.pps = 0;
-		state.gameStartTimestamp = Infinity;
+		$state.dropTimestamps = [];
+		$state.pps = 0;
+		$state.gameStartTimestamp = Infinity;
 	}
 
 	export function start() {
-		state.gameStartTimestamp = now();
+		$state.gameStartTimestamp = now();
 	}
 
 	export function handleDrop() {
-		state.dropTimestamps = [...state.dropTimestamps, now()];
+		$state.dropTimestamps = [...$state.dropTimestamps, now()];
 	}
 </script>
 
-{Math.round(state.pps * 100) / 100}
+{Math.round($state.pps * 100) / 100}

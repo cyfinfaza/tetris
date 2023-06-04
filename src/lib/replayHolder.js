@@ -33,12 +33,13 @@ export class ReplayHolder {
 		return Date.now();
 	}
 
-	recordEvent = (stateholder, event, args = []) => {
+	recordEvent = (stateholder, event, args = [], recordsState=false) => {
 		// console.warn("recordEvent", stateholder);
 		this.timeline.push({ timestamp: Date.now() });
 		this.atIndex = this.timeline.length - 1;
 		this.timeline[this.atIndex].event = { stateholder, event };
-		if (args.length) this.timeline[this.atIndex].args = args;
+		if (args.length) this.timeline[this.atIndex].event.args = args;
+		if (recordsState) this.timeline[this.atIndex].recordsState = true;
 		this.numStates.set(this.timeline.length);
 	}
 
@@ -50,6 +51,7 @@ export class ReplayHolder {
 		// console.log(timeline.length);
 		this.timeline[this.atIndex].state[stateholder] = state;
 		this.numStates.set(this.timeline.length);
+		console.log("recording timeline", this.timeline[this.atIndex]);
 	}
 
 	reset = () => {
@@ -62,6 +64,8 @@ export class ReplayHolder {
 	}
 
 	goToIndex = (index) => {
+		console.warn("goToIndex", index, this.timeline[index]);
+		// console.log(this.timeline)
 		let stateAtIndex = this.timeline[index]?.state;
 		if (!stateAtIndex) return;
 		Object.keys(this.stateHolders).forEach((key) => {
@@ -70,7 +74,8 @@ export class ReplayHolder {
 			for (let i = index; i >= 0; i--) {
 				stateAtIndex = this.timeline[i].state;
 				// console.log(key, stateAtIndex, i, typeof stateholder.stateFire, stateAtIndex[key]);
-				if (typeof stateholder.stateFire === "function" && stateAtIndex[key]) {
+				console.log(key, stateholder, stateAtIndex);
+				if (typeof stateholder.stateFire === "function" && stateAtIndex?.[key]) {
 					// console.log(key, JSON.parse(stateAtIndex[key]));
 					stateholder.stateFire(JSON.parse(JSON.stringify(stateAtIndex[key])));
 					break;
@@ -97,9 +102,18 @@ export class ReplayHolder {
 		let eventAtIndex = timelineAtIndex.event;
 		this.atIndex++;
 		if (!eventAtIndex) return true;
+		if (timelineAtIndex.recordsState) {
+			var stateAtIndex = structuredClone(timelineAtIndex.state);
+			this.goToIndex(this.atIndex);
+		}
 		if (applyTime) this.overrideNow = timelineAtIndex.timestamp;
 		const stateholder = this.stateHolders[eventAtIndex.stateholder];
-		stateholder?.eventFire(eventAtIndex.event);
+		if (typeof stateholder?.eventFire === 'function')
+			stateholder?.eventFire(eventAtIndex.event, eventAtIndex.args);
+		if (timelineAtIndex.recordsState) {
+			this.timeline[this.atIndex].state = stateAtIndex;
+			this.goToIndex(this.atIndex);
+		}
 		return true;
 	}
 
@@ -132,7 +146,7 @@ export class ReplayHolder {
 			yield count++ / this.timeline.length;
 			// await delay(0);
 			await tick();
-			if (count % 100 === 0) await this.delay(0);
+			if (count % 1 === 0) await this.delay(5);
 		}
 		this.overrideNow = null;
 		console.log(this.timeline);
@@ -149,6 +163,8 @@ export class ReplayHolder {
 		replay.timeline = this.timeline.map((t) => ({
 			timestamp: t.timestamp,
 			event: t.event ? { stateholder: t.event.stateholder, event: t.event.event, args: t.event.args } : null,
+			recordsState: t.recordsState,
+			state: t.recordsState ? t.state : undefined,
 		}));
 		return replay;
 	}

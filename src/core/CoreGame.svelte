@@ -15,6 +15,8 @@
 	import { userConfig } from "~/lib/stores";
 	import { inMenu } from "~/lib/stores";
 	import { sx, sy } from "./tetris";
+	import EventManager from "~/lib/eventManager";
+
 	const { recordEvent, recordState, registerStateholder, inReplay } = getContext("replayHolder");
 
 	const dispatch = createEventDispatcher();

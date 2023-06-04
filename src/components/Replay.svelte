@@ -10,6 +10,8 @@
 	const replayHolder = new ReplayHolder();
 	setContext('replayHolder', replayHolder);
 
+	window.replayHolder = replayHolder;
+
     // $: replayHolder.$inReplay = gameView === "replay";
     replayHolder.inReplay.set(true);
 
@@ -100,7 +102,6 @@
 		}
 		$generalSoundDisable = true;
 		for await (const progress of populateStatesGen()) {
-			console.log('something');
 			populationProgress = progress;
 		}
 		$generalSoundDisable = false;
@@ -149,7 +150,7 @@
 			on:input={(e) => {
 				// running = false;
 				goToIndex(parseInt(e.target.value));
-				console.log(replayHolder.atIndex);
+				// console.log(replayHolder.atIndex);
 				startTimestamp = Date.now() - getFrameTimestamp(0);
 			}}
 			bind:this={slider}

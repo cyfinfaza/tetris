@@ -4,32 +4,26 @@
 	import CoreGame from "~/core/CoreGame.svelte";
 	import PpsCounter from "~/components/PPSCounter.svelte";
 	import Setting from "~/components/Setting.svelte";
-	
-	const { numStates, goToIndex, recordEvent, registerStateholder, recordState } = getContext('replayHolder');
+	import EventManager from "~/lib/eventManager"
 
-	let state = {
-		linesCleared: 0,
-		gravityEnabled: true,
-		inputEnabled: true,
-	};
-	registerStateholder("/gamemodes/DebugGamemode", { stateFire: (s) => (state = { ...s, _disableRecord: true }) });
+	const { numStates, goToIndex, recordEvent, recordState } = getContext("replayHolder");
 
-	$: {
-		if (!state._disableRecord) recordState("/gamemodes/DebugGamemode", state);
-		delete state._disableRecord;
-	}
-
-	const events = {
-		drawPiece: (x, y, piece) => {
-			game.staticMatrix[y + ry][x] = piece;
-			cg.updateVis();
+	const eventManager = new EventManager("/gamemodes/DebugGamemode", {
+		initialState: {
+			linesCleared: 0,
+			gravityEnabled: true,
+			inputEnabled: true,
 		},
-	};
+		events: {
+			drawPiece: (x, y, piece) => {
+				game.staticMatrix[y + ry][x] = piece;
+				cg.updateVis();
+			},
+			handleRestartRequested,
+		}
+	})
 
-	function fireEvent(name, records = true, ...args) {
-		if (records) recordEvent("/gamemodes/DebugGamemode", name, args);
-		events[name](...args);
-	}
+	const state = eventManager.state;
 
 	let ppscounter;
 
@@ -41,7 +35,7 @@
 	let cg;
 
 	function handleLinesCleared(e) {
-		state.linesCleared += e.detail.numLines;
+		$state.linesCleared += e.detail.numLines;
 	}
 
 	function handleDrop() {
@@ -50,7 +44,7 @@
 
 	function handleRestartRequested() {
 		game.resetGame();
-		state.linesCleared = 0;
+		$state.linesCleared = 0;
 		cg.restartGame();
 		ppscounter.reset();
 		game.start();
@@ -62,10 +56,10 @@
 			elements.forEach((element, x) => {
 				function handleMouse(e) {
 					if (e.buttons & 1) {
-						fireEvent("drawPiece", true, x, y, { type: "clearable-garbage" });
+						eventManager.fireEvent("drawPiece", x, y, { type: "clearable-garbage" });
 					}
 					if (e.buttons & 2) {
-						fireEvent("drawPiece", true, x, y, null);
+						eventManager.fireEvent("drawPiece", x, y, null);
 					}
 				}
 				if (element === null) {
@@ -80,7 +74,7 @@
 		});
 	}
 
-	$: game.lockDelay = state.gravityEnabled ? 30 : Infinity;
+	$: game.lockDelay = $state.gravityEnabled ? 30 : Infinity;
 
 	onMount(() => {
 		game.start();
@@ -95,22 +89,22 @@
 	{game}
 	bind:this={cg}
 	bind:pieceElements
-	on:restartRequested={handleRestartRequested}
+	on:restartRequested={() => eventManager.fireStateRecordingEvent("handleRestartRequested")}
 	on:drop={handleDrop}
 	on:linesCleared={handleLinesCleared}
-	inputDisabled={!state.inputEnabled}
+	inputDisabled={!$state.inputEnabled}
 	sidePane="settings"
-	blurGame={state.showingEndGame}
-	gravityEnabled={state.gravityEnabled}
+	blurGame={$state.showingEndGame}
+	gravityEnabled={$state.gravityEnabled}
 >
 	<svelte:fragment slot="stats">
 		<h2><PpsCounter bind:this={ppscounter} /> PPS</h2>
-		<h1>{state.linesCleared} {state.linesCleared == 1 ? "line" : "lines"}</h1>
+		<h1>{$state.linesCleared} {$state.linesCleared == 1 ? "line" : "lines"}</h1>
 	</svelte:fragment>
 	<h1 slot="gameName">Debug Mode</h1>
 	<svelte:fragment slot="sidePane">
-		<Setting name="Input" bind:value={state.inputEnabled} type="toggle" />
-		<Setting name="Gravity" bind:value={state.gravityEnabled} type="toggle" />
+		<Setting name="Input" bind:value={$state.inputEnabled} type="toggle" />
+		<Setting name="Gravity" bind:value={$state.gravityEnabled} type="toggle" />
 		<input
 			type="range"
 			style="width: 100%"
